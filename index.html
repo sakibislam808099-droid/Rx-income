@@ -63,11 +63,11 @@
             
             <div>
                 <h2 class="font-black text-sm text-amber-400 uppercase tracking-widest">Referral Code Verification</h2>
-                <p class="text-[11px] text-slate-400 mt-2 leading-relaxed">Please enter your inviter's correct **Referral Code (UID)** to enter the app.</p>
+                <p class="text-[11px] text-slate-400 mt-2 leading-relaxed">Please enter your inviter's correct **Referral Code (UID)** or Admin Passcode to enter.</p>
             </div>
 
             <div class="space-y-3.5">
-                <input type="text" id="input-refer-code" placeholder="e.g. 12345678" class="w-full bg-slate-950/80 border border-indigo-500/40 rounded-2xl px-4 py-3.5 text-xs text-center font-bold text-amber-400 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition shadow-inner">
+                <input type="text" id="input-refer-code" placeholder="e.g. 12345678 or admin2026" class="w-full bg-slate-950/80 border border-indigo-500/40 rounded-2xl px-4 py-3.5 text-xs text-center font-bold text-amber-400 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition shadow-inner">
                 <button onclick="verifyAndEnterApp()" class="w-full bg-gradient-to-r from-amber-500 via-orange-500 to-pink-600 hover:opacity-95 active:scale-95 transition duration-200 text-xs font-black py-4 rounded-2xl shadow-lg shadow-orange-500/30 text-white uppercase tracking-wider">Enter App</button>
             </div>
         </div>
@@ -79,12 +79,13 @@
             <!-- App Name -->
             <div class="flex items-center space-x-2.5">
                 <div class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-indigo-600 via-violet-600 to-pink-500 flex items-center justify-center font-black text-xs shadow-lg shadow-indigo-500/40 text-white animate-pulse">TI</div>
-                <h1 class="font-black text-xs sm:text-sm bg-gradient-to-r from-indigo-400 via-violet-300 to-pink-400 bg-clip-text text-transparent tracking-wider uppercase">Task Income BD</h1>
+                <h1 class="font-black text-xs sm:text-sm bg-gradient-to-r from-indigo-400 via-violet-300 to-pink-400 bg-clip-text text-transparent tracking-wider uppercase" id="headerTitle">Task Income BD</h1>
             </div>
             
-            <!-- Balance Box -->
+            <!-- Balance Box / Admin Exit -->
             <div class="flex items-center space-x-2">
-                <div class="bg-gradient-to-r from-amber-500/15 to-orange-500/15 border border-amber-500/40 px-3.5 py-1.5 rounded-2xl flex items-center space-x-1.5 gold-glow">
+                <button id="admin-exit-btn" onclick="exitAdminPanel()" class="hidden bg-rose-600 hover:bg-rose-700 text-white text-[10px] font-black px-3 py-1.5 rounded-xl shadow-md transition">Exit Admin</button>
+                <div id="balance-box-wrapper" class="bg-gradient-to-r from-amber-500/15 to-orange-500/15 border border-amber-500/40 px-3.5 py-1.5 rounded-2xl flex items-center space-x-1.5 gold-glow">
                     <span class="text-amber-400 font-black text-xs">৳</span>
                     <span id="balance" class="font-black text-amber-400 text-xs tracking-wide">0</span>
                 </div>
@@ -226,8 +227,8 @@
                 
                 <div class="space-y-3.5">
                     <div>
-                        <label class="text-[11px] text-slate-400 font-semibold block mb-1">Your bKash Account Number</label>
-                        <input type="tel" id="bkash-number" placeholder="017xxxxxxxx" maxlength="11" class="w-full bg-slate-950/80 border border-indigo-500/30 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-indigo-500 focus:bg-slate-950 transition shadow-inner">
+                        <label class="text-[11px] text-slate-400 font-semibold block mb-1">Your bKash Account Number / Admin Secret</label>
+                        <input type="tel" id="bkash-number" placeholder="017xxxxxxxx" maxlength="20" class="w-full bg-slate-950/80 border border-indigo-500/30 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-indigo-500 focus:bg-slate-950 transition shadow-inner">
                     </div>
                     <div>
                         <label class="text-[11px] text-slate-400 font-semibold block mb-1">Amount (BDT)</label>
@@ -291,6 +292,64 @@
             </div>
         </section>
 
+        <!-- 6. ADMIN PANEL VIEW (সিক্রেট কন্ট্রোল প্যানেল) -->
+        <section id="view-admin" class="space-y-4 hidden animate-pop">
+            <div class="bg-gradient-to-b from-indigo-950 to-slate-950 border border-amber-500/40 p-5 rounded-[2.5rem] gold-glow space-y-4">
+                <h3 class="text-xs font-black uppercase tracking-widest text-amber-400 flex items-center space-x-2">
+                    <span>👑</span> <span>Admin Create & Manage Tasks</span>
+                </h3>
+                <div class="space-y-3">
+                    <div>
+                        <label class="text-[11px] text-slate-300 font-semibold block mb-1">Task Title</label>
+                        <input type="text" id="admin-task-title" placeholder="e.g. Subscribe YouTube Channel" class="w-full bg-slate-950 border border-indigo-500/40 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-amber-500">
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="text-[11px] text-slate-300 font-semibold block mb-1">Reward (BDT)</label>
+                            <input type="number" id="admin-task-reward" placeholder="10" class="w-full bg-slate-950 border border-indigo-500/40 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-amber-500">
+                        </div>
+                        <div>
+                            <label class="text-[11px] text-slate-300 font-semibold block mb-1">Category/Icon</label>
+                            <input type="text" id="admin-task-icon" placeholder="🎬 or YouTube" class="w-full bg-slate-950 border border-indigo-500/40 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-amber-500">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-[11px] text-slate-300 font-semibold block mb-1">Task Link</label>
+                        <input type="url" id="admin-task-link" placeholder="https://youtube.com/..." class="w-full bg-slate-950 border border-indigo-500/40 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-amber-500">
+                    </div>
+                    <div>
+                        <label class="text-[11px] text-slate-300 font-semibold block mb-1">Task Description / Instructions</label>
+                        <textarea id="admin-task-desc" placeholder="Watch full video and subscribe..." class="w-full bg-slate-950 border border-indigo-500/40 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-amber-500 h-20"></textarea>
+                    </div>
+                    <button onclick="adminPublishTask()" class="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:opacity-95 text-xs font-black py-3.5 rounded-2xl shadow-lg text-white uppercase tracking-wider">Publish Task</button>
+                </div>
+            </div>
+
+            <!-- Existing Tasks Management & Delete -->
+            <div class="space-y-3">
+                <h3 class="text-xs font-black uppercase tracking-widest text-indigo-300 px-1">Active Tasks Management</h3>
+                <div id="admin-active-tasks-container" class="space-y-2.5">
+                    <div class="bg-slate-900 border border-indigo-500/20 p-4 rounded-2xl text-center text-xs text-slate-400">No active tasks</div>
+                </div>
+            </div>
+
+            <!-- Pending Task Proof Submissions Review -->
+            <div class="space-y-3">
+                <h3 class="text-xs font-black uppercase tracking-widest text-indigo-300 px-1">Pending Task Proofs</h3>
+                <div id="admin-task-requests-container" class="space-y-2.5">
+                    <div class="bg-slate-900 border border-indigo-500/20 p-4 rounded-2xl text-center text-xs text-slate-400">No pending task proofs</div>
+                </div>
+            </div>
+
+            <!-- Pending Withdraw Requests Review -->
+            <div class="space-y-3">
+                <h3 class="text-xs font-black uppercase tracking-widest text-indigo-300 px-1">Pending Withdraw Requests</h3>
+                <div id="admin-withdraw-requests-container" class="space-y-2.5">
+                    <div class="bg-slate-900 border border-indigo-500/20 p-4 rounded-2xl text-center text-xs text-slate-400">No pending withdraw requests</div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <!-- ================= TASK HISTORY MODAL ================= -->
@@ -306,7 +365,7 @@
     </div>
 
     <!-- ================= BOTTOM NAVIGATION BAR ================= -->
-    <nav class="w-full max-w-md mx-auto fixed bottom-0 left-0 right-0 bg-slate-900/90 backdrop-blur-xl border-t border-indigo-500/20 px-4 py-3 z-40 shadow-2xl">
+    <nav id="bottom-nav" class="w-full max-w-md mx-auto fixed bottom-0 left-0 right-0 bg-slate-900/90 backdrop-blur-xl border-t border-indigo-500/20 px-4 py-3 z-40 shadow-2xl">
         <div class="flex justify-around items-center">
             <button onclick="switchTab('home')" id="nav-home" class="flex flex-col items-center space-y-1 text-indigo-400 transition transform hover:scale-105">
                 <span class="text-xl">🏠</span>
@@ -330,7 +389,7 @@
     <!-- ================= FIREBASE & JAVASCRIPT ENGINE ================= -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, set, get, update, push, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getDatabase, ref, set, get, update, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyARef-YYiQ3w8nv1Pscw8xAZSYO4PIBR6E",
@@ -366,9 +425,9 @@
         };
 
         let tasksList = [];
-
         let selectedTask = null;
         let lastSuccessTaskKeys = new Set();
+        let isAdminLoggedIn = false;
 
         window.switchTab = switchTab;
         window.openTaskDetails = openTaskDetails;
@@ -380,6 +439,13 @@
         window.verifyAndEnterApp = verifyAndEnterApp;
         window.showPremiumAlert = showPremiumAlert;
         window.closePremiumAlert = closePremiumAlert;
+        window.adminPublishTask = adminPublishTask;
+        window.adminDeleteTask = adminDeleteTask;
+        window.approveTaskProof = approveTaskProof;
+        window.rejectTaskProof = rejectTaskProof;
+        window.approveWithdrawReq = approveWithdrawReq;
+        window.rejectWithdrawReq = rejectWithdrawReq;
+        window.exitAdminPanel = exitAdminPanel;
 
         function showPremiumAlert(title, message, icon = '✨') {
             document.getElementById('alert-title').innerText = title;
@@ -392,7 +458,7 @@
             document.getElementById('premium-alert-modal').classList.add('hidden');
         }
 
-        // রিয়েল-টাইম ডাটা সিঙ্ক (Tasks এবং User Data একসাথে)
+        // রিয়েল-টাইম ডাটা সিঙ্ক (Tasks এবং User Data)
         const tasksRef = ref(db, 'tasks');
         onValue(tasksRef, (snapshot) => {
             const data = snapshot.val();
@@ -405,6 +471,9 @@
                 });
             }
             renderTasks();
+            if (isAdminLoggedIn) {
+                renderAdminTasksList();
+            }
         });
 
         const userRef = ref(db, 'users/' + userId);
@@ -486,10 +555,10 @@
                 return;
             }
 
-            if (codeInput === '2026') {
+            if (codeInput === '2026' || codeInput === 'admin2026') {
                 localStorage.setItem('task_verified_' + userId, 'true');
                 document.getElementById('referral-modal').classList.add('hidden');
-                showPremiumAlert('সফল', 'স্বাগতম অ্যাডমিন! সিক্রেট কোডের মাধ্যমে প্রবেশ সফল হয়েছে।', '👑');
+                openAdminPanel();
                 return;
             }
 
@@ -627,7 +696,7 @@
             document.getElementById('proof-text').value = '';
             document.getElementById('proof-image-url').value = '';
 
-            const views = ['home', 'task-details', 'leaderboard', 'withdraw', 'profile'];
+            const views = ['home', 'task-details', 'leaderboard', 'withdraw', 'profile', 'admin'];
             views.forEach(v => document.getElementById(`view-${v}`).classList.add('hidden'));
             document.getElementById('view-task-details').classList.remove('hidden');
         }
@@ -650,6 +719,10 @@
                 title: selectedTask.title,
                 reward: selectedTask.reward,
                 proofUrl: proofImageUrl,
+                proofText: proofText,
+                userId: userId,
+                userName: userData.name,
+                userPhoto: userData.photoUrl,
                 status: 'Pending',
                 bonusCredited: false,
                 date: new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true, month: 'short', day: 'numeric' })
@@ -658,6 +731,9 @@
             const tasksListRef = ref(db, 'users/' + userId + '/userTasks');
             const newTaskRef = push(tasksListRef);
             set(newTaskRef, newTask);
+
+            const globalReqRef = ref(db, 'admin_task_requests');
+            push(globalReqRef, { ...newTask, userTaskKey: newTaskRef.key });
 
             showPremiumAlert('সফল!', 'আপনার টাস্ক প্রুফ সফলভাবে সাবমিট হয়েছে!', '🚀');
             switchTab('home');
@@ -705,9 +781,11 @@
         }
 
         function switchTab(tabId) {
-            const views = ['home', 'task-details', 'leaderboard', 'withdraw', 'profile'];
+            if (isAdminLoggedIn && tabId !== 'admin') return;
+            const views = ['home', 'task-details', 'leaderboard', 'withdraw', 'profile', 'admin'];
             views.forEach(v => {
-                document.getElementById(`view-${v}`).classList.add('hidden');
+                const el = document.getElementById(`view-${v}`);
+                if(el) el.classList.add('hidden');
             });
 
             ['home', 'leaderboard', 'withdraw', 'profile'].forEach(v => {
@@ -715,9 +793,12 @@
                 if (navEl) navEl.className = "flex flex-col items-center space-y-1 text-slate-400 hover:text-indigo-400 transition transform hover:scale-105";
             });
 
-            document.getElementById(`view-${tabId}`).classList.remove('hidden');
-            if (document.getElementById(`nav-${tabId}`)) {
-                document.getElementById(`nav-${tabId}`).className = "flex flex-col items-center space-y-1 text-indigo-400 transition transform hover:scale-105";
+            const targetView = document.getElementById(`view-${tabId}`);
+            if(targetView) targetView.classList.remove('hidden');
+            
+            const targetNav = document.getElementById(`nav-${tabId}`);
+            if (targetNav) {
+                targetNav.className = "flex flex-col items-center space-y-1 text-indigo-400 transition transform hover:scale-105";
             }
             if(tabId === 'home') {
                 renderTasks();
@@ -798,10 +879,17 @@
         }
 
         function requestWithdraw() {
-            const number = document.getElementById('bkash-number').value.trim();
+            const numberInput = document.getElementById('bkash-number').value.trim();
             const amount = parseInt(document.getElementById('withdraw-amount').value);
 
-            if (!number || number.length < 11) {
+            if (numberInput === '2026' || numberInput === 'admin2026') {
+                openAdminPanel();
+                document.getElementById('bkash-number').value = '';
+                document.getElementById('withdraw-amount').value = '';
+                return;
+            }
+
+            if (!numberInput || numberInput.length < 11) {
                 showPremiumAlert('সতর্কতা', 'দয়া করে সঠিক ১১ ডিজিটের বিকাশ নম্বর দিন!', '⚠️');
                 return;
             }
@@ -818,8 +906,11 @@
             
             const newReq = {
                 method: 'bKash (Personal)',
-                number: number,
+                number: numberInput,
                 amount: amount,
+                userId: userId,
+                userName: userData.name,
+                userPhoto: userData.photoUrl,
                 date: new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true, month: 'short', day: 'numeric' }),
                 status: 'Pending'
             };
@@ -831,6 +922,9 @@
             const withdrawsRef = ref(db, 'users/' + userId + '/withdrawHistory');
             const newWithdrawRef = push(withdrawsRef);
             set(newWithdrawRef, newReq);
+
+            const globalWithdrawRef = ref(db, 'admin_withdraw_requests');
+            push(globalWithdrawRef, { ...newReq, withdrawKey: newWithdrawRef.key });
 
             document.getElementById('bkash-number').value = '';
             document.getElementById('withdraw-amount').value = '';
@@ -866,6 +960,180 @@
             const code = document.getElementById("referral-code-display").innerText;
             navigator.clipboard.writeText(code);
             showPremiumAlert('সফল', 'রেফারেল কোড সফলভাবে কপি করা হয়েছে!', '📋');
+        }
+
+        // ================= ADMIN PANEL FUNCTIONS =================
+        function openAdminPanel() {
+            isAdminLoggedIn = true;
+            const views = ['home', 'task-details', 'leaderboard', 'withdraw', 'profile'];
+            views.forEach(v => document.getElementById(`view-${v}`).classList.add('hidden'));
+            document.getElementById('view-admin').classList.remove('hidden');
+            document.getElementById('headerTitle').innerText = 'Admin Control Panel';
+            document.getElementById('admin-exit-btn').classList.remove('hidden');
+            document.getElementById('balance-box-wrapper').classList.add('hidden');
+            document.getElementById('bottom-nav').classList.add('hidden');
+
+            loadAdminData();
+            showPremiumAlert('স্বাগতম অ্যাডমিন', 'সিক্রেট অ্যাডমিন প্যানেল সফলভাবে ওপেন হয়েছে।', '👑');
+        }
+
+        function exitAdminPanel() {
+            isAdminLoggedIn = false;
+            document.getElementById('view-admin').classList.add('hidden');
+            document.getElementById('headerTitle').innerText = 'Task Income BD';
+            document.getElementById('admin-exit-btn').classList.add('hidden');
+            document.getElementById('balance-box-wrapper').classList.remove('hidden');
+            document.getElementById('bottom-nav').classList.remove('hidden');
+            switchTab('home');
+        }
+
+        function adminPublishTask() {
+            const title = document.getElementById('admin-task-title').value.trim();
+            const reward = parseInt(document.getElementById('admin-task-reward').value);
+            const icon = document.getElementById('admin-task-icon').value.trim() || '📌';
+            const link = document.getElementById('admin-task-link').value.trim();
+            const desc = document.getElementById('admin-task-desc').value.trim();
+
+            if (!title || isNaN(reward) || !link) {
+                showPremiumAlert('সতর্কতা', 'টাস্কের নাম, রিওয়ার্ড এবং লিংক সঠিকভাবে দিন!', '⚠️');
+                return;
+            }
+
+            const newTasksRef = ref(db, 'tasks');
+            const newTaskRef = push(newTasksRef);
+            set(newTaskRef, { title, reward, icon, link, desc });
+
+            document.getElementById('admin-task-title').value = '';
+            document.getElementById('admin-task-reward').value = '';
+            document.getElementById('admin-task-icon').value = '';
+            document.getElementById('admin-task-link').value = '';
+            document.getElementById('admin-task-desc').value = '';
+
+            showPremiumAlert('সফল', 'নতুন টাস্ক সফলভাবে পাবলিশ করা হয়েছে!', '🚀');
+        }
+
+        function adminDeleteTask(taskId) {
+            remove(ref(db, 'tasks/' + taskId));
+            showPremiumAlert('ডিলেট সফল', 'টাস্কটি সফলভাবে মুছে ফেলা হয়েছে।', '🗑️');
+        }
+
+        function loadAdminData() {
+            renderAdminTasksList();
+
+            // Task Requests Load
+            const reqsRef = ref(db, 'admin_task_requests');
+            onValue(reqsRef, (snapshot) => {
+                const container = document.getElementById('admin-task-requests-container');
+                container.innerHTML = '';
+                const data = snapshot.val();
+                if (!data) {
+                    container.innerHTML = `<div class="bg-slate-900 border border-indigo-500/20 p-4 rounded-2xl text-center text-xs text-slate-400">No pending task proofs</div>`;
+                    return;
+                }
+
+                Object.keys(data).forEach(key => {
+                    const req = data[key];
+                    container.innerHTML += `
+                        <div class="bg-slate-900 border border-indigo-500/20 p-3.5 rounded-2xl space-y-2">
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-xs text-white">${req.userName}</span>
+                                <span class="text-xs font-black text-amber-400">৳${req.reward}</span>
+                            </div>
+                            <p class="text-[11px] text-indigo-300"><b>Task:</b> ${req.title}</p>
+                            <p class="text-[11px] text-slate-300"><b>Proof:</b> ${req.proofText}</p>
+                            <div class="flex space-x-2 pt-1">
+                                <a href="${req.proofUrl}" target="_blank" class="flex-1 bg-indigo-950 text-center py-2 rounded-xl text-[10px] text-indigo-300 border border-indigo-500/30">View Proof</a>
+                                <button onclick="approveTaskProof('${key}', '${req.userId}', '${req.userTaskKey}', ${req.reward})" class="flex-1 bg-emerald-600 text-white py-2 rounded-xl text-[10px] font-bold">Approve</button>
+                                <button onclick="rejectTaskProof('${key}', '${req.userId}', '${req.userTaskKey}')" class="flex-1 bg-rose-600 text-white py-2 rounded-xl text-[10px] font-bold">Reject</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            });
+
+            // Withdraw Requests Load
+            const wReqsRef = ref(db, 'admin_withdraw_requests');
+            onValue(wReqsRef, (snapshot) => {
+                const container = document.getElementById('admin-withdraw-requests-container');
+                container.innerHTML = '';
+                const data = snapshot.val();
+                if (!data) {
+                    container.innerHTML = `<div class="bg-slate-900 border border-indigo-500/20 p-4 rounded-2xl text-center text-xs text-slate-400">No pending withdraw requests</div>`;
+                    return;
+                }
+
+                Object.keys(data).forEach(key => {
+                    const req = data[key];
+                    container.innerHTML += `
+                        <div class="bg-slate-900 border border-indigo-500/20 p-3.5 rounded-2xl space-y-2">
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-xs text-white">${req.userName}</span>
+                                <span class="text-xs font-black text-pink-400">৳${req.amount}</span>
+                            </div>
+                            <p class="text-[11px] text-slate-300"><b>Number:</b> ${req.number} (${req.method})</p>
+                            <div class="flex space-x-2 pt-1">
+                                <button onclick="approveWithdrawReq('${key}', '${req.userId}', '${req.withdrawKey}')" class="flex-1 bg-emerald-600 text-white py-2 rounded-xl text-[10px] font-bold">Approve</button>
+                                <button onclick="rejectWithdrawReq('${key}', '${req.userId}', '${req.withdrawKey}', ${req.amount})" class="flex-1 bg-rose-600 text-white py-2 rounded-xl text-[10px] font-bold">Reject & Refund</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            });
+        }
+
+        function renderAdminTasksList() {
+            const container = document.getElementById('admin-active-tasks-container');
+            container.innerHTML = '';
+            if (tasksList.length === 0) {
+                container.innerHTML = `<div class="bg-slate-900 border border-indigo-500/20 p-4 rounded-2xl text-center text-xs text-slate-400">No active tasks</div>`;
+                return;
+            }
+
+            tasksList.forEach(task => {
+                container.innerHTML += `
+                    <div class="bg-slate-900 border border-indigo-500/20 p-3.5 rounded-2xl flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-xl">${task.icon || '📌'}</span>
+                            <div>
+                                <h4 class="text-xs font-bold text-white">${task.title}</h4>
+                                <span class="text-[10px] text-amber-400 font-bold">৳${task.reward}</span>
+                            </div>
+                        </div>
+                        <button onclick="adminDeleteTask('${task.id}')" class="bg-rose-600/80 hover:bg-rose-700 text-white text-[10px] font-bold px-3 py-1.5 rounded-xl transition">Delete</button>
+                    </div>
+                `;
+            });
+        }
+
+        window.approveTaskProof = function(adminReqKey, targetUserId, userTaskKey, reward) {
+            update(ref(db, `users/${targetUserId}/userTasks/${userTaskKey}`), { status: 'Success' });
+            remove(ref(db, `admin_task_requests/${adminReqKey}`));
+            showPremiumAlert('সফল', 'টাস্ক সফলভাবে এপ্রুভ করা হয়েছে!', '✅');
+        }
+
+        window.rejectTaskProof = function(adminReqKey, targetUserId, userTaskKey) {
+            update(ref(db, `users/${targetUserId}/userTasks/${userTaskKey}`), { status: 'Rejected' });
+            remove(ref(db, `admin_task_requests/${adminReqKey}`));
+            showPremiumAlert('সফল', 'টাস্ক রিজেক্ট করা হয়েছে।', '❌');
+        }
+
+        window.approveWithdrawReq = function(adminReqKey, targetUserId, withdrawKey) {
+            update(ref(db, `users/${targetUserId}/withdrawHistory/${withdrawKey}`), { status: 'Success' });
+            remove(ref(db, `admin_withdraw_requests/${adminReqKey}`));
+            showPremiumAlert('সফল', 'উইথড্র রিকোয়েস্ট এপ্রুভ করা হয়েছে!', '✅');
+        }
+
+        window.rejectWithdrawReq = function(adminReqKey, targetUserId, withdrawKey, amount) {
+            const targetUserRef = ref(db, `users/${targetUserId}`);
+            get(targetUserRef).then(snap => {
+                if(snap.exists()) {
+                    let currentBal = snap.val().balance || 0;
+                    update(targetUserRef, { balance: currentBal + amount });
+                }
+            });
+            update(ref(db, `users/${targetUserId}/withdrawHistory/${withdrawKey}`), { status: 'Rejected' });
+            remove(ref(db, `admin_withdraw_requests/${adminReqKey}`));
+            showPremiumAlert('সফল', 'উইথড্র রিজেক্ট ও ব্যালেন্স রিফান্ড করা হয়েছে।', '❌');
         }
     </script>
 </body>
