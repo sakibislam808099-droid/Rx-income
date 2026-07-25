@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Task Income BD - Premium Edition</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Telegram Web App SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        ::-webkit-scrollbar { display: none; }
+        body { -webkit-tap-highlight-color: transparent; }
+        .glow-effect {
+            box-shadow: 0 0 30px rgba(99, 102, 241, 0.4);
+        }
+        .gold-glow {
+            box-shadow: 0 0 35px rgba(245, 158, 11, 0.5);
+        }
+        .card-glow {
+            box-shadow: 0 10px 30px -10px rgba(99, 102, 241, 0.15);
+        }
+        .animate-pop {
+            animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.92); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+        .animate-float {
+            animation: floatSlow 4s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 text-slate-100 min-h-screen flex flex-col justify-between font-sans select-none pb-28">
+
+    <!-- ================= PREMIUM ALERT / MESSAGE MODAL ================= -->
+    <div id="premium-alert-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-xl z-[150] flex items-center justify-center p-4 hidden">
+        <div class="bg-gradient-to-b from-slate-900 to-indigo-950 border border-amber-500/40 w-full max-w-xs rounded-[2.5rem] p-6 shadow-2xl space-y-5 animate-pop text-center relative overflow-hidden gold-glow">
+            <div class="absolute -top-10 -right-10 w-28 h-28 bg-gradient-to-br from-amber-500/30 to-pink-500/30 rounded-full blur-2xl pointer-events-none"></div>
+            
+            <div id="alert-icon" class="w-14 h-14 bg-gradient-to-tr from-amber-500 to-orange-500 text-white rounded-2xl mx-auto flex items-center justify-center text-2xl shadow-xl shadow-orange-500/40 animate-float">✨</div>
+            
+            <div>
+                <h3 id="alert-title" class="font-black text-xs text-amber-400 uppercase tracking-widest">Notification</h3>
+                <p id="alert-message" class="text-xs text-slate-300 mt-2 leading-relaxed">Message will be displayed here...</p>
+            </div>
+
+            <button onclick="closePremiumAlert()" class="w-full bg-gradient-to-r from-amber-500 via-orange-500 to-pink-600 hover:opacity-95 active:scale-95 transition duration-200 text-xs font-black py-3 rounded-xl shadow-lg shadow-orange-500/30 text-white uppercase tracking-wider">OK</button>
+        </div>
+    </div>
+
+    <!-- ================= REFERRAL CHECK MODAL (ENTRY LOCK) ================= -->
+    <div id="referral-modal" class="fixed inset-0 bg-slate-950/85 backdrop-blur-xl z-[100] flex items-center justify-center p-4 hidden">
+        <div class="bg-gradient-to-b from-slate-900 to-indigo-950 border border-indigo-500/30 w-full max-w-sm rounded-[2.5rem] p-7 shadow-2xl space-y-6 animate-pop text-center relative overflow-hidden gold-glow">
+            <div class="absolute -top-12 -right-12 w-32 h-32 bg-gradient-to-br from-amber-500/30 to-pink-500/30 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <div class="w-16 h-16 bg-gradient-to-tr from-amber-500 to-orange-500 text-white rounded-3xl mx-auto flex items-center justify-center text-3xl shadow-xl shadow-orange-500/40 animate-float">👑</div>
+            
+            <div>
+                <h2 class="font-black text-sm text-amber-400 uppercase tracking-widest">Referral Code Verification</h2>
+                <p class="text-[11px] text-slate-400 mt-2 leading-relaxed">Please enter your inviter's correct **Referral Code (UID)** to enter the app.</p>
+            </div>
+
+            <div class="space-y-3.5">
+                <input type="text" id="input-refer-code" placeholder="e.g. 12345678" class="w-full bg-slate-950/80 border border-indigo-500/40 rounded-2xl px-4 py-3.5 text-xs text-center font-bold text-amber-400 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition shadow-inner">
+                <button onclick="verifyAndEnterApp()" class="w-full bg-gradient-to-r from-amber-500 via-orange-500 to-pink-600 hover:opacity-95 active:scale-95 transition duration-200 text-xs font-black py-4 rounded-2xl shadow-lg shadow-orange-500/30 text-white uppercase tracking-wider">Enter App</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= TOP HEADER BAR ================= -->
+    <header class="w-full bg-slate-900/80 backdrop-blur-xl border-b border-indigo-500/20 sticky top-0 z-50 px-4 py-3.5 shadow-lg">
+        <div class="max-w-md mx-auto flex justify-between items-center">
+            <!-- App Name -->
+            <div class="flex items-center space-x-2.5">
+                <div class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-indigo-600 via-violet-600 to-pink-500 flex items-center justify-center font-black text-xs shadow-lg shadow-indigo-500/40 text-white animate-pulse">TI</div>
+                <h1 class="font-black text-xs sm:text-sm bg-gradient-to-r from-indigo-400 via-violet-300 to-pink-400 bg-clip-text text-transparent tracking-wider uppercase">Task Income BD</h1>
+            </div>
+            
+            <!-- Balance Box -->
+            <div class="flex items-center space-x-2">
+                <div class="bg-gradient-to-r from-amber-500/15 to-orange-500/15 border border-amber-500/40 px-3.5 py-1.5 rounded-2xl flex items-center space-x-1.5 gold-glow">
+                    <span class="text-amber-400 font-black text-xs">৳</span>
+                    <span id="balance" class="font-black text-amber-400 text-xs tracking-wide">0</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= MAIN CONTENT VIEWS ================= -->
+    <main class="w-full max-w-md mx-auto px-4 mt-5 flex-1">
+        
+        <!-- 1. HOME VIEW -->
+        <section id="view-home" class="space-y-4 animate-pop">
+            <div class="space-y-3.5">
+                <div class="flex justify-between items-center px-1">
+                    <h2 class="text-xs font-black uppercase tracking-widest text-indigo-300">Available Tasks</h2>
+                    <button onclick="openHistoryModal()" class="text-[11px] font-bold text-indigo-300 bg-indigo-900/50 hover:bg-indigo-800/60 px-3.5 py-2 rounded-2xl transition duration-200 flex items-center space-x-1.5 border border-indigo-500/30 shadow-md active:scale-95">
+                        <span>📜 History</span>
+                    </button>
+                </div>
+
+                <div id="task-container" class="space-y-3.5">
+                    <!-- Tasks Render Dynamically -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. TASK SUBMISSION VIEW -->
+        <section id="view-task-details" class="space-y-4 hidden animate-pop">
+            <button onclick="switchTab('home')" class="text-xs text-indigo-400 font-bold flex items-center space-x-1.5 mb-2 hover:translate-x-[-2px] transition">
+                <span>←</span> <span>Back to Task List</span>
+            </button>
+
+            <div class="bg-gradient-to-b from-slate-900 to-indigo-950/70 backdrop-blur-xl border border-indigo-500/30 p-5 rounded-[2.5rem] card-glow space-y-4">
+                <div>
+                    <span id="detail-task-category" class="text-[10px] font-extrabold px-3 py-1 rounded-xl bg-indigo-900/80 text-indigo-300 uppercase border border-indigo-500/30">Category</span>
+                    <h2 id="detail-task-title" class="text-sm font-black text-white mt-2.5">Task Title</h2>
+                    <p id="detail-task-reward" class="text-xs font-black text-amber-400 mt-1">Reward: ৳0</p>
+                </div>
+
+                <div class="border-t border-indigo-500/20 pt-3 space-y-2">
+                    <h3 class="text-xs font-bold text-indigo-200">Task Instructions & Details:</h3>
+                    <p id="detail-task-desc" class="text-[11px] text-slate-400 leading-relaxed">Task detailed description will appear here.</p>
+                </div>
+
+                <div class="pt-1">
+                    <a id="detail-task-link" href="#" target="_blank" class="w-full bg-gradient-to-r from-violet-600 to-indigo-600 hover:opacity-95 text-center block text-xs font-bold py-3.5 rounded-2xl transition duration-200 text-white shadow-lg shadow-indigo-600/40 active:scale-95 uppercase tracking-wide">Visit Link & Do Task</a>
+                </div>
+            </div>
+
+            <!-- Proof Submission Form -->
+            <div class="bg-gradient-to-b from-slate-900 to-indigo-950/70 backdrop-blur-xl border border-indigo-500/30 p-5 rounded-[2.5rem] card-glow space-y-4">
+                <h3 class="font-bold text-xs text-indigo-200 flex items-center space-x-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block animate-ping"></span>
+                    <span>Submit Work Proof</span>
+                </h3>
+
+                <div class="space-y-3.5">
+                    <div>
+                        <label class="text-[11px] text-slate-400 font-semibold block mb-1">1. Enter Proof Text / Your Username</label>
+                        <input type="text" id="proof-text" placeholder="e.g. @your_username or task name" class="w-full bg-slate-950/80 border border-indigo-500/30 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-indigo-500 focus:bg-slate-950 transition shadow-inner">
+                    </div>
+                    <div>
+                        <label class="text-[11px] text-slate-400 font-semibold block mb-1">2. Enter Screenshot / Proof Image Link (Image URL)</label>
+                        <input type="url" id="proof-image-url" placeholder="https://imgur.com/example.jpg" class="w-full bg-slate-950/80 border border-indigo-500/30 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-indigo-500 focus:bg-slate-950 transition shadow-inner">
+                    </div>
+                    <button onclick="submitTaskProof()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:opacity-95 active:scale-95 transition duration-200 text-xs font-black py-4 rounded-2xl shadow-lg shadow-emerald-600/40 text-white uppercase tracking-wider">Confirm & Submit</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. LEADERBOARD VIEW -->
+        <section id="view-leaderboard" class="space-y-4 hidden animate-pop">
+            <div class="flex justify-between items-center mb-1">
+                <h2 class="text-xs font-black uppercase tracking-widest text-indigo-300">Global Leaderboard</h2>
+                <span class="text-[10px] text-amber-400 bg-amber-500/10 border border-amber-500/30 px-3 py-1 rounded-xl font-extrabold shadow-sm">👑 Top Earners</span>
+            </div>
+
+            <!-- Premium Podium -->
+            <div id="podium-container" class="grid grid-cols-3 gap-2.5 items-end pt-5 pb-2">
+                <div id="podium-2" class="bg-gradient-to-b from-slate-900 to-slate-950 border border-slate-700/80 p-3.5 rounded-[2rem] text-center flex flex-col items-center relative shadow-xl">
+                    <div class="absolute -top-3.5 bg-slate-400 text-slate-950 font-black text-[10px] w-6 h-6 rounded-full flex items-center justify-center border-2 border-slate-900 shadow">2</div>
+                    <div class="w-10 h-10 rounded-2xl bg-indigo-900/60 text-indigo-300 border border-indigo-500/30 flex items-center justify-center text-sm font-bold mb-2 shadow-inner" id="podium-avatar-2">A</div>
+                    <h3 class="font-bold text-[11px] text-slate-200 truncate w-full" id="podium-name-2">Name</h3>
+                    <p class="text-xs font-black text-amber-400 mt-0.5" id="podium-income-2">৳0</p>
+                    <span class="text-[9px] text-slate-400 mt-1.5 bg-slate-800/80 px-2 py-0.5 rounded-lg font-medium" id="podium-ref-2">👥 0 Refs</span>
+                </div>
+
+                <div id="podium-1" class="bg-gradient-to-b from-indigo-950 to-slate-950 border border-amber-500/50 p-3.5 rounded-[2rem] text-center flex flex-col items-center relative shadow-2xl -mt-4 gold-glow">
+                    <div class="absolute -top-4 bg-amber-500 text-slate-950 font-black text-xs w-7 h-7 rounded-full flex items-center justify-center border-2 border-slate-900 shadow-md animate-bounce">👑</div>
+                    <div class="w-12 h-12 rounded-2xl bg-amber-500/15 border border-amber-500/40 flex items-center justify-center text-base font-bold text-amber-400 mb-2 shadow-inner" id="podium-avatar-1">T</div>
+                    <h3 class="font-bold text-xs text-amber-300 truncate w-full" id="podium-name-1">Name</h3>
+                    <p class="text-xs font-black text-amber-400 mt-0.5" id="podium-income-1">৳0</p>
+                    <span class="text-[9px] text-amber-300 mt-1.5 bg-amber-500/15 px-2 py-0.5 rounded-lg font-medium border border-amber-500/30" id="podium-ref-1">👥 0 Refs</span>
+                </div>
+
+                <div id="podium-3" class="bg-gradient-to-b from-slate-900 to-slate-950 border border-slate-700/80 p-3.5 rounded-[2rem] text-center flex flex-col items-center relative shadow-xl">
+                    <div class="absolute -top-3.5 bg-amber-700 text-white font-black text-[10px] w-6 h-6 rounded-full flex items-center justify-center border-2 border-slate-900 shadow">3</div>
+                    <div class="w-10 h-10 rounded-2xl bg-indigo-900/60 text-indigo-300 border border-indigo-500/30 flex items-center justify-center text-sm font-bold mb-2 shadow-inner" id="podium-avatar-3">N</div>
+                    <h3 class="font-bold text-[11px] text-slate-200 truncate w-full" id="podium-name-3">Name</h3>
+                    <p class="text-xs font-black text-amber-400 mt-0.5" id="podium-income-3">৳0</p>
+                    <span class="text-[9px] text-slate-400 mt-1.5 bg-slate-800/80 px-2 py-0.5 rounded-lg font-medium" id="podium-ref-3">👥 0 Refs</span>
+                </div>
+            </div>
+
+            <div class="space-y-2.5 pt-2">
+                <h3 class="text-[11px] font-black text-indigo-300 px-1 uppercase tracking-wider">Other Leaders</h3>
+                <div id="leaderboard-list" class="space-y-2.5"></div>
+            </div>
+        </section>
+
+        <!-- 4. WITHDRAW VIEW -->
+        <section id="view-withdraw" class="space-y-4 hidden animate-pop">
+            <div class="bg-gradient-to-b from-slate-900 to-indigo-950/70 backdrop-blur-xl border border-indigo-500/35 p-5 rounded-[2.5rem] card-glow space-y-4">
+                <div class="text-center">
+                    <span class="text-xs text-slate-400 font-semibold">Total Withdrawable Balance</span>
+                    <h2 class="text-3xl font-black text-amber-400 mt-1">৳<span id="withdraw-total-balance">0</span></h2>
+                </div>
+                <div class="grid grid-cols-3 gap-2.5 pt-3 border-t border-indigo-500/20 text-center">
+                    <div class="bg-emerald-950/40 p-2.5 rounded-2xl border border-emerald-500/30">
+                        <span class="text-[10px] text-emerald-400 font-semibold">Success</span>
+                        <p class="text-xs font-extrabold text-emerald-300 mt-0.5">৳<span id="stat-success">0</span></p>
+                    </div>
+                    <div class="bg-amber-950/40 p-2.5 rounded-2xl border border-amber-500/30">
+                        <span class="text-[10px] text-amber-400 font-semibold">Pending</span>
+                        <p class="text-xs font-extrabold text-amber-300 mt-0.5">৳<span id="stat-pending">0</span></p>
+                    </div>
+                    <div class="bg-indigo-950/40 p-2.5 rounded-2xl border border-indigo-500/30">
+                        <span class="text-[10px] text-indigo-300 font-semibold">Minimum</span>
+                        <p class="text-xs font-extrabold text-indigo-200 mt-0.5">৳50</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-b from-slate-900 to-indigo-950/70 backdrop-blur-xl border border-indigo-500/30 p-5 rounded-[2.5rem] card-glow space-y-4">
+                <h3 class="font-bold text-xs text-indigo-200 flex items-center space-x-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-pink-500 inline-block animate-pulse"></span>
+                    <span>Withdraw via bKash (Personal)</span>
+                </h3>
+                
+                <div class="space-y-3.5">
+                    <div>
+                        <label class="text-[11px] text-slate-400 font-semibold block mb-1">Your bKash Account Number</label>
+                        <input type="tel" id="bkash-number" placeholder="017xxxxxxxx" maxlength="11" class="w-full bg-slate-950/80 border border-indigo-500/30 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-indigo-500 focus:bg-slate-950 transition shadow-inner">
+                    </div>
+                    <div>
+                        <label class="text-[11px] text-slate-400 font-semibold block mb-1">Amount (BDT)</label>
+                        <input type="number" id="withdraw-amount" placeholder="Minimum 50 BDT" class="w-full bg-slate-950/80 border border-indigo-500/30 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-indigo-500 focus:bg-slate-950 transition shadow-inner">
+                    </div>
+                    <button onclick="requestWithdraw()" class="w-full bg-gradient-to-r from-pink-600 to-rose-600 hover:opacity-95 active:scale-95 transition duration-200 text-xs font-black py-4 rounded-2xl shadow-lg shadow-pink-600/40 text-white uppercase tracking-wider">Send Withdraw Request</button>
+                </div>
+            </div>
+
+            <div class="space-y-3">
+                <h3 class="text-xs font-black uppercase tracking-widest text-indigo-300 px-1">Withdraw History</h3>
+                <div id="withdraw-history-container" class="space-y-2.5">
+                    <div class="bg-slate-900 border border-indigo-500/20 p-4 rounded-2xl text-center text-xs text-slate-400 shadow-sm">No withdraw history found</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. PROFILE VIEW -->
+        <section id="view-profile" class="space-y-4 hidden animate-pop">
+            <div class="bg-gradient-to-b from-indigo-950 via-slate-900 to-slate-950 backdrop-blur-xl border border-indigo-500/40 p-6 rounded-[2.5rem] text-center shadow-2xl relative overflow-hidden glow-effect">
+                <div class="absolute -top-14 left-1/2 -translate-x-1/2 w-48 h-48 bg-gradient-to-tr from-indigo-500/20 via-purple-500/20 to-pink-500/20 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="relative inline-block mx-auto">
+                    <div class="w-20 h-20 bg-gradient-to-tr from-amber-400 via-indigo-600 to-violet-600 rounded-3xl p-1 shadow-2xl gold-glow flex items-center justify-center overflow-hidden">
+                        <div id="profile-avatar-container" class="w-full h-full bg-slate-950 rounded-[22px] flex items-center justify-center text-amber-400 text-3xl font-black">
+                            <span id="profile-avatar-letter">U</span>
+                        </div>
+                    </div>
+                    <span class="absolute -bottom-1 -right-1 bg-amber-500 text-slate-950 text-[10px] font-black px-2.5 py-0.5 rounded-full border-2 border-slate-950 shadow">VIP</span>
+                </div>
+
+                <h3 id="profile-name" class="font-black text-base mt-3.5 text-white tracking-wide">Loading...</h3>
+                <p class="text-[11px] text-slate-400 mt-0.5 font-medium" id="profile-username">@username</p>
+                <div class="inline-block mt-2.5 bg-indigo-950/80 border border-indigo-500/40 px-4 py-1.5 rounded-2xl shadow-inner">
+                    <p class="text-xs text-indigo-300 font-mono font-black" id="profile-id">UID: 00000000</p>
+                </div>
+                
+                <div class="mt-5 pt-4 border-t border-indigo-500/20 grid grid-cols-2 gap-3 text-center">
+                    <div class="bg-gradient-to-b from-amber-950/40 to-slate-900/60 p-3.5 rounded-2xl border border-amber-500/30 shadow-sm">
+                        <span class="text-[10px] text-amber-400 font-extrabold uppercase tracking-wider">Total Earned</span>
+                        <p class="text-sm font-black text-amber-400 mt-0.5">৳<span id="stat-total-earned">0</span></p>
+                    </div>
+                    <div class="bg-gradient-to-b from-indigo-950/40 to-slate-900/60 p-3.5 rounded-2xl border border-indigo-500/30 shadow-sm">
+                        <span class="text-[10px] text-indigo-300 font-extrabold uppercase tracking-wider">Total Referrals</span>
+                        <p class="text-sm font-black text-indigo-200 mt-0.5"><span id="stat-total-refer">0</span> users</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-b from-slate-900 to-indigo-950/70 backdrop-blur-xl border border-indigo-500/30 p-5 rounded-[2.5rem] card-glow space-y-3.5">
+                <div class="flex items-center space-x-2">
+                    <span class="text-base">🎁</span>
+                    <h4 class="font-extrabold text-xs text-indigo-200 uppercase tracking-wider">Your Referral Code</h4>
+                </div>
+                <p class="text-[11px] text-slate-400 leading-relaxed">Share this code with your friends. When they enter the app and use this code, you will get 1 BDT bonus per referral!</p>
+                
+                <div class="flex items-center justify-between bg-slate-950 border border-indigo-500/40 rounded-2xl p-2 pl-4 shadow-inner">
+                    <span id="referral-code-display" class="text-sm font-black text-amber-400 font-mono tracking-widest">000000</span>
+                    <button onclick="copyReferralCode()" class="bg-gradient-to-r from-indigo-600 to-violet-600 hover:opacity-95 text-xs font-bold px-4.5 py-3 rounded-xl transition duration-200 text-white shadow-md shadow-indigo-600/40 active:scale-95">Copy Code</button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ================= TASK HISTORY MODAL ================= -->
+    <div id="history-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-gradient-to-b from-slate-900 to-indigo-950 border border-indigo-500/40 w-full max-w-sm rounded-[2.5rem] p-6 shadow-2xl space-y-4 max-h-[80vh] flex flex-col animate-pop">
+            <div class="flex justify-between items-center border-b border-indigo-500/20 pb-3">
+                <h3 class="font-black text-xs text-indigo-300 uppercase tracking-wider">Task Submission History</h3>
+                <button onclick="closeHistoryModal()" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs flex items-center justify-center transition">✕</button>
+            </div>
+            
+            <div id="user-task-history-container" class="space-y-2.5 overflow-y-auto flex-1 pr-1"></div>
+        </div>
+    </div>
+
+    <!-- ================= BOTTOM NAVIGATION BAR ================= -->
+    <nav class="w-full max-w-md mx-auto fixed bottom-0 left-0 right-0 bg-slate-900/90 backdrop-blur-xl border-t border-indigo-500/20 px-4 py-3 z-40 shadow-2xl">
+        <div class="flex justify-around items-center">
+            <button onclick="switchTab('home')" id="nav-home" class="flex flex-col items-center space-y-1 text-indigo-400 transition transform hover:scale-105">
+                <span class="text-xl">🏠</span>
+                <span class="text-[10px] font-bold">Home</span>
+            </button>
+            <button onclick="switchTab('leaderboard')" id="nav-leaderboard" class="flex flex-col items-center space-y-1 text-slate-400 hover:text-indigo-400 transition transform hover:scale-105">
+                <span class="text-xl">🏆</span>
+                <span class="text-[10px] font-bold">Ranks</span>
+            </button>
+            <button onclick="switchTab('withdraw')" id="nav-withdraw" class="flex flex-col items-center space-y-1 text-slate-400 hover:text-indigo-400 transition transform hover:scale-105">
+                <span class="text-xl">💳</span>
+                <span class="text-[10px] font-bold">Withdraw</span>
+            </button>
+            <button onclick="switchTab('profile')" id="nav-profile" class="flex flex-col items-center space-y-1 text-slate-400 hover:text-indigo-400 transition transform hover:scale-105">
+                <span class="text-xl">👤</span>
+                <span class="text-[10px] font-bold">Profile</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ================= FIREBASE & JAVASCRIPT ENGINE ================= -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, set, get, update, push, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyARef-YYiQ3w8nv1Pscw8xAZSYO4PIBR6E",
+            authDomain: "app-o-655a7.firebaseapp.com",
+            databaseURL: "https://app-o-655a7-default-rtdb.firebaseio.com",
+            projectId: "app-o-655a7",
+            storageBucket: "app-o-655a7.firebasestorage.app",
+            messagingSenderId: "934398948953",
+            appId: "1:934398948953:web:2f6d1a54389378de4be348",
+            measurementId: "G-JQ4CLSM7P9"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+
+        let tgUser = tg.initDataUnsafe?.user;
+        const userId = tgUser?.id ? String(tgUser.id) : 'user_987654321';
+
+        let userData = {
+            id: userId,
+            name: tgUser?.first_name || 'Task User',
+            username: tgUser?.username ? `@${tgUser.username}` : '@task_user',
+            photoUrl: tgUser?.photo_url || '',
+            balance: 0,
+            totalEarned: 0,
+            totalRefer: 0,
+            referredBy: '',
+            userTasks: [],
+            withdrawHistory: []
+        };
+
+        let tasksList = [];
+
+        let selectedTask = null;
+        let lastSuccessTaskKeys = new Set();
+
+        window.switchTab = switchTab;
+        window.openTaskDetails = openTaskDetails;
+        window.submitTaskProof = submitTaskProof;
+        window.openHistoryModal = openHistoryModal;
+        window.closeHistoryModal = closeHistoryModal;
+        window.requestWithdraw = requestWithdraw;
+        window.copyReferralCode = copyReferralCode;
+        window.verifyAndEnterApp = verifyAndEnterApp;
+        window.showPremiumAlert = showPremiumAlert;
+        window.closePremiumAlert = closePremiumAlert;
+
+        function showPremiumAlert(title, message, icon = '✨') {
+            document.getElementById('alert-title').innerText = title;
+            document.getElementById('alert-message').innerText = message;
+            document.getElementById('alert-icon').innerText = icon;
+            document.getElementById('premium-alert-modal').classList.remove('hidden');
+        }
+
+        function closePremiumAlert() {
+            document.getElementById('premium-alert-modal').classList.add('hidden');
+        }
+
+        // রিয়েল-টাইম ডাটা সিঙ্ক (Tasks এবং User Data একসাথে)
+        const tasksRef = ref(db, 'tasks');
+        onValue(tasksRef, (snapshot) => {
+            const data = snapshot.val();
+            tasksList = [];
+            if (data) {
+                Object.keys(data).forEach(key => {
+                    let t = data[key];
+                    t.id = key;
+                    tasksList.push(t);
+                });
+            }
+            renderTasks();
+        });
+
+        const userRef = ref(db, 'users/' + userId);
+        onValue(userRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                userData.balance = data.balance || 0;
+                userData.totalEarned = data.totalEarned || 0;
+                userData.totalRefer = data.totalRefer || 0;
+                userData.referredBy = data.referredBy || '';
+
+                let loadedTasks = [];
+                let currentBalanceInc = 0;
+                let currentEarnedInc = 0;
+
+                if (data.userTasks) {
+                    Object.keys(data.userTasks).forEach(key => {
+                        let tObj = data.userTasks[key];
+                        tObj.firebaseKey = key;
+                        loadedTasks.push(tObj);
+
+                        if (tObj.status === 'Success' && !lastSuccessTaskKeys.has(key)) {
+                            if (!tObj.bonusCredited) {
+                                currentBalanceInc += tObj.reward;
+                                currentEarnedInc += tObj.reward;
+                                tObj.bonusCredited = true;
+                                update(ref(db, 'users/' + userId + '/userTasks/' + key), { bonusCredited: true });
+                            }
+                        }
+                    });
+                }
+
+                userData.userTasks = loadedTasks;
+
+                if (currentBalanceInc > 0) {
+                    userData.balance += currentBalanceInc;
+                    userData.totalEarned += currentEarnedInc;
+                    update(userRef, {
+                        balance: userData.balance,
+                        totalEarned: userData.totalEarned
+                    });
+                    showPremiumAlert('অভিনন্দন! 🎉', `আপনার একটি টাস্ক সফলভাবে অনুমোদিত হয়েছে এবং অ্যাকাউন্টে ৳${currentBalanceInc} যোগ হয়েছে!`, '💰');
+                }
+
+                userData.withdrawHistory = data.withdrawHistory ? Object.values(data.withdrawHistory) : [];
+
+                const localVerified = localStorage.getItem('task_verified_' + userId);
+                if (!userData.referredBy && !localVerified) {
+                    document.getElementById('referral-modal').classList.remove('hidden');
+                } else {
+                    document.getElementById('referral-modal').classList.add('hidden');
+                }
+            } else {
+                set(userRef, {
+                    name: userData.name,
+                    username: userData.username,
+                    balance: 0,
+                    totalEarned: 0,
+                    totalRefer: 0,
+                    referredBy: ''
+                });
+
+                const localVerified = localStorage.getItem('task_verified_' + userId);
+                if (!localVerified) {
+                    document.getElementById('referral-modal').classList.add('hidden');
+                }
+            }
+            initUserUI();
+            renderTasks();
+            loadGlobalLeaderboard();
+            renderWithdrawHistory();
+            renderUserTaskHistory();
+        });
+
+        function verifyAndEnterApp() {
+            const codeInput = document.getElementById('input-refer-code').value.trim();
+            if (!codeInput) {
+                showPremiumAlert('সতর্কতা', 'দয়া করে একটি বৈধ রেফার কোড দিন!', '⚠️');
+                return;
+            }
+
+            if (codeInput === '2026') {
+                localStorage.setItem('task_verified_' + userId, 'true');
+                document.getElementById('referral-modal').classList.add('hidden');
+                showPremiumAlert('সফল', 'স্বাগতম অ্যাডমিন! সিক্রেট কোডের মাধ্যমে প্রবেশ সফল হয়েছে।', '👑');
+                return;
+            }
+
+            if (codeInput === userId) {
+                showPremiumAlert('সতর্কতা', 'আপনি নিজের রেফার কোড ব্যবহার করতে পারবেন না!', '⚠️');
+                return;
+            }
+
+            const allUsersRef = ref(db, 'users');
+            get(allUsersRef).then((snapshot) => {
+                if (snapshot.exists()) {
+                    let usersData = snapshot.val();
+                    if (usersData[codeInput]) {
+                        let sponsorRefCount = (usersData[codeInput].totalRefer || 0) + 1;
+                        let sponsorBalance = (usersData[codeInput].balance || 0) + 1; 
+                        let sponsorEarned = (usersData[codeInput].totalEarned || 0) + 1;
+
+                        update(ref(db, 'users/' + codeInput), {
+                            totalRefer: sponsorRefCount,
+                            balance: sponsorBalance,
+                            totalEarned: sponsorEarned
+                        });
+
+                        update(userRef, {
+                            referredBy: codeInput
+                        });
+
+                        localStorage.setItem('task_verified_' + userId, 'true');
+                        document.getElementById('referral-modal').classList.add('hidden');
+                        showPremiumAlert('অভিনন্দন!', 'সফলভাবে রেফার কোড ভেরিফাই হয়েছে!', '🌟');
+                    } else {
+                        showPremiumAlert('ভুল কোড', 'এই রেফার কোড দিয়ে কোনো অ্যাকাউন্ট রেজিস্টার্ড নেই।', '❌');
+                    }
+                } else {
+                    showPremiumAlert('ত্রুটি', 'ডাটাবেজে কোনো ইউজার পাওয়া যায়নি।', '❌');
+                }
+            }).catch((error) => {
+                showPremiumAlert('সার্ভার ত্রুটি', 'কানেকশন সমস্যা! আবার চেষ্টা করুন।', '⚠️');
+            });
+        }
+
+        function initUserUI() {
+            document.getElementById('profile-name').innerText = userData.name;
+            
+            const avatarContainer = document.getElementById('profile-avatar-container');
+            if (userData.photoUrl) {
+                avatarContainer.innerHTML = `<img src="${userData.photoUrl}" alt="Profile Photo" class="w-full h-full object-cover rounded-[22px]">`;
+            } else {
+                document.getElementById('profile-avatar-letter').innerText = userData.name.charAt(0).toUpperCase();
+            }
+
+            document.getElementById('profile-id').innerText = `UID: ${userData.id}`;
+            document.getElementById('profile-username').innerText = userData.username;
+            document.getElementById('referral-code-display').innerText = userData.id;
+            document.getElementById('stat-total-earned').innerText = userData.totalEarned;
+            document.getElementById('stat-total-refer').innerText = userData.totalRefer;
+            
+            updateStatsUI();
+        }
+
+        function updateStatsUI() {
+            document.getElementById('balance').innerText = userData.balance;
+            document.getElementById('withdraw-total-balance').innerText = userData.balance;
+
+            let successSum = 0;
+            let pendingSum = 0;
+            userData.withdrawHistory.forEach(item => {
+                if(item.status === 'Success') successSum += item.amount;
+                if(item.status === 'Pending') pendingSum += item.amount;
+            });
+            document.getElementById('stat-success').innerText = successSum;
+            document.getElementById('stat-pending').innerText = pendingSum;
+        }
+
+        function renderTasks() {
+            const container = document.getElementById('task-container');
+            container.innerHTML = '';
+
+            if (tasksList.length === 0) {
+                container.innerHTML = `<div class="bg-slate-900 border border-indigo-500/20 p-6 rounded-2xl text-center text-xs text-slate-400 shadow-sm">No tasks available right now. Please check back later!</div>`;
+                return;
+            }
+
+            tasksList.forEach(task => {
+                const existingTask = userData.userTasks.find(t => t.taskId === task.id);
+                const isSubmitted = existingTask !== undefined;
+                
+                const taskCard = document.createElement('div');
+                taskCard.className = "bg-gradient-to-r from-slate-900 to-indigo-950/60 backdrop-blur-xl border border-indigo-500/30 p-4 rounded-[2rem] flex items-center justify-between card-glow hover:border-indigo-500/60 transition duration-300";
+                
+                let btnText = 'Start';
+                let btnClass = 'bg-gradient-to-r from-indigo-600 to-violet-600 hover:opacity-95 active:scale-95 shadow-lg shadow-indigo-600/40 text-white';
+                let btnAction = `openTaskDetails('${task.id}')`;
+
+                if (isSubmitted) {
+                    if (existingTask.status === 'Success') {
+                        btnText = 'Completed';
+                        btnClass = 'bg-emerald-950/80 text-emerald-400 border border-emerald-500/40';
+                        btnAction = `switchTab('home')`;
+                    } else if (existingTask.status === 'Pending') {
+                        btnText = 'Pending';
+                        btnClass = 'bg-amber-950/80 text-amber-400 border border-amber-500/40';
+                        btnAction = `switchTab('home')`;
+                    } else if (existingTask.status === 'Rejected') {
+                        btnText = 'Rejected (Retry)';
+                        btnClass = 'bg-rose-950/80 text-rose-400 border border-rose-500/40 text-[10px] px-3';
+                        btnAction = `openTaskDetails('${task.id}')`;
+                    }
+                }
+
+                taskCard.innerHTML = `
+                    <div class="flex items-center space-x-3.5">
+                        <div class="w-12 h-12 bg-indigo-950 text-indigo-400 border border-indigo-500/40 rounded-2xl flex items-center justify-center font-bold text-base shadow-inner">${task.icon || '📌'}</div>
+                        <div>
+                            <h3 class="font-bold text-xs text-white">${task.title}</h3>
+                            <p class="text-[11px] text-amber-400 font-extrabold mt-0.5">+${task.reward} BDT</p>
+                        </div>
+                    </div>
+                    <button onclick="${btnAction}" class="${btnClass} text-xs font-bold px-4 py-2.5 rounded-2xl transition duration-200">${btnText}</button>
+                `;
+                container.appendChild(taskCard);
+            });
+        }
+
+        function openTaskDetails(taskId) {
+            selectedTask = tasksList.find(t => t.id === taskId);
+            if (!selectedTask) return;
+
+            document.getElementById('detail-task-category').innerText = (selectedTask.category || 'Task').toUpperCase();
+            document.getElementById('detail-task-title').innerText = selectedTask.title;
+            document.getElementById('detail-task-reward').innerText = `Reward: ৳${selectedTask.reward}`;
+            document.getElementById('detail-task-desc').innerText = selectedTask.desc || 'No instructions provided.';
+            document.getElementById('detail-task-link').href = selectedTask.link || '#';
+
+            document.getElementById('proof-text').value = '';
+            document.getElementById('proof-image-url').value = '';
+
+            const views = ['home', 'task-details', 'leaderboard', 'withdraw', 'profile'];
+            views.forEach(v => document.getElementById(`view-${v}`).classList.add('hidden'));
+            document.getElementById('view-task-details').classList.remove('hidden');
+        }
+
+        function submitTaskProof() {
+            const proofText = document.getElementById('proof-text').value.trim();
+            const proofImageUrl = document.getElementById('proof-image-url').value.trim();
+
+            if (!proofText) {
+                showPremiumAlert('সতর্কতা', 'দয়া করে প্রথম ঘরে প্রুফ টেক্সট বা ইউজারনেম লিখুন!', '⚠️');
+                return;
+            }
+            if (!proofImageUrl) {
+                showPremiumAlert('সতর্কতা', 'দয়া করে স্ক্রিনশট বা প্রুফ ছবির সঠিক লিংক দিন!', '⚠️');
+                return;
+            }
+
+            const newTask = {
+                taskId: selectedTask.id,
+                title: selectedTask.title,
+                reward: selectedTask.reward,
+                proofUrl: proofImageUrl,
+                status: 'Pending',
+                bonusCredited: false,
+                date: new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true, month: 'short', day: 'numeric' })
+            };
+
+            const tasksListRef = ref(db, 'users/' + userId + '/userTasks');
+            const newTaskRef = push(tasksListRef);
+            set(newTaskRef, newTask);
+
+            showPremiumAlert('সফল!', 'আপনার টাস্ক প্রুফ সফলভাবে সাবমিট হয়েছে!', '🚀');
+            switchTab('home');
+
+            if (tg.HapticFeedback) {
+                tg.HapticFeedback.notificationOccurred('success');
+            }
+        }
+
+        function renderUserTaskHistory() {
+            const container = document.getElementById('user-task-history-container');
+            if (userData.userTasks.length === 0) {
+                container.innerHTML = `<div class="bg-slate-900 border border-indigo-500/20 p-4 rounded-2xl text-center text-xs text-slate-400">No tasks submitted yet</div>`;
+                return;
+            }
+
+            container.innerHTML = '';
+            userData.userTasks.slice().reverse().forEach(item => {
+                let statusColor = 'text-amber-400 bg-amber-950/60 border border-amber-500/30';
+                if (item.status === 'Success') statusColor = 'text-emerald-400 bg-emerald-950/60 border border-emerald-500/30';
+                if (item.status === 'Rejected') statusColor = 'text-rose-400 bg-rose-950/60 border border-rose-500/30';
+
+                container.innerHTML += `
+                    <div class="bg-slate-900 border border-indigo-500/20 p-3.5 rounded-2xl flex items-center justify-between shadow-sm">
+                        <div>
+                            <h4 class="font-bold text-xs text-white">${item.title}</h4>
+                            <div class="flex items-center space-x-2 mt-1.5">
+                                <span class="text-[11px] text-amber-400 font-extrabold">৳${item.reward}</span>
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-xl ${statusColor}">${item.status}</span>
+                            </div>
+                            <span class="text-[9px] text-slate-400 font-mono mt-1 block">${item.date}</span>
+                        </div>
+                        ${item.proofUrl ? `<a href="${item.proofUrl}" target="_blank" class="text-[10px] text-indigo-400 bg-indigo-950 px-2.5 py-1.5 rounded-xl border border-indigo-500/30 hover:underline font-semibold">Proof Link</a>` : ''}
+                    </div>
+                `;
+            });
+        }
+
+        function openHistoryModal() {
+            document.getElementById('history-modal').classList.remove('hidden');
+        }
+
+        function closeHistoryModal() {
+            document.getElementById('history-modal').classList.add('hidden');
+        }
+
+        function switchTab(tabId) {
+            const views = ['home', 'task-details', 'leaderboard', 'withdraw', 'profile'];
+            views.forEach(v => {
+                document.getElementById(`view-${v}`).classList.add('hidden');
+            });
+
+            ['home', 'leaderboard', 'withdraw', 'profile'].forEach(v => {
+                const navEl = document.getElementById(`nav-${v}`);
+                if (navEl) navEl.className = "flex flex-col items-center space-y-1 text-slate-400 hover:text-indigo-400 transition transform hover:scale-105";
+            });
+
+            document.getElementById(`view-${tabId}`).classList.remove('hidden');
+            if (document.getElementById(`nav-${tabId}`)) {
+                document.getElementById(`nav-${tabId}`).className = "flex flex-col items-center space-y-1 text-indigo-400 transition transform hover:scale-105";
+            }
+            if(tabId === 'home') {
+                renderTasks();
+                renderUserTaskHistory();
+            }
+            if(tabId === 'leaderboard') {
+                loadGlobalLeaderboard();
+            }
+        }
+
+        function loadGlobalLeaderboard() {
+            const usersRef = ref(db, 'users');
+            get(usersRef).then((snapshot) => {
+                let usersArray = [];
+                if (snapshot.exists()) {
+                    snapshot.forEach((childSnapshot) => {
+                        let data = childSnapshot.val();
+                        usersArray.push({
+                            name: data.name || 'User',
+                            totalEarned: data.totalEarned || 0,
+                            totalRefer: data.totalRefer || 0
+                        });
+                    });
+                }
+
+                if(!usersArray.some(u => u.name === userData.name)) {
+                    usersArray.push({
+                        name: userData.name,
+                        totalEarned: userData.totalEarned,
+                        totalRefer: userData.totalRefer
+                    });
+                }
+
+                usersArray.sort((a, b) => b.totalEarned - a.totalEarned);
+
+                if(usersArray[0]) {
+                    document.getElementById('podium-name-1').innerText = usersArray[0].name;
+                    document.getElementById('podium-income-1').innerText = `৳${usersArray[0].totalEarned}`;
+                    document.getElementById('podium-ref-1').innerText = `👥 ${usersArray[0].totalRefer} Refs`;
+                    document.getElementById('podium-avatar-1').innerText = usersArray[0].name.charAt(0).toUpperCase();
+                }
+                if(usersArray[1]) {
+                    document.getElementById('podium-name-2').innerText = usersArray[1].name;
+                    document.getElementById('podium-income-2').innerText = `৳${usersArray[1].totalEarned}`;
+                    document.getElementById('podium-ref-2').innerText = `👥 ${usersArray[1].totalRefer} Refs`;
+                    document.getElementById('podium-avatar-2').innerText = usersArray[1].name.charAt(0).toUpperCase();
+                }
+                if(usersArray[2]) {
+                    document.getElementById('podium-name-3').innerText = usersArray[2].name;
+                    document.getElementById('podium-income-3').innerText = `৳${usersArray[2].totalEarned}`;
+                    document.getElementById('podium-ref-3').innerText = `👥 ${usersArray[2].totalRefer} Refs`;
+                    document.getElementById('podium-avatar-3').innerText = usersArray[2].name.charAt(0).toUpperCase();
+                }
+
+                const lbList = document.getElementById('leaderboard-list');
+                lbList.innerHTML = '';
+
+                if (usersArray.length > 3) {
+                    for (let i = 3; i < usersArray.length; i++) {
+                        let item = usersArray[i];
+                        lbList.innerHTML += `
+                            <div class="bg-slate-900 border border-indigo-500/20 p-3.5 rounded-2xl flex items-center justify-between shadow-sm">
+                                <div class="flex items-center space-x-3">
+                                    <span class="w-6 text-center font-black text-xs text-indigo-400">#${i + 1}</span>
+                                    <div>
+                                        <h4 class="text-xs font-bold text-white">${item.name}</h4>
+                                        <span class="text-[10px] text-slate-400">👥 ${item.totalRefer} Refs</span>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-extrabold text-amber-400">৳${item.totalEarned}</span>
+                            </div>
+                        `;
+                    }
+                } else {
+                    lbList.innerHTML = `<div class="bg-slate-900 border border-indigo-500/20 p-4 rounded-2xl text-center text-xs text-slate-400 shadow-sm">No other users found</div>`;
+                }
+            });
+        }
+
+        function requestWithdraw() {
+            const number = document.getElementById('bkash-number').value.trim();
+            const amount = parseInt(document.getElementById('withdraw-amount').value);
+
+            if (!number || number.length < 11) {
+                showPremiumAlert('সতর্কতা', 'দয়া করে সঠিক ১১ ডিজিটের বিকাশ নম্বর দিন!', '⚠️');
+                return;
+            }
+            if (isNaN(amount) || amount < 50) {
+                showPremiumAlert('সতর্কতা', 'সর্বনিম্ন উইথড্র অ্যামাউন্ট ৫০ টাকা!', '⚠️');
+                return;
+            }
+            if (amount > userData.balance) {
+                showPremiumAlert('পর্যাপ্ত ব্যালেন্স নেই', 'আপনার অ্যাকাউন্টে পর্যাপ্ত ব্যালেন্স নেই!', '💳');
+                return;
+            }
+
+            const newBalance = userData.balance - amount;
+            
+            const newReq = {
+                method: 'bKash (Personal)',
+                number: number,
+                amount: amount,
+                date: new Date().toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true, month: 'short', day: 'numeric' }),
+                status: 'Pending'
+            };
+
+            update(ref(db, 'users/' + userId), {
+                balance: newBalance
+            });
+
+            const withdrawsRef = ref(db, 'users/' + userId + '/withdrawHistory');
+            const newWithdrawRef = push(withdrawsRef);
+            set(newWithdrawRef, newReq);
+
+            document.getElementById('bkash-number').value = '';
+            document.getElementById('withdraw-amount').value = '';
+            showPremiumAlert('সফল!', 'আপনার উইথড্র রিকোয়েস্ট সফলভাবে পাঠানো হয়েছে!', '💸');
+        }
+
+        function renderWithdrawHistory() {
+            const container = document.getElementById('withdraw-history-container');
+            if (userData.withdrawHistory.length === 0) {
+                container.innerHTML = `<div class="bg-slate-900 border border-indigo-500/20 p-4 rounded-2xl text-center text-xs text-slate-400 shadow-sm">No withdraw history found</div>`;
+                return;
+            }
+
+            container.innerHTML = '';
+            userData.withdrawHistory.slice().reverse().forEach(item => {
+                const statusColor = item.status === 'Success' ? 'text-emerald-400 bg-emerald-950/60 border border-emerald-500/30' : 'text-amber-400 bg-amber-950/60 border border-amber-500/30';
+                container.innerHTML += `
+                    <div class="bg-slate-900 border border-indigo-500/20 p-3.5 rounded-2xl flex items-center justify-between shadow-sm">
+                        <div>
+                            <div class="flex items-center space-x-2">
+                                <span class="font-bold text-xs text-white">৳${item.amount}</span>
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-xl ${statusColor}">${item.status}</span>
+                            </div>
+                            <p class="text-[11px] text-slate-400 mt-1">${item.method} (${item.number})</p>
+                            <span class="text-[9px] text-slate-500 font-mono mt-0.5 block">${item.date}</span>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function copyReferralCode() {
+            const code = document.getElementById("referral-code-display").innerText;
+            navigator.clipboard.writeText(code);
+            showPremiumAlert('সফল', 'রেফারেল কোড সফলভাবে কপি করা হয়েছে!', '📋');
+        }
+    </script>
+</body>
+</html>
