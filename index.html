@@ -409,13 +409,23 @@
         tg.expand();
 
         let tgUser = tg.initDataUnsafe?.user;
-        const userId = tgUser?.id ? String(tgUser.id) : 'user_987654321';
+        
+        // টেলিগ্রাম থেকে সরাসরি ডাটা নেওয়া, না থাকলে ফলব্যাক আইডি বা ব্রাউজার স্টোরেজ ব্যবহার করা
+        let userId = tgUser?.id ? String(tgUser.id) : localStorage.getItem('task_fallback_uid');
+        if (!userId) {
+            userId = 'usr_' + Math.floor(10000000 + Math.random() * 90000000);
+            localStorage.setItem('task_fallback_uid', userId);
+        }
+
+        let userName = tgUser?.first_name || (tgUser?.last_name ? `${tgUser.first_name} ${tgUser.last_name}` : 'Telegram User');
+        let userUsername = tgUser?.username ? `@${tgUser.username}` : '@telegram_user';
+        let userPhotoUrl = tgUser?.photo_url || '';
 
         let userData = {
             id: userId,
-            name: tgUser?.first_name || 'Task User',
-            username: tgUser?.username ? `@${tgUser.username}` : '@task_user',
-            photoUrl: tgUser?.photo_url || '',
+            name: userName,
+            username: userUsername,
+            photoUrl: userPhotoUrl,
             balance: 0,
             totalEarned: 0,
             totalRefer: 0,
@@ -484,6 +494,7 @@
                 userData.totalEarned = data.totalEarned || 0;
                 userData.totalRefer = data.totalRefer || 0;
                 userData.referredBy = data.referredBy || '';
+                userData.name = data.name || userData.name;
 
                 let loadedTasks = [];
                 let currentBalanceInc = 0;
@@ -538,7 +549,7 @@
 
                 const localVerified = localStorage.getItem('task_verified_' + userId);
                 if (!localVerified) {
-                    document.getElementById('referral-modal').classList.add('hidden');
+                    document.getElementById('referral-modal').classList.remove('hidden');
                 }
             }
             initUserUI();
