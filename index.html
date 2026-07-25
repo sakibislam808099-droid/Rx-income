@@ -75,7 +75,6 @@
             </div>
 
             <div class="space-y-3.5">
-                <!-- এখানে উদাহরণ বা কোনো হিন্ট মুছে ফেলা হয়েছে -->
                 <input type="text" id="input-refer-code" placeholder="Enter referral code" class="w-full bg-slate-950/80 border border-indigo-500/40 rounded-2xl px-4 py-3.5 text-xs text-center font-bold text-amber-400 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 transition shadow-inner">
                 <button onclick="verifyAndEnterApp()" class="w-full bg-gradient-to-r from-amber-500 via-orange-500 to-pink-600 hover:opacity-95 active:scale-95 transition duration-200 text-xs font-black py-4 rounded-2xl shadow-lg shadow-orange-500/30 text-white uppercase tracking-wider">Enter App</button>
             </div>
@@ -285,9 +284,6 @@
                         <p class="text-sm font-black text-indigo-200 mt-0.5"><span id="stat-total-refer">0</span> users</p>
                     </div>
                 </div>
-
-                <!-- Admin Panel Secret Button -->
-                <button onclick="openAdminPanel()" class="absolute top-4 right-4 w-9 h-9 bg-slate-900/80 hover:bg-slate-800 border border-amber-500/40 rounded-2xl flex items-center justify-center text-amber-400 text-sm shadow-md transition">⚙️</button>
             </div>
 
             <div class="bg-gradient-to-b from-slate-900 to-indigo-950/70 backdrop-blur-xl border border-indigo-500/30 p-5 rounded-[2.5rem] card-glow space-y-3.5">
@@ -469,7 +465,6 @@
         window.approveWithdrawReq = approveWithdrawReq;
         window.rejectWithdrawReq = rejectWithdrawReq;
         window.exitAdminPanel = exitAdminPanel;
-        window.openAdminPanel = openAdminPanel;
         window.openAdminHistoryModal = openAdminHistoryModal;
         window.closeAdminHistoryModal = closeAdminHistoryModal;
         window.openImageZoom = openImageZoom;
@@ -676,12 +671,22 @@
             const container = document.getElementById('task-container');
             container.innerHTML = '';
 
-            if (tasksList.length === 0) {
+            // যে টাস্কগুলো অলরেডি 'Success' বা সফলভাবে সম্পন্ন হয়েছে, সেগুলোর taskId গুলো ফিল্টার করে আলাদা করা হলো
+            const successfulTaskIds = new Set(
+                userData.userTasks
+                    .filter(t => t.status === 'Success')
+                    .map(t => t.taskId)
+            );
+
+            // সফলভাবে সম্পন্ন হওয়া টাস্কগুলো বাদ দিয়ে বাকি Available টাস্কগুলো ফিল্টার করা হলো
+            const availableTasks = tasksList.filter(task => !successfulTaskIds.has(task.id));
+
+            if (availableTasks.length === 0) {
                 container.innerHTML = `<div class="bg-slate-900 border border-indigo-500/20 p-6 rounded-2xl text-center text-xs text-slate-400 shadow-sm">No tasks available right now. Please check back later!</div>`;
                 return;
             }
 
-            tasksList.forEach(task => {
+            availableTasks.forEach(task => {
                 const existingTask = userData.userTasks.find(t => t.taskId === task.id);
                 const isSubmitted = existingTask !== undefined;
                 
@@ -693,11 +698,7 @@
                 let btnAction = `openTaskDetails('${task.id}')`;
 
                 if (isSubmitted) {
-                    if (existingTask.status === 'Success') {
-                        btnText = 'Completed';
-                        btnClass = 'bg-emerald-950/80 text-emerald-400 border border-emerald-500/40';
-                        btnAction = `switchTab('home')`;
-                    } else if (existingTask.status === 'Pending') {
+                    if (existingTask.status === 'Pending') {
                         btnText = 'Pending';
                         btnClass = 'bg-amber-950/80 text-amber-400 border border-amber-500/40';
                         btnAction = `switchTab('home')`;
