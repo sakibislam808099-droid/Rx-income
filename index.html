@@ -423,7 +423,6 @@
         let userUsername = tgUser?.username ? `@${tgUser.username}` : '@telegram_user';
         let userPhotoUrl = tgUser?.photo_url || '';
 
-        // ইনস্ট্যান্ট ফলব্যাক ডাটা সেটআপ (যাতে কখনো লোডিং আটকে না থাকে)
         let userData = {
             id: userId,
             name: userName,
@@ -437,7 +436,6 @@
             withdrawHistory: []
         };
 
-        // শুরুতে ইউজার ইন্টারফেস ইনস্ট্যান্ট রেন্ডার করে দেওয়া হলো
         initUserUI();
 
         let tasksList = [];
@@ -445,6 +443,7 @@
         let lastSuccessTaskKeys = new Set();
         let isAdminLoggedIn = false;
 
+        // গ্লোবাল উইন্ডো স্কোপে ফাংশনগুলো বাইন্ড করা হলো
         window.switchTab = switchTab;
         window.openTaskDetails = openTaskDetails;
         window.submitTaskProof = submitTaskProof;
@@ -544,7 +543,6 @@
                     document.getElementById('referral-modal').classList.add('hidden');
                 }
             } else {
-                // ডাটাবেজে ইউজার না থাকলে নতুন রেকর্ড তৈরি হবে
                 set(userRef, {
                     name: userName,
                     username: userUsername,
@@ -1019,20 +1017,24 @@
 
             const newTasksRef = ref(db, 'tasks');
             const newTaskRef = push(newTasksRef);
-            set(newTaskRef, { title, reward, icon, link, desc });
+            set(newTaskRef, { title, reward, icon, link, desc }).then(() => {
+                // ফর্ম ফিল্ড রিসেট করা
+                document.getElementById('admin-task-title').value = '';
+                document.getElementById('admin-task-reward').value = '';
+                document.getElementById('admin-task-icon').value = '';
+                document.getElementById('admin-task-link').value = '';
+                document.getElementById('admin-task-desc').value = '';
 
-            document.getElementById('admin-task-title').value = '';
-            document.getElementById('admin-task-reward').value = '';
-            document.getElementById('admin-task-icon').value = '';
-            document.getElementById('admin-task-link').value = '';
-            document.getElementById('admin-task-desc').value = '';
-
-            showPremiumAlert('সফল', 'নতুন টাস্ক সফলভাবে পাবলিশ করা হয়েছে!', '🚀');
+                showPremiumAlert('সফল', 'নতুন টাস্ক সফলভাবে পাবলিশ করা হয়েছে!', '🚀');
+                renderAdminTasksList(); // ইনস্ট্যান্ট লিস্ট আপডেট
+            });
         }
 
         function adminDeleteTask(taskId) {
-            remove(ref(db, 'tasks/' + taskId));
-            showPremiumAlert('ডিলেট সফল', 'টাস্কটি সফলভাবে মুছে ফেলা হয়েছে।', '🗑️');
+            remove(ref(db, 'tasks/' + taskId)).then(() => {
+                showPremiumAlert('ডিলেট সফল', 'টাস্কটি সফলভাবে মুছে ফেলা হয়েছে।', '🗑️');
+                renderAdminTasksList();
+            });
         }
 
         function loadAdminData() {
@@ -1154,4 +1156,3 @@
     </script>
 </body>
 </html>
-
