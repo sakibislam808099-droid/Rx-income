@@ -260,7 +260,7 @@
                     <span class="absolute -bottom-1 -right-1 bg-amber-500 text-slate-950 text-[10px] font-black px-2.5 py-0.5 rounded-full border-2 border-slate-950 shadow">VIP</span>
                 </div>
 
-                <h3 id="profile-name" class="font-black text-base mt-3.5 text-white tracking-wide">Loading...</h3>
+                <h3 id="profile-name" class="font-black text-base mt-3.5 text-white tracking-wide">User</h3>
                 <p class="text-[11px] text-slate-400 mt-0.5 font-medium" id="profile-username">@username</p>
                 <div class="inline-block mt-2.5 bg-indigo-950/80 border border-indigo-500/40 px-4 py-1.5 rounded-2xl shadow-inner">
                     <p class="text-xs text-indigo-300 font-mono font-black" id="profile-id">UID: 00000000</p>
@@ -276,6 +276,9 @@
                         <p class="text-sm font-black text-indigo-200 mt-0.5"><span id="stat-total-refer">0</span> users</p>
                     </div>
                 </div>
+
+                <!-- Admin Panel Secret Button -->
+                <button onclick="openAdminPanel()" class="absolute top-4 right-4 w-9 h-9 bg-slate-900/80 hover:bg-slate-800 border border-amber-500/40 rounded-2xl flex items-center justify-center text-amber-400 text-sm shadow-md transition">⚙️</button>
             </div>
 
             <div class="bg-gradient-to-b from-slate-900 to-indigo-950/70 backdrop-blur-xl border border-indigo-500/30 p-5 rounded-[2.5rem] card-glow space-y-3.5">
@@ -292,7 +295,7 @@
             </div>
         </section>
 
-        <!-- 6. ADMIN PANEL VIEW (সিক্রেট কন্ট্রোল প্যানেল) -->
+        <!-- 6. ADMIN PANEL VIEW (ইন-অ্যাপ সিক্রেট অ্যাডমিন প্যানেল) -->
         <section id="view-admin" class="space-y-4 hidden animate-pop">
             <div class="bg-gradient-to-b from-indigo-950 to-slate-950 border border-amber-500/40 p-5 rounded-[2.5rem] gold-glow space-y-4">
                 <h3 class="text-xs font-black uppercase tracking-widest text-amber-400 flex items-center space-x-2">
@@ -410,7 +413,6 @@
 
         let tgUser = tg.initDataUnsafe?.user;
         
-        // টেলিগ্রাম থেকে সরাসরি ডাটা নেওয়া, না থাকলে ফলব্যাক আইডি বা ব্রাউজার স্টোরেজ ব্যবহার করা
         let userId = tgUser?.id ? String(tgUser.id) : localStorage.getItem('task_fallback_uid');
         if (!userId) {
             userId = 'usr_' + Math.floor(10000000 + Math.random() * 90000000);
@@ -421,6 +423,7 @@
         let userUsername = tgUser?.username ? `@${tgUser.username}` : '@telegram_user';
         let userPhotoUrl = tgUser?.photo_url || '';
 
+        // ইনস্ট্যান্ট ফলব্যাক ডাটা সেটআপ (যাতে কখনো লোডিং আটকে না থাকে)
         let userData = {
             id: userId,
             name: userName,
@@ -433,6 +436,9 @@
             userTasks: [],
             withdrawHistory: []
         };
+
+        // শুরুতে ইউজার ইন্টারফেস ইনস্ট্যান্ট রেন্ডার করে দেওয়া হলো
+        initUserUI();
 
         let tasksList = [];
         let selectedTask = null;
@@ -456,6 +462,7 @@
         window.approveWithdrawReq = approveWithdrawReq;
         window.rejectWithdrawReq = rejectWithdrawReq;
         window.exitAdminPanel = exitAdminPanel;
+        window.openAdminPanel = openAdminPanel;
 
         function showPremiumAlert(title, message, icon = '✨') {
             document.getElementById('alert-title').innerText = title;
@@ -468,7 +475,6 @@
             document.getElementById('premium-alert-modal').classList.add('hidden');
         }
 
-        // রিয়েল-টাইম ডাটা সিঙ্ক (Tasks এবং User Data)
         const tasksRef = ref(db, 'tasks');
         onValue(tasksRef, (snapshot) => {
             const data = snapshot.val();
@@ -494,7 +500,7 @@
                 userData.totalEarned = data.totalEarned || 0;
                 userData.totalRefer = data.totalRefer || 0;
                 userData.referredBy = data.referredBy || '';
-                userData.name = data.name || userData.name;
+                userData.name = data.name || userName;
 
                 let loadedTasks = [];
                 let currentBalanceInc = 0;
@@ -538,9 +544,10 @@
                     document.getElementById('referral-modal').classList.add('hidden');
                 }
             } else {
+                // ডাটাবেজে ইউজার না থাকলে নতুন রেকর্ড তৈরি হবে
                 set(userRef, {
-                    name: userData.name,
-                    username: userData.username,
+                    name: userName,
+                    username: userUsername,
                     balance: 0,
                     totalEarned: 0,
                     totalRefer: 0,
@@ -612,13 +619,13 @@
         }
 
         function initUserUI() {
-            document.getElementById('profile-name').innerText = userData.name;
+            document.getElementById('profile-name').innerText = userData.name || 'User';
             
             const avatarContainer = document.getElementById('profile-avatar-container');
             if (userData.photoUrl) {
                 avatarContainer.innerHTML = `<img src="${userData.photoUrl}" alt="Profile Photo" class="w-full h-full object-cover rounded-[22px]">`;
             } else {
-                document.getElementById('profile-avatar-letter').innerText = userData.name.charAt(0).toUpperCase();
+                document.getElementById('profile-avatar-letter').innerText = (userData.name || 'U').charAt(0).toUpperCase();
             }
 
             document.getElementById('profile-id').innerText = `UID: ${userData.id}`;
@@ -1031,7 +1038,6 @@
         function loadAdminData() {
             renderAdminTasksList();
 
-            // Task Requests Load
             const reqsRef = ref(db, 'admin_task_requests');
             onValue(reqsRef, (snapshot) => {
                 const container = document.getElementById('admin-task-requests-container');
@@ -1062,7 +1068,6 @@
                 });
             });
 
-            // Withdraw Requests Load
             const wReqsRef = ref(db, 'admin_withdraw_requests');
             onValue(wReqsRef, (snapshot) => {
                 const container = document.getElementById('admin-withdraw-requests-container');
@@ -1149,3 +1154,4 @@
     </script>
 </body>
 </html>
+
