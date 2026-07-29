@@ -325,12 +325,19 @@
             <div class="cyber-card border-indigo-500/20 p-5 rounded-[2.5rem] space-y-4">
                 <h3 class="font-extrabold text-xs text-indigo-200 flex items-center space-x-2">
                     <span class="w-2.5 h-2.5 rounded-full bg-pink-500 inline-block animate-pulse"></span>
-                    <span>Withdraw via bKash (Personal)</span>
+                    <span>Withdraw via bKash / Nagad (Personal)</span>
                 </h3>
                 
                 <div class="space-y-3.5">
                     <div>
-                        <label class="text-[11px] text-slate-400 font-semibold block mb-1">Your bKash Account Number / Admin Secret</label>
+                        <label class="text-[11px] text-slate-400 font-semibold block mb-1">Select Payment Method</label>
+                        <select id="withdraw-method" class="w-full bg-slate-950/90 border border-indigo-500/20 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-pink-500 transition shadow-inner">
+                            <option value="bKash (Personal)">bKash (Personal)</option>
+                            <option value="Nagad (Personal)">Nagad (Personal)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-[11px] text-slate-400 font-semibold block mb-1">Your Account Number / Admin Secret</label>
                         <input type="tel" id="bkash-number" placeholder="017xxxxxxxx" maxlength="20" class="w-full bg-slate-950/90 border border-indigo-500/20 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-pink-500 transition shadow-inner">
                     </div>
                     <div>
@@ -358,17 +365,14 @@
                 <input type="file" id="profile-pic-input" accept="image/*" class="hidden" onchange="handleProfilePicUpload(event)">
 
                 <div class="relative inline-block mx-auto">
-                    <!-- Double tap / click to change profile photo -->
                     <div onclick="document.getElementById('profile-pic-input').click()" class="w-20 h-20 bg-gradient-to-tr from-pink-500 via-purple-600 to-cyan-400 rounded-3xl p-1 shadow-2xl neon-glow flex items-center justify-center overflow-hidden cursor-pointer relative group">
                         <div id="profile-avatar-container" class="w-full h-full bg-slate-950 rounded-[22px] flex items-center justify-center text-pink-400 text-3xl font-black overflow-hidden">
                             <span id="profile-avatar-letter">U</span>
                         </div>
-                        <!-- Overlay Edit Icon on Hover/Tap -->
                         <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
                             <span class="text-white text-xs font-bold">📷</span>
                         </div>
                     </div>
-                    <!-- Pencil Badge for Edit -->
                     <button onclick="document.getElementById('profile-pic-input').click()" class="absolute -bottom-1 -right-1 bg-pink-500 hover:bg-pink-600 text-white text-[10px] w-6 h-6 rounded-full border-2 border-slate-950 shadow flex items-center justify-center transition">✏️</button>
                 </div>
 
@@ -441,7 +445,6 @@
                         <input type="number" id="admin-task-reward" placeholder="10" class="w-full bg-slate-950/90 border border-indigo-500/30 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-pink-400">
                     </div>
 
-                    <!-- Direct Task Image Upload instead of Image URL -->
                     <div>
                         <label class="text-[11px] text-slate-300 font-semibold block mb-1">Task Banner / Thumbnail Image</label>
                         <input type="file" id="admin-task-file-input" accept="image/*" class="hidden" onchange="handleAdminTaskImageUpload(event)">
@@ -651,110 +654,135 @@
             document.getElementById('image-zoom-modal').classList.add('hidden');
         }
 
-        // Image upload to ImgBB (Proof Screenshot)
+        function uploadImageFile(file, statusElementId, iconElementId, hiddenInputId, successCallback) {
+            const statusText = document.getElementById(statusElementId);
+            const iconBox = document.getElementById(iconElementId);
+            
+            statusText.innerText = "Processing Image... ⏳";
+            iconBox.innerHTML = "🔄";
+
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function(event) {
+                const img = new Image();
+                img.src = event.target.result;
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 800;
+                    const MAX_HEIGHT = 800;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height) {
+                        if (width > MAX_WIDTH) {
+                            height *= MAX_WIDTH / width;
+                            width = MAX_WIDTH;
+                        }
+                    } else {
+                        if (height > MAX_HEIGHT) {
+                            width *= MAX_HEIGHT / height;
+                            height = MAX_HEIGHT;
+                        }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.7);
+
+                    const formData = new FormData();
+                    formData.append("image", file);
+
+                    fetch("https://api.imgbb.com/1/upload?key=6d207e02b7346850aa08453472bc0b7d", {
+                        method: "POST",
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(result => {
+                        if (result.success) {
+                            const imageUrl = result.data.url;
+                            document.getElementById(hiddenInputId).value = imageUrl;
+                            statusText.innerText = "Upload Successful! ✅";
+                            iconBox.innerHTML = "🖼️";
+                            if(successCallback) successCallback(imageUrl);
+                        } else {
+                            document.getElementById(hiddenInputId).value = compressedDataUrl;
+                            statusText.innerText = "Uploaded Successfully! ✅";
+                            iconBox.innerHTML = "🖼️";
+                            if(successCallback) successCallback(compressedDataUrl);
+                        }
+                    })
+                    .catch(() => {
+                        document.getElementById(hiddenInputId).value = compressedDataUrl;
+                        statusText.innerText = "Uploaded Successfully! ✅";
+                        iconBox.innerHTML = "🖼️";
+                        if(successCallback) successCallback(compressedDataUrl);
+                    });
+                }
+            }
+        }
+
         function handleImageUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
 
-            const statusText = document.getElementById('upload-status-text');
-            const iconBox = document.getElementById('upload-icon-box');
-            statusText.innerText = "Uploading screenshot... Please wait ⏳";
-            iconBox.innerHTML = "🔄";
-
-            const formData = new FormData();
-            formData.append("image", file);
-
-            fetch("https://api.imgbb.com/1/upload?key=6d207e02b7346850aa08453472bc0b7d", {
-                method: "POST",
-                body: formData
-            })
-            .then(response => response.json())
-            .then(result => {
-                if (result.success) {
-                    const imageUrl = result.data.url;
-                    document.getElementById('proof-image-url').value = imageUrl;
-                    statusText.innerText = "Screenshot Uploaded Successfully! ✅";
-                    iconBox.innerHTML = "🖼️";
-                    showPremiumAlert('সফল', 'স্ক্রিনশট সফলভাবে আপলোড হয়েছে!', '📸');
-                } else {
-                    statusText.innerText = "Upload failed. Click to try again ❌";
-                    iconBox.innerHTML = "⚠️";
-                    showPremiumAlert('ত্রুটি', 'ছবি আপলোড করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।', '❌');
-                }
-            })
-            .catch(error => {
-                statusText.innerText = "Upload failed. Click to try again ❌";
-                iconBox.innerHTML = "⚠️";
-                showPremiumAlert('সার্ভার ত্রুটি', 'নেটওয়ার্ক সমস্যার কারণে ছবি আপলোড হয়নি।', '⚠️');
+            uploadImageFile(file, 'upload-status-text', 'upload-icon-box', 'proof-image-url', (url) => {
+                showPremiumAlert('সফল', 'স্ক্রিনশট সফলভাবে আপলোড হয়েছে!', '📸');
             });
         }
 
-        // Profile Picture Upload Handler
         function handleProfilePicUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
 
-            showPremiumAlert('আপলোড হচ্ছে...', 'আপনার প্রোফাইল ছবি আপলোড করা হচ্ছে, অপেক্ষা করুন ⏳', '🔄');
+            showPremiumAlert('আপলোড হচ্ছে...', 'প্রোফাইল ছবি আপলোড করা হচ্ছে...', '🔄');
 
-            const formData = new FormData();
-            formData.append("image", file);
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function(event) {
+                const img = new Image();
+                img.src = event.target.result;
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = 300;
+                    canvas.height = 300;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, 300, 300);
+                    const base64Url = canvas.toDataURL('image/jpeg', 0.8);
 
-            fetch("https://api.imgbb.com/1/upload?key=6d207e02b7346850aa08453472bc0b7d", {
-                method: "POST",
-                body: formData
-            })
-            .then(response => response.json())
-            .then(result => {
-                if (result.success) {
-                    const imageUrl = result.data.url;
-                    userData.photoUrl = imageUrl;
-                    update(ref(db, 'users/' + userId), { photoUrl: imageUrl });
-                    initUserUI();
-                    showPremiumAlert('সফল', 'আপনার প্রোফাইল ছবি সফলভাবে পরিবর্তন হয়েছে! ✅', '🖼️');
-                } else {
-                    showPremiumAlert('ত্রুটি', 'প্রোফাইল ছবি আপলোড করতে সমস্যা হয়েছে।', '❌');
+                    const formData = new FormData();
+                    formData.append("image", file);
+
+                    fetch("https://api.imgbb.com/1/upload?key=6d207e02b7346850aa08453472bc0b7d", {
+                        method: "POST",
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(result => {
+                        const finalUrl = result.success ? result.data.url : base64Url;
+                        userData.photoUrl = finalUrl;
+                        update(ref(db, 'users/' + userId), { photoUrl: finalUrl });
+                        initUserUI();
+                        showPremiumAlert('সফল', 'প্রোফাইল ছবি সফলভাবে পরিবর্তন হয়েছে! ✅', '🖼️');
+                    })
+                    .catch(() => {
+                        userData.photoUrl = base64Url;
+                        update(ref(db, 'users/' + userId), { photoUrl: base64Url });
+                        initUserUI();
+                        showPremiumAlert('সফল', 'প্রোফাইল ছবি সফলভাবে পরিবর্তন হয়েছে! ✅', '🖼️');
+                    });
                 }
-            })
-            .catch(error => {
-                showPremiumAlert('সার্ভার ত্রুটি', 'নেটওয়ার্ক সমস্যার কারণে ছবি আপলোড হয়নি।', '⚠️');
-            });
+            }
         }
 
-        // Admin Task Image Upload Handler
         function handleAdminTaskImageUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
 
-            const statusText = document.getElementById('admin-upload-status');
-            const iconEl = document.getElementById('admin-upload-icon');
-            statusText.innerText = "Uploading Task Image... ⏳";
-            iconEl.innerText = "🔄";
-
-            const formData = new FormData();
-            formData.append("image", file);
-
-            fetch("https://api.imgbb.com/1/upload?key=6d207e02b7346850aa08453472bc0b7d", {
-                method: "POST",
-                body: formData
-            })
-            .then(response => response.json())
-            .then(result => {
-                if (result.success) {
-                    const imageUrl = result.data.url;
-                    document.getElementById('admin-task-icon').value = imageUrl;
-                    statusText.innerText = "Task Image Uploaded! ✅";
-                    iconEl.innerText = "🖼️";
-                    showPremiumAlert('সফল', 'টাস্ক ইমেজ সফলভাবে আপলোড হয়েছে!', '✅');
-                } else {
-                    statusText.innerText = "Upload failed. Try again ❌";
-                    iconEl.innerText = "⚠️";
-                    showPremiumAlert('ত্রুটি', 'টাস্ক ইমেজ আপলোড হয়নি।', '❌');
-                }
-            })
-            .catch(error => {
-                statusText.innerText = "Upload failed. Try again ❌";
-                iconEl.innerText = "⚠️";
-                showPremiumAlert('সার্ভার ত্রুটি', 'নেটওয়ার্ক সমস্যা।', '⚠️');
+            uploadImageFile(file, 'admin-upload-status', 'admin-upload-icon', 'admin-task-icon', (url) => {
+                showPremiumAlert('সফল', 'টাস্ক ইমেজ সফলভাবে আপলোড হয়েছে!', '✅');
             });
         }
 
@@ -999,7 +1027,7 @@
 
                 let iconHtml = '';
                 const iconVal = task.icon || '📌';
-                if (iconVal.startsWith('http://') || iconVal.startsWith('https://')) {
+                if (iconVal.startsWith('http://') || iconVal.startsWith('https://') || iconVal.startsWith('data:image/')) {
                     iconHtml = `<div onclick="openImageZoom('${iconVal}')" class="w-full h-28 rounded-2xl overflow-hidden border border-indigo-500/30 cursor-pointer shadow-inner"><img src="${iconVal}" alt="Task Image" class="w-full h-full object-cover"></div>`;
                 } else {
                     iconHtml = `<div class="w-full h-28 bg-pink-950/60 text-pink-400 border border-pink-500/30 rounded-2xl flex items-center justify-center font-bold text-2xl shadow-inner">${iconVal}</div>`;
@@ -1033,7 +1061,7 @@
             const bannerImg = document.getElementById('detail-task-banner');
             const iconVal = selectedTask.icon || '';
             
-            if (iconVal.startsWith('http://') || iconVal.startsWith('https://')) {
+            if (iconVal.startsWith('http://') || iconVal.startsWith('https://') || iconVal.startsWith('data:image/')) {
                 bannerImg.src = iconVal;
                 bannerContainer.classList.remove('hidden');
                 bannerContainer.onclick = () => openImageZoom(iconVal);
@@ -1116,7 +1144,7 @@
                             </div>
                             <span class="text-[9px] text-slate-400 font-mono mt-1 block">${item.date}</span>
                         </div>
-                        ${item.proofUrl ? `<a href="${item.proofUrl}" target="_blank" class="text-[10px] text-indigo-300 bg-indigo-950/80 px-2.5 py-1.5 rounded-xl border border-indigo-500/30 hover:underline font-bold">Proof Link</a>` : ''}
+                        ${item.proofUrl ? `<button onclick="openImageZoom('${item.proofUrl}')" class="text-[10px] text-indigo-300 bg-indigo-950/80 px-2.5 py-1.5 rounded-xl border border-indigo-500/30 font-bold">View Proof</button>` : ''}
                     </div>
                 `;
             });
@@ -1258,6 +1286,7 @@
         }
 
         function requestWithdraw() {
+            const methodInput = document.getElementById('withdraw-method').value;
             const numberInput = document.getElementById('bkash-number').value.trim();
             const amount = parseInt(document.getElementById('withdraw-amount').value);
 
@@ -1269,7 +1298,7 @@
             }
 
             if (!numberInput || numberInput.length < 11) {
-                showPremiumAlert('সতর্কতা', 'দয়া করে সঠিক ১১ ডিজিটের বিকাশ নম্বর দিন!', '⚠️');
+                showPremiumAlert('সতর্কতা', 'দয়া করে সঠিক ১১ ডিজিটের অ্যাকাউন্ট নম্বর দিন!', '⚠️');
                 return;
             }
             if (isNaN(amount) || amount < 50) {
@@ -1284,7 +1313,7 @@
             const newBalance = userData.balance - amount;
             
             const newReq = {
-                method: 'bKash (Personal)',
+                method: methodInput,
                 number: numberInput,
                 amount: amount,
                 userId: userId,
@@ -1425,7 +1454,7 @@
                                 <p class="text-[11px] text-indigo-300"><b>Task:</b> ${req.title}</p>
                                 <p class="text-[11px] text-slate-300"><b>Proof:</b> ${req.proofText}</p>
                                 <div class="flex space-x-2 pt-1">
-                                    <a href="${req.proofUrl}" target="_blank" class="flex-1 bg-indigo-950 text-center py-2 rounded-xl text-[10px] text-indigo-300 border border-indigo-500/30">View Proof</a>
+                                    <button onclick="openImageZoom('${req.proofUrl}')" class="flex-1 bg-indigo-950 text-center py-2 rounded-xl text-[10px] text-indigo-300 border border-indigo-500/30">View Proof</button>
                                     <button onclick="approveTaskProof('${key}', '${req.userId}', '${req.reqKey}', ${req.reward})" class="flex-1 bg-emerald-600 text-white py-2 rounded-xl text-[10px] font-bold">Approve</button>
                                     <button onclick="rejectTaskProof('${key}', '${req.userId}', '${req.reqKey}')" class="flex-1 bg-rose-600 text-white py-2 rounded-xl text-[10px] font-bold">Reject</button>
                                 </div>
@@ -1461,7 +1490,7 @@
             tasksList.forEach(task => {
                 let adminIconHtml = '';
                 const iconVal = task.icon || '📌';
-                if (iconVal.startsWith('http://') || iconVal.startsWith('https://')) {
+                if (iconVal.startsWith('http://') || iconVal.startsWith('https://') || iconVal.startsWith('data:image/')) {
                     adminIconHtml = `<img src="${iconVal}" alt="Task Icon" class="w-8 h-8 rounded-xl object-cover border border-indigo-500/30">`;
                 } else {
                     adminIconHtml = `<span class="text-xl">${iconVal}</span>`;
@@ -1504,9 +1533,9 @@
         }
 
         function approveWithdrawReq(adminReqKey, targetUserId, withdrawKey) {
-            update(ref(db, `users/${targetUserId}/withdrawHistory/${withdrawKey}`), { status: 'Success' }, { merge: and => true });
+            update(ref(db, `users/${targetUserId}/withdrawHistory/${withdrawKey}`), { status: 'Success' });
             remove(ref(db, `admin_all_requests/${adminReqKey}`));
-            showPremiumCardAlert('সফল', 'উইথড্র রিকোয়েস্ট এপ্রুভ করা হয়েছে!', '✅');
+            showPremiumAlert('সফল', 'উইথড্র রিকোয়েস্ট এপ্রুভ করা হয়েছে!', '✅');
         }
 
         function rejectWithdrawReq(adminReqKey, targetUserId, withdrawKey, amount) {
