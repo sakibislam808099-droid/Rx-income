@@ -195,7 +195,8 @@
                     </button>
                 </div>
 
-                <div id="task-container" class="space-y-3.5">
+                <!-- 2 Column Grid for Tasks -->
+                <div id="task-container" class="grid grid-cols-2 gap-3">
                     <!-- Tasks Render Dynamically -->
                 </div>
             </div>
@@ -208,6 +209,10 @@
             </button>
 
             <div class="cyber-card border-pink-500/20 p-5 rounded-[2.5rem] space-y-4">
+                <div id="detail-task-img-container" class="w-full h-44 rounded-2xl overflow-hidden border border-pink-500/30 hidden cursor-pointer shadow-inner">
+                    <img id="detail-task-banner" src="" alt="Task Banner" class="w-full h-full object-cover">
+                </div>
+
                 <div>
                     <span id="detail-task-category" class="text-[10px] font-extrabold px-3 py-1 rounded-xl bg-pink-950/60 text-pink-300 uppercase border border-pink-500/30">Category</span>
                     <h2 id="detail-task-title" class="text-sm font-black text-white mt-3">Task Title</h2>
@@ -349,13 +354,22 @@
             <div class="cyber-card border-indigo-500/30 p-6 rounded-[2.5rem] text-center shadow-2xl relative overflow-hidden cyber-glow">
                 <div class="absolute -top-14 left-1/2 -translate-x-1/2 w-48 h-48 bg-pink-500/20 rounded-full blur-3xl pointer-events-none"></div>
 
+                <!-- Hidden file input for Profile Picture Change -->
+                <input type="file" id="profile-pic-input" accept="image/*" class="hidden" onchange="handleProfilePicUpload(event)">
+
                 <div class="relative inline-block mx-auto">
-                    <div class="w-20 h-20 bg-gradient-to-tr from-pink-500 via-purple-600 to-cyan-400 rounded-3xl p-1 shadow-2xl neon-glow flex items-center justify-center overflow-hidden">
+                    <!-- Double tap / click to change profile photo -->
+                    <div onclick="document.getElementById('profile-pic-input').click()" class="w-20 h-20 bg-gradient-to-tr from-pink-500 via-purple-600 to-cyan-400 rounded-3xl p-1 shadow-2xl neon-glow flex items-center justify-center overflow-hidden cursor-pointer relative group">
                         <div id="profile-avatar-container" class="w-full h-full bg-slate-950 rounded-[22px] flex items-center justify-center text-pink-400 text-3xl font-black overflow-hidden">
                             <span id="profile-avatar-letter">U</span>
                         </div>
+                        <!-- Overlay Edit Icon on Hover/Tap -->
+                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+                            <span class="text-white text-xs font-bold">📷</span>
+                        </div>
                     </div>
-                    <span class="absolute -bottom-1 -right-1 bg-pink-500 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full border-2 border-slate-950 shadow">VIP</span>
+                    <!-- Pencil Badge for Edit -->
+                    <button onclick="document.getElementById('profile-pic-input').click()" class="absolute -bottom-1 -right-1 bg-pink-500 hover:bg-pink-600 text-white text-[10px] w-6 h-6 rounded-full border-2 border-slate-950 shadow flex items-center justify-center transition">✏️</button>
                 </div>
 
                 <h3 id="profile-name" class="font-black text-base mt-3.5 text-white tracking-wide">User</h3>
@@ -422,16 +436,23 @@
                         <label class="text-[11px] text-slate-300 font-semibold block mb-1">Task Title</label>
                         <input type="text" id="admin-task-title" placeholder="e.g. Subscribe YouTube Channel" class="w-full bg-slate-950/90 border border-indigo-500/30 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-pink-400">
                     </div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <div>
-                            <label class="text-[11px] text-slate-300 font-semibold block mb-1">Reward (BDT)</label>
-                            <input type="number" id="admin-task-reward" placeholder="10" class="w-full bg-slate-950/90 border border-indigo-500/30 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-pink-400">
-                        </div>
-                        <div>
-                            <label class="text-[11px] text-slate-300 font-semibold block mb-1">Icon / Image URL</label>
-                            <input type="text" id="admin-task-icon" placeholder="Image URL or Emoji" class="w-full bg-slate-950/90 border border-indigo-500/30 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-pink-400">
-                        </div>
+                    <div>
+                        <label class="text-[11px] text-slate-300 font-semibold block mb-1">Reward (BDT)</label>
+                        <input type="number" id="admin-task-reward" placeholder="10" class="w-full bg-slate-950/90 border border-indigo-500/30 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-pink-400">
                     </div>
+
+                    <!-- Direct Task Image Upload instead of Image URL -->
+                    <div>
+                        <label class="text-[11px] text-slate-300 font-semibold block mb-1">Task Banner / Thumbnail Image</label>
+                        <input type="file" id="admin-task-file-input" accept="image/*" class="hidden" onchange="handleAdminTaskImageUpload(event)">
+                        
+                        <div onclick="document.getElementById('admin-task-file-input').click()" class="w-full bg-slate-950/90 border-2 border-dashed border-indigo-500/30 hover:border-pink-500 rounded-2xl p-3.5 text-center cursor-pointer transition flex items-center justify-center space-x-2">
+                            <span id="admin-upload-icon">📁</span>
+                            <span id="admin-upload-status" class="text-xs font-bold text-slate-300">Click to Upload Task Image</span>
+                        </div>
+                        <input type="hidden" id="admin-task-icon" value="">
+                    </div>
+
                     <div>
                         <label class="text-[11px] text-slate-300 font-semibold block mb-1">Task Link</label>
                         <input type="url" id="admin-task-link" placeholder="https://youtube.com/..." class="w-full bg-slate-950/90 border border-indigo-500/30 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-pink-400">
@@ -587,6 +608,8 @@
         window.openTaskDetails = openTaskDetails;
         window.submitTaskProof = submitTaskProof;
         window.handleImageUpload = handleImageUpload;
+        window.handleProfilePicUpload = handleProfilePicUpload;
+        window.handleAdminTaskImageUpload = handleAdminTaskImageUpload;
         window.openHistoryModal = openHistoryModal;
         window.closeHistoryModal = closeHistoryModal;
         window.requestWithdraw = requestWithdraw;
@@ -628,7 +651,7 @@
             document.getElementById('image-zoom-modal').classList.add('hidden');
         }
 
-        // Image upload to ImgBB via file picker (Camera/Gallery)
+        // Image upload to ImgBB (Proof Screenshot)
         function handleImageUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -641,7 +664,6 @@
             const formData = new FormData();
             formData.append("image", file);
 
-            // ImgBB API key (Free public key)
             fetch("https://api.imgbb.com/1/upload?key=6d207e02b7346850aa08453472bc0b7d", {
                 method: "POST",
                 body: formData
@@ -664,6 +686,75 @@
                 statusText.innerText = "Upload failed. Click to try again ❌";
                 iconBox.innerHTML = "⚠️";
                 showPremiumAlert('সার্ভার ত্রুটি', 'নেটওয়ার্ক সমস্যার কারণে ছবি আপলোড হয়নি।', '⚠️');
+            });
+        }
+
+        // Profile Picture Upload Handler
+        function handleProfilePicUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            showPremiumAlert('আপলোড হচ্ছে...', 'আপনার প্রোফাইল ছবি আপলোড করা হচ্ছে, অপেক্ষা করুন ⏳', '🔄');
+
+            const formData = new FormData();
+            formData.append("image", file);
+
+            fetch("https://api.imgbb.com/1/upload?key=6d207e02b7346850aa08453472bc0b7d", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    const imageUrl = result.data.url;
+                    userData.photoUrl = imageUrl;
+                    update(ref(db, 'users/' + userId), { photoUrl: imageUrl });
+                    initUserUI();
+                    showPremiumAlert('সফল', 'আপনার প্রোফাইল ছবি সফলভাবে পরিবর্তন হয়েছে! ✅', '🖼️');
+                } else {
+                    showPremiumAlert('ত্রুটি', 'প্রোফাইল ছবি আপলোড করতে সমস্যা হয়েছে।', '❌');
+                }
+            })
+            .catch(error => {
+                showPremiumAlert('সার্ভার ত্রুটি', 'নেটওয়ার্ক সমস্যার কারণে ছবি আপলোড হয়নি।', '⚠️');
+            });
+        }
+
+        // Admin Task Image Upload Handler
+        function handleAdminTaskImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const statusText = document.getElementById('admin-upload-status');
+            const iconEl = document.getElementById('admin-upload-icon');
+            statusText.innerText = "Uploading Task Image... ⏳";
+            iconEl.innerText = "🔄";
+
+            const formData = new FormData();
+            formData.append("image", file);
+
+            fetch("https://api.imgbb.com/1/upload?key=6d207e02b7346850aa08453472bc0b7d", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    const imageUrl = result.data.url;
+                    document.getElementById('admin-task-icon').value = imageUrl;
+                    statusText.innerText = "Task Image Uploaded! ✅";
+                    iconEl.innerText = "🖼️";
+                    showPremiumAlert('সফল', 'টাস্ক ইমেজ সফলভাবে আপলোড হয়েছে!', '✅');
+                } else {
+                    statusText.innerText = "Upload failed. Try again ❌";
+                    iconEl.innerText = "⚠️";
+                    showPremiumAlert('ত্রুটি', 'টাস্ক ইমেজ আপলোড হয়নি।', '❌');
+                }
+            })
+            .catch(error => {
+                statusText.innerText = "Upload failed. Try again ❌";
+                iconEl.innerText = "⚠️";
+                showPremiumAlert('সার্ভার ত্রুটি', 'নেটওয়ার্ক সমস্যা।', '⚠️');
             });
         }
 
@@ -879,7 +970,7 @@
             const availableTasks = tasksList.filter(task => !successfulTaskIds.has(task.id));
 
             if (availableTasks.length === 0) {
-                container.innerHTML = `<div class="cyber-card p-6 rounded-2xl text-center text-xs text-slate-400">No tasks available right now. Please check back later!</div>`;
+                container.innerHTML = `<div class="cyber-card p-6 rounded-2xl text-center text-xs text-slate-400 col-span-2">No tasks available right now. Please check back later!</div>`;
                 return;
             }
 
@@ -888,9 +979,9 @@
                 const isSubmitted = existingTask !== undefined;
                 
                 const taskCard = document.createElement('div');
-                taskCard.className = "cyber-card cyber-card-hover p-4 rounded-[2rem] flex items-center justify-between";
+                taskCard.className = "cyber-card cyber-card-hover p-3.5 rounded-[2rem] flex flex-col justify-between space-y-3";
                 
-                let btnText = 'Start';
+                let btnText = 'Start Task';
                 let btnClass = 'btn-cyber text-white shadow-lg';
                 let btnAction = `openTaskDetails('${task.id}')`;
 
@@ -900,8 +991,8 @@
                         btnClass = 'bg-pink-950/80 text-pink-400 border border-pink-500/40';
                         btnAction = `switchTab('home')`;
                     } else if (existingTask.status === 'Rejected') {
-                        btnText = 'Rejected (Retry)';
-                        btnClass = 'bg-rose-950/80 text-rose-400 border border-rose-500/40 text-[10px] px-3';
+                        btnText = 'Retry';
+                        btnClass = 'bg-rose-950/80 text-rose-400 border border-rose-500/40';
                         btnAction = `openTaskDetails('${task.id}')`;
                     }
                 }
@@ -909,20 +1000,20 @@
                 let iconHtml = '';
                 const iconVal = task.icon || '📌';
                 if (iconVal.startsWith('http://') || iconVal.startsWith('https://')) {
-                    iconHtml = `<div onclick="openImageZoom('${iconVal}')" class="w-12 h-12 rounded-2xl overflow-hidden border border-indigo-500/30 cursor-pointer shadow-inner flex-shrink-0"><img src="${iconVal}" alt="Task Icon" class="w-full h-full object-cover"></div>`;
+                    iconHtml = `<div onclick="openImageZoom('${iconVal}')" class="w-full h-28 rounded-2xl overflow-hidden border border-indigo-500/30 cursor-pointer shadow-inner"><img src="${iconVal}" alt="Task Image" class="w-full h-full object-cover"></div>`;
                 } else {
-                    iconHtml = `<div class="w-12 h-12 bg-pink-950/60 text-pink-400 border border-pink-500/30 rounded-2xl flex items-center justify-center font-bold text-base shadow-inner flex-shrink-0">${iconVal}</div>`;
+                    iconHtml = `<div class="w-full h-28 bg-pink-950/60 text-pink-400 border border-pink-500/30 rounded-2xl flex items-center justify-center font-bold text-2xl shadow-inner">${iconVal}</div>`;
                 }
 
                 taskCard.innerHTML = `
-                    <div class="flex items-center space-x-3.5">
+                    <div class="space-y-2">
                         ${iconHtml}
                         <div>
-                            <h3 class="font-extrabold text-xs text-white">${task.title}</h3>
-                            <p class="text-[11px] text-pink-400 font-black mt-0.5">+${task.reward} BDT</p>
+                            <h3 class="font-extrabold text-xs text-white truncate">${task.title}</h3>
+                            <p class="text-xs text-pink-400 font-black mt-0.5">+${task.reward} BDT</p>
                         </div>
                     </div>
-                    <button onclick="${btnAction}" class="${btnClass} text-xs font-bold px-4 py-2.5 rounded-2xl transition duration-200">${btnText}</button>
+                    <button onclick="${btnAction}" class="${btnClass} text-[11px] font-bold py-2.5 rounded-xl w-full transition duration-200 text-center">${btnText}</button>
                 `;
                 container.appendChild(taskCard);
             });
@@ -937,6 +1028,18 @@
             document.getElementById('detail-task-reward').innerText = `Reward: ৳${selectedTask.reward}`;
             document.getElementById('detail-task-desc').innerText = selectedTask.desc || 'No instructions provided.';
             document.getElementById('detail-task-link').href = selectedTask.link || '#';
+
+            const bannerContainer = document.getElementById('detail-task-img-container');
+            const bannerImg = document.getElementById('detail-task-banner');
+            const iconVal = selectedTask.icon || '';
+            
+            if (iconVal.startsWith('http://') || iconVal.startsWith('https://')) {
+                bannerImg.src = iconVal;
+                bannerContainer.classList.remove('hidden');
+                bannerContainer.onclick = () => openImageZoom(iconVal);
+            } else {
+                bannerContainer.classList.add('hidden');
+            }
 
             document.getElementById('proof-text').value = '';
             document.getElementById('proof-image-url').value = '';
@@ -1282,6 +1385,8 @@
                 document.getElementById('admin-task-icon').value = '';
                 document.getElementById('admin-task-link').value = '';
                 document.getElementById('admin-task-desc').value = '';
+                document.getElementById('admin-upload-status').innerText = 'Click to Upload Task Image';
+                document.getElementById('admin-upload-icon').innerText = '📁';
 
                 showPremiumAlert('সফল', 'নতুন টাস্ক সফলভাবে পাবলিশ ও পোস্ট করা হয়েছে!', '🚀');
                 renderAdminPostedTasks();
@@ -1399,9 +1504,9 @@
         }
 
         function approveWithdrawReq(adminReqKey, targetUserId, withdrawKey) {
-            update(ref(db, `users/${targetUserId}/withdrawHistory/${withdrawKey}`), { status: 'Success' }, { merge: true });
+            update(ref(db, `users/${targetUserId}/withdrawHistory/${withdrawKey}`), { status: 'Success' }, { merge: and => true });
             remove(ref(db, `admin_all_requests/${adminReqKey}`));
-            showPremiumAlert('সফল', 'উইথড্র রিকোয়েস্ট এপ্রুভ করা হয়েছে!', '✅');
+            showPremiumCardAlert('সফল', 'উইথড্র রিকোয়েস্ট এপ্রুভ করা হয়েছে!', '✅');
         }
 
         function rejectWithdrawReq(adminReqKey, targetUserId, withdrawKey, amount) {
@@ -1419,4 +1524,3 @@
     </script>
 </body>
 </html>
-
