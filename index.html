@@ -121,6 +121,29 @@
         </div>
     </div>
 
+    <!-- ================= ACTION SELECTOR MODAL (CAMERA OR GALLERY) ================= -->
+    <div id="source-selector-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-[180] hidden flex items-center justify-center p-4">
+        <div class="cyber-card neon-card border-pink-500/40 w-full max-w-xs rounded-[2.5rem] p-6 shadow-2xl space-y-4 animate-pop text-center relative overflow-hidden">
+            <h3 class="font-extrabold text-xs text-pink-400 uppercase tracking-widest">ছবি আপলোড মাধ্যম</h3>
+            <p class="text-[11px] text-slate-300">আপনি কীভাবে ছবি আপলোড করতে চান?</p>
+            <div class="grid grid-cols-2 gap-3 pt-2">
+                <button onclick="triggerCameraInput()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold py-3.5 rounded-2xl shadow-md transition flex flex-col items-center justify-center space-y-1">
+                    <span class="text-lg">📸</span>
+                    <span>ক্যামেরা</span>
+                </button>
+                <button onclick="triggerGalleryInput()" class="bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold py-3.5 rounded-2xl shadow-md transition flex flex-col items-center justify-center space-y-1">
+                    <span class="text-lg">📁</span>
+                    <span>গ্যালারি</span>
+                </button>
+            </div>
+            <button onclick="closeSourceSelector()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold py-2.5 rounded-xl transition mt-2">বাতিল</button>
+        </div>
+    </div>
+
+    <!-- Hidden Inputs for Proof & Profile -->
+    <input type="file" id="real-camera-input" accept="image/*" capture="environment" class="hidden" onchange="handleFileSelected(event)">
+    <input type="file" id="real-gallery-input" accept="image/*" class="hidden" onchange="handleFileSelected(event)">
+
     <!-- ================= ALERT / MESSAGE MODAL ================= -->
     <div id="premium-alert-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-[150] flex items-center justify-center p-4 hidden">
         <div class="cyber-card neon-card border-pink-500/40 w-full max-w-xs rounded-[2.5rem] p-6 shadow-2xl space-y-5 animate-pop text-center relative overflow-hidden">
@@ -244,9 +267,8 @@
                     
                     <div>
                         <label class="text-[11px] text-slate-400 font-semibold block mb-1">2. Upload Screenshot (Camera / Gallery)</label>
-                        <input type="file" id="proof-file-input" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
                         
-                        <div onclick="document.getElementById('proof-file-input').click()" class="w-full bg-slate-950/90 border-2 border-dashed border-indigo-500/30 hover:border-pink-500 rounded-2xl p-4 text-center cursor-pointer transition flex flex-col items-center justify-center space-y-2">
+                        <div onclick="openSourceSelectorFor('proof')" class="w-full bg-slate-950/90 border-2 border-dashed border-indigo-500/30 hover:border-pink-500 rounded-2xl p-4 text-center cursor-pointer transition flex flex-col items-center justify-center space-y-2">
                             <div id="upload-icon-box" class="w-10 h-10 rounded-xl bg-indigo-950/80 text-pink-400 flex items-center justify-center text-lg shadow-inner">📁</div>
                             <span id="upload-status-text" class="text-xs font-bold text-slate-300">Click to Select or Capture Screenshot</span>
                             <span class="text-[9px] text-slate-500">Supports Camera & Gallery</span>
@@ -361,11 +383,8 @@
             <div class="cyber-card border-indigo-500/30 p-6 rounded-[2.5rem] text-center shadow-2xl relative overflow-hidden cyber-glow">
                 <div class="absolute -top-14 left-1/2 -translate-x-1/2 w-48 h-48 bg-pink-500/20 rounded-full blur-3xl pointer-events-none"></div>
 
-                <!-- Hidden file input for Profile Picture Change -->
-                <input type="file" id="profile-pic-input" accept="image/*" class="hidden" onchange="handleProfilePicUpload(event)">
-
                 <div class="relative inline-block mx-auto">
-                    <div onclick="document.getElementById('profile-pic-input').click()" class="w-20 h-20 bg-gradient-to-tr from-pink-500 via-purple-600 to-cyan-400 rounded-3xl p-1 shadow-2xl neon-glow flex items-center justify-center overflow-hidden cursor-pointer relative group">
+                    <div onclick="openSourceSelectorFor('profile')" class="w-20 h-20 bg-gradient-to-tr from-pink-500 via-purple-600 to-cyan-400 rounded-3xl p-1 shadow-2xl neon-glow flex items-center justify-center overflow-hidden cursor-pointer relative group">
                         <div id="profile-avatar-container" class="w-full h-full bg-slate-950 rounded-[22px] flex items-center justify-center text-pink-400 text-3xl font-black overflow-hidden">
                             <span id="profile-avatar-letter">U</span>
                         </div>
@@ -373,7 +392,7 @@
                             <span class="text-white text-xs font-bold">📷</span>
                         </div>
                     </div>
-                    <button onclick="document.getElementById('profile-pic-input').click()" class="absolute -bottom-1 -right-1 bg-pink-500 hover:bg-pink-600 text-white text-[10px] w-6 h-6 rounded-full border-2 border-slate-950 shadow flex items-center justify-center transition">✏️</button>
+                    <button onclick="openSourceSelectorFor('profile')" class="absolute -bottom-1 -right-1 bg-pink-500 hover:bg-pink-600 text-white text-[10px] w-6 h-6 rounded-full border-2 border-slate-950 shadow flex items-center justify-center transition">✏️</button>
                 </div>
 
                 <h3 id="profile-name" class="font-black text-base mt-3.5 text-white tracking-wide">User</h3>
@@ -447,9 +466,8 @@
 
                     <div>
                         <label class="text-[11px] text-slate-300 font-semibold block mb-1">Task Banner / Thumbnail Image</label>
-                        <input type="file" id="admin-task-file-input" accept="image/*" class="hidden" onchange="handleAdminTaskImageUpload(event)">
                         
-                        <div onclick="document.getElementById('admin-task-file-input').click()" class="w-full bg-slate-950/90 border-2 border-dashed border-indigo-500/30 hover:border-pink-500 rounded-2xl p-3.5 text-center cursor-pointer transition flex items-center justify-center space-x-2">
+                        <div onclick="openSourceSelectorFor('admin')" class="w-full bg-slate-950/90 border-2 border-dashed border-indigo-500/30 hover:border-pink-500 rounded-2xl p-3.5 text-center cursor-pointer transition flex items-center justify-center space-x-2">
                             <span id="admin-upload-icon">📁</span>
                             <span id="admin-upload-status" class="text-xs font-bold text-slate-300">Click to Upload Task Image</span>
                         </div>
@@ -606,13 +624,16 @@
         let selectedTask = null;
         let lastSuccessTaskKeys = new Set();
         let isAdminLoggedIn = false;
+        let activeUploadTarget = ''; // 'proof', 'profile', or 'admin'
 
         window.switchTab = switchTab;
         window.openTaskDetails = openTaskDetails;
         window.submitTaskProof = submitTaskProof;
-        window.handleImageUpload = handleImageUpload;
-        window.handleProfilePicUpload = handleProfilePicUpload;
-        window.handleAdminTaskImageUpload = handleAdminTaskImageUpload;
+        window.openSourceSelectorFor = openSourceSelectorFor;
+        window.closeSourceSelector = closeSourceSelector;
+        window.triggerCameraInput = triggerCameraInput;
+        window.triggerGalleryInput = triggerGalleryInput;
+        window.handleFileSelected = handleFileSelected;
         window.openHistoryModal = openHistoryModal;
         window.closeHistoryModal = closeHistoryModal;
         window.requestWithdraw = requestWithdraw;
@@ -654,7 +675,40 @@
             document.getElementById('image-zoom-modal').classList.add('hidden');
         }
 
-        function uploadImageFile(file, statusElementId, iconElementId, hiddenInputId, successCallback) {
+        function openSourceSelectorFor(target) {
+            activeUploadTarget = target;
+            document.getElementById('source-selector-modal').classList.remove('hidden');
+        }
+
+        function closeSourceSelector() {
+            document.getElementById('source-selector-modal').classList.add('hidden');
+        }
+
+        function triggerCameraInput() {
+            closeSourceSelector();
+            document.getElementById('real-camera-input').click();
+        }
+
+        function triggerGalleryInput() {
+            closeSourceSelector();
+            document.getElementById('real-gallery-input').click();
+        }
+
+        function handleFileSelected(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            if (activeUploadTarget === 'proof') {
+                processAndUploadImage(file, 'upload-status-text', 'upload-icon-box', 'proof-image-url', 'স্ক্রিনশট সফলভাবে আপলোড হয়েছে! 📸');
+            } else if (activeUploadTarget === 'profile') {
+                processAndUploadProfilePic(file);
+            } else if (activeUploadTarget === 'admin') {
+                processAndUploadImage(file, 'admin-upload-status', 'admin-upload-icon', 'admin-task-icon', 'টাস্ক ইমেজ সফলভাবে আপলোড হয়েছে! ✅');
+            }
+            event.target.value = '';
+        }
+
+        function processAndUploadImage(file, statusElementId, iconElementId, hiddenInputId, successMsg) {
             const statusText = document.getElementById(statusElementId);
             const iconBox = document.getElementById(iconElementId);
             
@@ -706,37 +760,25 @@
                             document.getElementById(hiddenInputId).value = imageUrl;
                             statusText.innerText = "Upload Successful! ✅";
                             iconBox.innerHTML = "🖼️";
-                            if(successCallback) successCallback(imageUrl);
+                            showPremiumAlert('সফল', successMsg, '✅');
                         } else {
                             document.getElementById(hiddenInputId).value = compressedDataUrl;
                             statusText.innerText = "Uploaded Successfully! ✅";
                             iconBox.innerHTML = "🖼️";
-                            if(successCallback) successCallback(compressedDataUrl);
+                            showPremiumAlert('সফল', successMsg, '✅');
                         }
                     })
                     .catch(() => {
                         document.getElementById(hiddenInputId).value = compressedDataUrl;
                         statusText.innerText = "Uploaded Successfully! ✅";
                         iconBox.innerHTML = "🖼️";
-                        if(successCallback) successCallback(compressedDataUrl);
+                        showPremiumAlert('সফল', successMsg, '✅');
                     });
                 }
             }
         }
 
-        function handleImageUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            uploadImageFile(file, 'upload-status-text', 'upload-icon-box', 'proof-image-url', (url) => {
-                showPremiumAlert('সফল', 'স্ক্রিনশট সফলভাবে আপলোড হয়েছে!', '📸');
-            });
-        }
-
-        function handleProfilePicUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
+        function processAndUploadProfilePic(file) {
             showPremiumAlert('আপলোড হচ্ছে...', 'প্রোফাইল ছবি আপলোড করা হচ্ছে...', '🔄');
 
             const reader = new FileReader();
@@ -775,15 +817,6 @@
                     });
                 }
             }
-        }
-
-        function handleAdminTaskImageUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            uploadImageFile(file, 'admin-upload-status', 'admin-upload-icon', 'admin-task-icon', (url) => {
-                showPremiumAlert('সফল', 'টাস্ক ইমেজ সফলভাবে আপলোড হয়েছে!', '✅');
-            });
         }
 
         const tasksRef = ref(db, 'tasks');
@@ -1553,3 +1586,4 @@
     </script>
 </body>
 </html>
+
