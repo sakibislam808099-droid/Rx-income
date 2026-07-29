@@ -96,15 +96,6 @@
         .btn-cyber:active {
             transform: scale(0.95);
         }
-
-        .btn-neon {
-            background: linear-gradient(135deg, #38bdf8 0%, #6366f1 100%);
-            transition: all 0.25s ease;
-            box-shadow: 0 4px 20px rgba(56, 189, 248, 0.4);
-        }
-        .btn-neon:active {
-            transform: scale(0.95);
-        }
     </style>
 </head>
 <body class="bg-[#030712] text-slate-100 min-h-screen flex flex-col justify-between font-sans select-none pb-28 relative overflow-x-hidden">
@@ -176,13 +167,11 @@
     <!-- ================= TOP HEADER BAR ================= -->
     <header class="w-full bg-[#050914]/85 backdrop-blur-xl border-b border-indigo-500/15 sticky top-0 z-50 px-4 py-3.5 shadow-2xl">
         <div class="max-w-md mx-auto flex justify-between items-center">
-            <!-- App Name -->
             <div class="flex items-center space-x-3">
                 <div class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-pink-500 via-purple-600 to-cyan-400 flex items-center justify-center font-black text-xs shadow-lg shadow-pink-500/30 text-white border border-white/20">TI</div>
                 <h1 class="font-extrabold text-xs sm:text-sm bg-gradient-to-r from-pink-400 via-slate-100 to-cyan-400 bg-clip-text text-transparent tracking-wider uppercase" id="headerTitle">Task Income BD</h1>
             </div>
             
-            <!-- Balance Box / Admin Exit -->
             <div class="flex items-center space-x-2">
                 <button id="admin-exit-btn" onclick="exitAdminPanel()" class="hidden bg-rose-600 hover:bg-rose-700 text-white text-[10px] font-black px-3.5 py-1.5 rounded-xl shadow-md transition">Exit Admin</button>
                 <div id="balance-box-wrapper" class="cyber-card border-pink-500/30 px-4 py-1.5 rounded-2xl flex items-center space-x-1.5 neon-glow">
@@ -247,10 +236,19 @@
                         <label class="text-[11px] text-slate-400 font-semibold block mb-1">1. Enter Proof Text / Your Username</label>
                         <input type="text" id="proof-text" placeholder="e.g. @your_username or task name" class="w-full bg-slate-950/90 border border-indigo-500/20 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-pink-500 transition shadow-inner">
                     </div>
+                    
                     <div>
-                        <label class="text-[11px] text-slate-400 font-semibold block mb-1">2. Enter Screenshot / Proof Image Link (Image URL)</label>
-                        <input type="url" id="proof-image-url" placeholder="https://imgur.com/example.jpg" class="w-full bg-slate-950/90 border border-indigo-500/20 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-pink-500 transition shadow-inner">
+                        <label class="text-[11px] text-slate-400 font-semibold block mb-1">2. Upload Screenshot (Camera / Gallery)</label>
+                        <input type="file" id="proof-file-input" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
+                        
+                        <div onclick="document.getElementById('proof-file-input').click()" class="w-full bg-slate-950/90 border-2 border-dashed border-indigo-500/30 hover:border-pink-500 rounded-2xl p-4 text-center cursor-pointer transition flex flex-col items-center justify-center space-y-2">
+                            <div id="upload-icon-box" class="w-10 h-10 rounded-xl bg-indigo-950/80 text-pink-400 flex items-center justify-center text-lg shadow-inner">📁</div>
+                            <span id="upload-status-text" class="text-xs font-bold text-slate-300">Click to Select or Capture Screenshot</span>
+                            <span class="text-[9px] text-slate-500">Supports Camera & Gallery</span>
+                        </div>
+                        <input type="hidden" id="proof-image-url" value="">
                     </div>
+
                     <button onclick="submitTaskProof()" class="w-full bg-gradient-to-r from-emerald-500 to-cyan-600 hover:opacity-95 active:scale-95 transition duration-200 text-xs font-black py-4 rounded-2xl shadow-lg shadow-emerald-500/20 text-white uppercase tracking-wider">Confirm & Submit</button>
                 </div>
             </div>
@@ -366,7 +364,6 @@
                     <p class="text-xs text-indigo-300 font-mono font-black" id="profile-id">UID: 00000000</p>
                 </div>
                 
-                <!-- Main Stats Grid -->
                 <div class="mt-5 pt-4 border-t border-slate-800/80 grid grid-cols-2 gap-3 text-center">
                     <div class="bg-pink-950/20 p-3.5 rounded-2xl border border-pink-500/20">
                         <span class="text-[10px] text-pink-400 font-extrabold uppercase tracking-wider">Total Earned</span>
@@ -378,7 +375,6 @@
                     </div>
                 </div>
 
-                <!-- Detailed Tasks Stats Grid -->
                 <div class="mt-3 grid grid-cols-3 gap-2 text-center">
                     <div class="bg-slate-900/60 p-2.5 rounded-2xl border border-slate-800">
                         <span class="text-[9px] text-slate-400 font-bold block">Completed</span>
@@ -487,7 +483,6 @@
     <nav id="bottom-nav" class="w-full max-w-md mx-auto fixed bottom-0 left-0 right-0 bg-[#050914]/90 backdrop-blur-2xl border-t border-indigo-500/20 px-4 py-2.5 z-40 shadow-2xl">
         <div class="flex justify-around items-center">
             
-            <!-- Home Nav -->
             <button onclick="switchTab('home')" id="nav-home" class="flex flex-col items-center space-y-1 text-pink-400 transition transform hover:scale-105 group nav-btn-active">
                 <div class="nav-icon-wrapper w-11 h-11 rounded-2xl bg-slate-900/90 border border-indigo-500/20 flex items-center justify-center overflow-hidden shadow-inner p-1.5">
                     <img src="https://i.postimg.cc/Z5gFdNwz/pngtree-3d-home-icon-image-on-transparent-background-png-image-20814352.png" alt="Home" class="w-full h-full object-contain">
@@ -495,7 +490,6 @@
                 <span class="text-[10px] font-extrabold tracking-wide">Home</span>
             </button>
 
-            <!-- Leaderboard / Ranks Nav -->
             <button onclick="switchTab('leaderboard')" id="nav-leaderboard" class="flex flex-col items-center space-y-1 text-slate-400 hover:text-pink-400 transition transform hover:scale-105 group">
                 <div class="nav-icon-wrapper w-11 h-11 rounded-2xl bg-slate-900/90 border border-indigo-500/20 flex items-center justify-center overflow-hidden shadow-inner p-1.5">
                     <img src="https://i.postimg.cc/D0jbKVN6/images-(2).jpg" alt="Ranks" class="w-full h-full object-cover rounded-xl">
@@ -503,7 +497,6 @@
                 <span class="text-[10px] font-extrabold tracking-wide">Ranks</span>
             </button>
 
-            <!-- Withdraw Nav -->
             <button onclick="switchTab('withdraw')" id="nav-withdraw" class="flex flex-col items-center space-y-1 text-slate-400 hover:text-pink-400 transition transform hover:scale-105 group">
                 <div class="nav-icon-wrapper w-11 h-11 rounded-2xl bg-slate-900/90 border border-indigo-500/20 flex items-center justify-center overflow-hidden shadow-inner p-1.5">
                     <img src="https://i.postimg.cc/DyNbjTLW/images-(3).jpg" alt="Withdraw" class="w-full h-full object-cover rounded-xl">
@@ -511,7 +504,6 @@
                 <span class="text-[10px] font-extrabold tracking-wide">Withdraw</span>
             </button>
 
-            <!-- Profile Nav -->
             <button onclick="switchTab('profile')" id="nav-profile" class="flex flex-col items-center space-y-1 text-slate-400 hover:text-pink-400 transition transform hover:scale-105 group">
                 <div class="nav-icon-wrapper w-11 h-11 rounded-2xl bg-slate-900/90 border border-indigo-500/20 flex items-center justify-center overflow-hidden shadow-inner p-1.5">
                     <img src="https://i.postimg.cc/6QJ4KfHT/images-(4).jpg" alt="Profile" class="w-full h-full object-cover rounded-xl">
@@ -594,6 +586,7 @@
         window.switchTab = switchTab;
         window.openTaskDetails = openTaskDetails;
         window.submitTaskProof = submitTaskProof;
+        window.handleImageUpload = handleImageUpload;
         window.openHistoryModal = openHistoryModal;
         window.closeHistoryModal = closeHistoryModal;
         window.requestWithdraw = requestWithdraw;
@@ -633,6 +626,45 @@
 
         function closeZoomModal() {
             document.getElementById('image-zoom-modal').classList.add('hidden');
+        }
+
+        // Image upload to ImgBB via file picker (Camera/Gallery)
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const statusText = document.getElementById('upload-status-text');
+            const iconBox = document.getElementById('upload-icon-box');
+            statusText.innerText = "Uploading screenshot... Please wait ⏳";
+            iconBox.innerHTML = "🔄";
+
+            const formData = new FormData();
+            formData.append("image", file);
+
+            // ImgBB API key (Free public key)
+            fetch("https://api.imgbb.com/1/upload?key=6d207e02b7346850aa08453472bc0b7d", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    const imageUrl = result.data.url;
+                    document.getElementById('proof-image-url').value = imageUrl;
+                    statusText.innerText = "Screenshot Uploaded Successfully! ✅";
+                    iconBox.innerHTML = "🖼️";
+                    showPremiumAlert('সফল', 'স্ক্রিনশট সফলভাবে আপলোড হয়েছে!', '📸');
+                } else {
+                    statusText.innerText = "Upload failed. Click to try again ❌";
+                    iconBox.innerHTML = "⚠️";
+                    showPremiumAlert('ত্রুটি', 'ছবি আপলোড করতে সমস্যা হয়েছে। আবার চেষ্টা করুন।', '❌');
+                }
+            })
+            .catch(error => {
+                statusText.innerText = "Upload failed. Click to try again ❌";
+                iconBox.innerHTML = "⚠️";
+                showPremiumAlert('সার্ভার ত্রুটি', 'নেটওয়ার্ক সমস্যার কারণে ছবি আপলোড হয়নি।', '⚠️');
+            });
         }
 
         const tasksRef = ref(db, 'tasks');
@@ -908,6 +940,8 @@
 
             document.getElementById('proof-text').value = '';
             document.getElementById('proof-image-url').value = '';
+            document.getElementById('upload-status-text').innerText = 'Click to Select or Capture Screenshot';
+            document.getElementById('upload-icon-box').innerHTML = '📁';
 
             const views = ['home', 'task-details', 'leaderboard', 'withdraw', 'profile', 'admin'];
             views.forEach(v => document.getElementById(`view-${v}`).classList.add('hidden'));
@@ -923,7 +957,7 @@
                 return;
             }
             if (!proofImageUrl) {
-                showPremiumAlert('সতর্কতা', 'দয়া করে স্ক্রিনশট বা প্রুফ ছবির সঠিক লিংক দিন!', '⚠️');
+                showPremiumAlert('সতর্কতা', 'দয়া করে গ্যালারি বা ক্যামেরা থেকে স্ক্রিনশট আপলোড করুন!', '⚠️');
                 return;
             }
 
