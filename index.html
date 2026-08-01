@@ -18,34 +18,34 @@
         body { -webkit-tap-highlight-color: transparent; }
         
         .cyber-card {
-            background: rgba(13, 18, 36, 0.75);
+            background: rgba(255, 255, 255, 0.88);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(129, 140, 248, 0.12);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            border: 1px solid rgba(236, 72, 153, 0.18);
+            box-shadow: 0 10px 30px 0 rgba(148, 163, 184, 0.15);
         }
         
         .cyber-card-hover {
             transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .cyber-card-hover:hover {
-            border-color: rgba(129, 140, 248, 0.5);
+            border-color: rgba(236, 72, 153, 0.5);
             transform: translateY(-3px);
-            box-shadow: 0 15px 35px -10px rgba(99, 102, 241, 0.4);
+            box-shadow: 0 15px 35px -10px rgba(236, 72, 153, 0.25);
         }
 
         .neon-card {
-            background: linear-gradient(135deg, rgba(236, 72, 153, 0.12) 0%, rgba(13, 18, 36, 0.9) 100%);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(253, 242, 248, 0.9) 100%);
             border: 1px solid rgba(236, 72, 153, 0.3);
-            box-shadow: 0 10px 30px -10px rgba(236, 72, 153, 0.25);
+            box-shadow: 0 10px 30px -10px rgba(236, 72, 153, 0.2);
         }
 
         .cyber-glow {
-            box-shadow: 0 0 40px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 0 40px rgba(99, 102, 241, 0.15);
         }
         
         .neon-glow {
-            box-shadow: 0 0 40px rgba(236, 72, 153, 0.35);
+            box-shadow: 0 0 30px rgba(236, 72, 153, 0.25);
         }
 
         .animate-pop {
@@ -57,16 +57,16 @@
         }
 
         @keyframes floatSlow {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-8px); }
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-12px) scale(1.05); }
         }
         .animate-float {
-            animation: floatSlow 4s ease-in-out infinite;
+            animation: floatSlow 5s ease-in-out infinite;
         }
 
         @keyframes pulseNeon {
-            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 15px rgba(236, 72, 153, 0.5)); }
-            50% { transform: scale(1.06); filter: drop-shadow(0 0 30px rgba(99, 102, 241, 0.8)); }
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 15px rgba(236, 72, 153, 0.4)); }
+            50% { transform: scale(1.06); filter: drop-shadow(0 0 25px rgba(99, 102, 241, 0.6)); }
         }
         .animate-splash-logo {
             animation: pulseNeon 2.5s ease-in-out infinite;
@@ -83,49 +83,50 @@
         }
         .nav-btn-active .nav-icon-wrapper {
             transform: translateY(-5px) scale(1.15);
-            box-shadow: 0 10px 25px rgba(236, 72, 153, 0.6);
+            box-shadow: 0 10px 25px rgba(236, 72, 153, 0.4);
             border-color: rgba(236, 72, 153, 0.8);
-            background: linear-gradient(135deg, rgba(236, 72, 153, 0.7) 0%, rgba(99, 102, 241, 0.7) 100%);
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.9) 0%, rgba(139, 92, 246, 0.9) 100%);
         }
         
         .btn-cyber {
             background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 50%, #6366f1 100%);
             transition: all 0.25s ease;
-            box-shadow: 0 4px 20px rgba(236, 72, 153, 0.4);
+            box-shadow: 0 4px 20px rgba(236, 72, 153, 0.35);
         }
         .btn-cyber:active {
             transform: scale(0.95);
         }
     </style>
 </head>
-<body class="bg-[#030712] text-slate-100 min-h-screen flex flex-col justify-between font-sans select-none pb-28 relative overflow-x-hidden">
+<body class="bg-[#f8fafc] text-slate-800 min-h-screen flex flex-col justify-between font-sans select-none pb-28 relative overflow-x-hidden">
 
-    <!-- Background Ambient Cyber Glows -->
-    <div class="fixed -top-32 -left-32 w-96 h-96 bg-pink-600/15 rounded-full blur-[140px] pointer-events-none"></div>
-    <div class="fixed -bottom-32 -right-32 w-96 h-96 bg-indigo-600/20 rounded-full blur-[140px] pointer-events-none"></div>
+    <!-- Background Animated Colorful Bubbles -->
+    <div class="fixed -top-32 -left-32 w-96 h-96 bg-pink-400/30 rounded-full blur-[100px] pointer-events-none animate-float"></div>
+    <div class="fixed top-1/3 -right-32 w-96 h-96 bg-purple-400/25 rounded-full blur-[100px] pointer-events-none animate-float" style="animation-delay: 2s;"></div>
+    <div class="fixed -bottom-32 left-1/4 w-96 h-96 bg-cyan-400/25 rounded-full blur-[100px] pointer-events-none animate-float" style="animation-delay: 4s;"></div>
 
     <!-- ================= SPLASH / ENTRY ANIMATION SCREEN ================= -->
-    <div id="splash-screen" class="fixed inset-0 bg-[#030712] z-[300] flex flex-col items-center justify-center p-6 text-center space-y-7">
+    <div id="splash-screen" class="fixed inset-0 bg-[#f8fafc] z-[300] flex flex-col items-center justify-center p-6 text-center space-y-7">
         <div class="relative">
-            <div class="absolute -inset-6 bg-gradient-to-r from-pink-500/30 via-purple-500/30 to-cyan-500/30 rounded-full blur-3xl animate-pulse"></div>
+            <div class="absolute -inset-6 bg-gradient-to-r from-pink-500/30 via-purple-500/30 to-cyan-400/30 rounded-full blur-3xl animate-pulse"></div>
             <div class="relative w-32 h-32 rounded-[2.8rem] p-1 bg-gradient-to-tr from-pink-500 via-purple-500 to-cyan-400 shadow-2xl neon-glow flex items-center justify-center overflow-hidden">
                 <img src="https://i.postimg.cc/QMYL50Rj/images-(1).jpg" alt="App Logo" class="w-full h-full object-cover rounded-[2.6rem] animate-splash-logo">
             </div>
         </div>
         <div class="space-y-2">
-            <h1 class="font-black text-2xl bg-gradient-to-r from-pink-400 via-indigo-300 to-cyan-400 bg-clip-text text-transparent tracking-widest uppercase">Task Income BD</h1>
-            <p class="text-xs text-slate-400 font-semibold tracking-wider uppercase">Cyber Edition Experience</p>
+            <h1 class="font-black text-2xl bg-gradient-to-r from-pink-600 via-purple-600 to-cyan-600 bg-clip-text text-transparent tracking-widest uppercase">Task Income BD</h1>
+            <p class="text-xs text-slate-500 font-semibold tracking-wider uppercase">Cyber Edition Experience</p>
         </div>
-        <div class="w-44 h-1.5 bg-slate-900 rounded-full overflow-hidden p-0.5 border border-slate-800">
+        <div class="w-44 h-1.5 bg-slate-200 rounded-full overflow-hidden p-0.5 border border-slate-300">
             <div id="splash-progress" class="w-0 h-full bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-400 transition-all duration-1000 rounded-full"></div>
         </div>
     </div>
 
-    <!-- ================= ACTION SELECTOR MODAL (CAMERA OR GALLERY) ================= -->
-    <div id="source-selector-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-[180] hidden flex items-center justify-center p-4">
+    <!-- ================= SOURCE SELECTOR MODAL ================= -->
+    <div id="source-selector-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-[180] hidden flex items-center justify-center p-4">
         <div class="cyber-card neon-card border-pink-500/40 w-full max-w-xs rounded-[2.5rem] p-6 shadow-2xl space-y-4 animate-pop text-center relative overflow-hidden">
-            <h3 class="font-extrabold text-xs text-pink-400 uppercase tracking-widest">ছবি আপলোড মাধ্যম</h3>
-            <p class="text-[11px] text-slate-300">আপনি কীভাবে ছবি আপলোড করতে চান?</p>
+            <h3 class="font-extrabold text-xs text-pink-600 uppercase tracking-widest">ছবি আপলোড মাধ্যম</h3>
+            <p class="text-[11px] text-slate-600">আপনি কীভাবে ছবি আপলোড করতে চান?</p>
             <div class="grid grid-cols-2 gap-3 pt-2">
                 <button onclick="triggerCameraInput()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold py-3.5 rounded-2xl shadow-md transition flex flex-col items-center justify-center space-y-1">
                     <span class="text-lg">📸</span>
@@ -136,70 +137,62 @@
                     <span>গ্যালারি</span>
                 </button>
             </div>
-            <button onclick="closeSourceSelector()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold py-2.5 rounded-xl transition mt-2">বাতিল</button>
+            <button onclick="closeSourceSelector()" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold py-2.5 rounded-xl transition mt-2">বাতিল</button>
         </div>
     </div>
 
-    <!-- Hidden Inputs for Proof & Profile -->
+    <!-- Hidden Inputs -->
     <input type="file" id="real-camera-input" accept="image/*" capture="environment" class="hidden" onchange="handleFileSelected(event)">
     <input type="file" id="real-gallery-input" accept="image/*" class="hidden" onchange="handleFileSelected(event)">
 
-    <!-- ================= ALERT / MESSAGE MODAL ================= -->
-    <div id="premium-alert-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-[150] flex items-center justify-center p-4 hidden">
+    <!-- ================= ALERT MODAL ================= -->
+    <div id="premium-alert-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-[150] flex items-center justify-center p-4 hidden">
         <div class="cyber-card neon-card border-pink-500/40 w-full max-w-xs rounded-[2.5rem] p-6 shadow-2xl space-y-5 animate-pop text-center relative overflow-hidden">
-            <div class="absolute -top-10 -right-10 w-28 h-28 bg-pink-500/20 rounded-full blur-2xl pointer-events-none"></div>
-            
             <div id="alert-icon" class="w-16 h-16 bg-gradient-to-tr from-pink-500 to-purple-600 text-white font-bold rounded-2xl mx-auto flex items-center justify-center text-3xl shadow-lg shadow-pink-500/30 animate-float">⚡</div>
-            
             <div>
-                <h3 id="alert-title" class="font-extrabold text-xs text-pink-400 uppercase tracking-widest">Notification</h3>
-                <p id="alert-message" class="text-xs text-slate-300 mt-2 leading-relaxed font-medium">Message will be displayed here...</p>
+                <h3 id="alert-title" class="font-extrabold text-xs text-pink-600 uppercase tracking-widest">Notification</h3>
+                <p id="alert-message" class="text-xs text-slate-600 mt-2 leading-relaxed font-medium">Message here...</p>
             </div>
-
             <button onclick="closePremiumAlert()" class="w-full btn-cyber text-xs font-black py-3.5 rounded-2xl shadow-lg text-white uppercase tracking-wider">OK</button>
         </div>
     </div>
 
     <!-- ================= IMAGE ZOOM MODAL ================= -->
-    <div id="image-zoom-modal" class="fixed inset-0 bg-black/95 backdrop-blur-xl z-[200] hidden flex items-center justify-center p-4">
+    <div id="image-zoom-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-xl z-[200] hidden flex items-center justify-center p-4">
         <div class="relative max-w-sm w-full flex flex-col items-center animate-pop">
-            <button onclick="closeZoomModal()" class="absolute -top-12 right-0 w-10 h-10 rounded-full bg-slate-800 hover:bg-slate-700 text-white font-black text-sm flex items-center justify-center border border-pink-500/40 shadow-xl transition">✕</button>
+            <button onclick="closeZoomModal()" class="absolute -top-12 right-0 w-10 h-10 rounded-full bg-white text-slate-800 font-black text-sm flex items-center justify-center border border-pink-500/40 shadow-xl transition">✕</button>
             <img id="zoomed-image-tag" src="" alt="Zoomed Task Image" class="max-w-full max-h-[75vh] object-contain rounded-3xl border border-pink-500/30 shadow-2xl">
         </div>
     </div>
 
-    <!-- ================= REFERRAL CHECK MODAL (ENTRY LOCK) ================= -->
-    <div id="referral-modal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-[100] flex items-center justify-center p-4 hidden">
+    <!-- ================= REFERRAL / ENTRY LOCK MODAL ================= -->
+    <div id="referral-modal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-md z-[100] flex items-center justify-center p-4 hidden">
         <div class="cyber-card neon-card w-full max-w-sm rounded-[2.5rem] p-7 shadow-2xl space-y-6 animate-pop text-center relative overflow-hidden">
-            <div class="absolute -top-12 -right-12 w-32 h-32 bg-pink-500/20 rounded-full blur-3xl pointer-events-none"></div>
-            
             <div class="w-16 h-16 bg-gradient-to-tr from-pink-500 to-purple-600 text-white font-bold rounded-2xl mx-auto flex items-center justify-center text-3xl shadow-lg shadow-pink-500/30 animate-float">🛡️</div>
-            
             <div>
-                <h2 class="font-extrabold text-sm text-pink-400 uppercase tracking-widest">Referral Verification</h2>
-                <p class="text-[11px] text-slate-300 mt-2 leading-relaxed font-medium">Please enter your inviter's correct **Referral Code** to access the app.</p>
+                <h2 class="font-extrabold text-sm text-pink-600 uppercase tracking-widest">Referral Verification</h2>
+                <p class="text-[11px] text-slate-600 mt-2 leading-relaxed font-medium">Please enter your inviter's correct **Referral Code** to access the app.</p>
             </div>
-
             <div class="space-y-3.5">
-                <input type="text" id="input-refer-code" placeholder="Enter referral code" class="w-full bg-slate-950/90 border border-pink-500/40 rounded-2xl px-4 py-3.5 text-xs text-center font-bold text-pink-400 outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-400/20 transition shadow-inner">
+                <input type="text" id="input-refer-code" placeholder="Enter referral code" class="w-full bg-white border border-pink-500/40 rounded-2xl px-4 py-3.5 text-xs text-center font-bold text-pink-600 outline-none focus:border-pink-500 transition shadow-inner">
                 <button onclick="verifyAndEnterApp()" class="w-full btn-cyber text-xs font-black py-4 rounded-2xl shadow-lg text-white uppercase tracking-wider">Enter App</button>
             </div>
         </div>
     </div>
 
     <!-- ================= TOP HEADER BAR ================= -->
-    <header class="w-full bg-[#050914]/85 backdrop-blur-xl border-b border-indigo-500/15 sticky top-0 z-50 px-4 py-3.5 shadow-2xl">
+    <header class="w-full bg-white/85 backdrop-blur-xl border-b border-pink-500/15 sticky top-0 z-50 px-4 py-3.5 shadow-sm">
         <div class="max-w-md mx-auto flex justify-between items-center">
             <div class="flex items-center space-x-3">
-                <div class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-pink-500 via-purple-600 to-cyan-400 flex items-center justify-center font-black text-xs shadow-lg shadow-pink-500/30 text-white border border-white/20">TI</div>
-                <h1 class="font-extrabold text-xs sm:text-sm bg-gradient-to-r from-pink-400 via-slate-100 to-cyan-400 bg-clip-text text-transparent tracking-wider uppercase" id="headerTitle">Task Income BD</h1>
+                <div class="w-9 h-9 rounded-2xl bg-gradient-to-tr from-pink-500 via-purple-600 to-cyan-400 flex items-center justify-center font-black text-xs shadow-lg shadow-pink-500/30 text-white border border-white/40">TI</div>
+                <h1 class="font-extrabold text-xs sm:text-sm bg-gradient-to-r from-pink-600 via-purple-600 to-cyan-600 bg-clip-text text-transparent tracking-wider uppercase" id="headerTitle">Task Income BD</h1>
             </div>
             
             <div class="flex items-center space-x-2">
                 <button id="admin-exit-btn" onclick="exitAdminPanel()" class="hidden bg-rose-600 hover:bg-rose-700 text-white text-[10px] font-black px-3.5 py-1.5 rounded-xl shadow-md transition">Exit Admin</button>
                 <div id="balance-box-wrapper" class="cyber-card border-pink-500/30 px-4 py-1.5 rounded-2xl flex items-center space-x-1.5 neon-glow">
-                    <span class="text-pink-400 font-black text-xs">৳</span>
-                    <span id="balance" class="font-extrabold text-pink-400 text-xs tracking-wide">0</span>
+                    <span class="text-pink-600 font-black text-xs">৳</span>
+                    <span id="balance" class="font-extrabold text-pink-600 text-xs tracking-wide">0</span>
                 </div>
             </div>
         </div>
@@ -208,26 +201,75 @@
     <!-- ================= MAIN CONTENT VIEWS ================= -->
     <main class="w-full max-w-md mx-auto px-4 mt-5 flex-1">
         
-        <!-- 1. HOME VIEW -->
+        <!-- 1. HOME VIEW (Dashboard, Banner, Notices & Referral Center) -->
         <section id="view-home" class="space-y-4 animate-pop">
-            <div class="space-y-3.5">
-                <div class="flex justify-between items-center px-1">
-                    <h2 class="text-xs font-extrabold uppercase tracking-widest text-pink-400">Available Tasks</h2>
-                    <button onclick="openHistoryModal()" class="text-[11px] font-bold text-indigo-300 cyber-card hover:bg-indigo-900/40 px-3.5 py-2 rounded-2xl transition duration-200 flex items-center space-x-1.5 border border-indigo-500/20 shadow-md active:scale-95">
-                        <span>📜 History</span>
-                    </button>
+            <!-- Banner & Welcome Card -->
+            <div class="cyber-card neon-card p-6 rounded-[2.5rem] space-y-4 relative overflow-hidden shadow-xl">
+                <div class="absolute -top-12 -right-12 w-36 h-36 bg-pink-500/15 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] font-extrabold uppercase px-3 py-1 bg-pink-100 text-pink-700 rounded-xl border border-pink-300">Cyber Edition 2026</span>
+                        <h2 class="text-lg font-black text-slate-800 mt-2">স্বাগতম, <span id="home-user-name" class="text-pink-600">User</span>! 👋</h2>
+                    </div>
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-pink-500 to-purple-600 flex items-center justify-center text-white text-xl shadow-lg shadow-pink-500/30">💰</div>
                 </div>
+                <p class="text-xs text-slate-600 leading-relaxed font-medium">টাস্ক কমপ্লিট করুন এবং ঘরে বসেই প্রতিদিন নিশ্চিত ইনকাম করুন। ন্যূনতম উইথড্র মাত্র <b class="text-pink-600 font-bold">৫০ টাকা</b>!</p>
+                <div class="grid grid-cols-2 gap-2 pt-1">
+                    <button onclick="switchTab('tasks')" class="btn-cyber text-xs font-extrabold py-3 rounded-2xl text-white shadow-lg text-center uppercase tracking-wider">🚀 Start Tasks</button>
+                    <button onclick="switchTab('withdraw')" class="bg-indigo-600 hover:bg-indigo-500 text-xs font-extrabold py-3 rounded-2xl text-white shadow-lg text-center uppercase tracking-wider transition">💳 Withdraw</button>
+                </div>
+            </div>
 
-                <!-- 2 Column Grid for Tasks -->
-                <div id="task-container" class="grid grid-cols-2 gap-3">
-                    <!-- Tasks Render Dynamically -->
+            <!-- Notice & Rules Card -->
+            <div class="cyber-card border-indigo-500/20 p-5 rounded-[2.5rem] space-y-3 shadow-sm">
+                <div class="flex items-center space-x-2">
+                    <span class="text-lg">📢</span>
+                    <h3 class="font-extrabold text-xs text-indigo-700 uppercase tracking-wider">জরুরি নিয়মাবলী ও নোটিশ</h3>
+                </div>
+                <ul class="text-[11px] text-slate-600 space-y-1.5 list-disc pl-4 font-medium leading-relaxed">
+                    <li>প্রতিটি টাস্কের নির্দেশনা সঠিকভাবে পড়ে কাজ সম্পন্ন করুন।</li>
+                    <li>ভুল স্ক্রিনশট বা প্রুফ জমা দিলে টাস্ক রিজেক্ট হতে পারে।</li>
+                    <li>উইথড্র রিকোয়েস্ট করার ২৪ ঘণ্টার মধ্যে পেমেন্ট পাঠানো হয়।</li>
+                    <li>ন্যূনতম উইথড্র সীমা হলো <b class="text-slate-800 font-bold">৫০ BDT</b>।</li>
+                </ul>
+            </div>
+
+            <!-- Referral Center Card -->
+            <div class="cyber-card border-pink-500/30 p-5 rounded-[2.5rem] space-y-3.5 shadow-sm cyber-glow">
+                <div class="flex items-center space-x-2">
+                    <span class="text-lg">🎁</span>
+                    <h3 class="font-extrabold text-xs text-pink-600 uppercase tracking-wider">রেফার ও ইনকাম সিস্টেম</h3>
+                </div>
+                <p class="text-[11px] text-slate-600 leading-relaxed font-medium">আপনার বন্ধুদের সাথে আপনার রেফারেল কোড শেয়ার করুন। প্রতি সফল রেফারে আপনি পাবেন <b class="text-pink-600 font-bold">১ টাকা বোনাস</b>!</p>
+                
+                <div class="space-y-2">
+                    <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wide block">আপনার ইউনিক রেফারেল কোড:</label>
+                    <div class="flex items-center justify-between bg-white border border-pink-500/30 rounded-2xl p-2 pl-4 shadow-inner">
+                        <span id="home-referral-code" class="text-sm font-black text-pink-600 font-mono tracking-widest">000000</span>
+                        <button onclick="copyHomeReferralCode()" class="btn-cyber text-xs font-extrabold px-4.5 py-3 rounded-xl text-white shadow-lg">Copy Code</button>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- 2. TASK SUBMISSION VIEW -->
+        <!-- 2. TASKS VIEW (Available Tasks & History) -->
+        <section id="view-tasks" class="space-y-4 hidden animate-pop">
+            <div class="flex justify-between items-center px-1">
+                <h2 class="text-xs font-extrabold uppercase tracking-widest text-pink-600">Available Tasks</h2>
+                <button onclick="openHistoryModal()" class="text-[11px] font-bold text-indigo-700 cyber-card hover:bg-indigo-50 px-3.5 py-2 rounded-2xl transition duration-200 flex items-center space-x-1.5 border border-indigo-500/20 shadow-sm active:scale-95">
+                    <span>📜 History</span>
+                </button>
+            </div>
+
+            <!-- Task List Grid -->
+            <div id="task-container" class="grid grid-cols-2 gap-3">
+                <!-- Dynamic Tasks Render Here -->
+            </div>
+        </section>
+
+        <!-- 3. TASK SUBMISSION VIEW -->
         <section id="view-task-details" class="space-y-4 hidden animate-pop">
-            <button onclick="switchTab('home')" class="text-xs text-pink-400 font-bold flex items-center space-x-1.5 mb-2 hover:translate-x-[-2px] transition">
+            <button onclick="switchTab('tasks')" class="text-xs text-pink-600 font-bold flex items-center space-x-1.5 mb-2 hover:translate-x-[-2px] transition">
                 <span>←</span> <span>Back to Task List</span>
             </button>
 
@@ -237,17 +279,17 @@
                 </div>
 
                 <div>
-                    <span id="detail-task-category" class="text-[10px] font-extrabold px-3 py-1 rounded-xl bg-pink-950/60 text-pink-300 uppercase border border-pink-500/30">Category</span>
-                    <h2 id="detail-task-title" class="text-sm font-black text-white mt-3">Task Title</h2>
+                    <span id="detail-task-category" class="text-[10px] font-extrabold px-3 py-1 rounded-xl bg-pink-100 text-pink-700 uppercase border border-pink-500/30">Category</span>
+                    <h2 id="detail-task-title" class="text-sm font-black text-slate-800 mt-3">Task Title</h2>
                     <div class="flex justify-between items-center mt-1">
-                        <p id="detail-task-reward" class="text-xs font-black text-pink-400">Reward: ৳0</p>
-                        <p id="detail-task-limit-info" class="text-[10px] font-bold text-cyan-400 bg-cyan-950/40 px-2.5 py-1 rounded-xl border border-cyan-500/30">Slots: 0/0</p>
+                        <p id="detail-task-reward" class="text-xs font-black text-pink-600">Reward: ৳0</p>
+                        <p id="detail-task-limit-info" class="text-[10px] font-bold text-cyan-700 bg-cyan-100 px-2.5 py-1 rounded-xl border border-cyan-500/30">Slots: 0/0</p>
                     </div>
                 </div>
 
-                <div class="border-t border-slate-800/80 pt-3 space-y-2">
-                    <h3 class="text-xs font-bold text-indigo-200">Task Instructions & Details:</h3>
-                    <p id="detail-task-desc" class="text-[11px] text-slate-400 leading-relaxed font-medium">Task detailed description will appear here.</p>
+                <div class="border-t border-slate-200 pt-3 space-y-2">
+                    <h3 class="text-xs font-bold text-indigo-700">Task Instructions & Details:</h3>
+                    <p id="detail-task-desc" class="text-[11px] text-slate-600 leading-relaxed font-medium">Task detailed description will appear here.</p>
                 </div>
 
                 <div class="pt-1">
@@ -257,24 +299,23 @@
 
             <!-- Proof Submission Form -->
             <div class="cyber-card border-indigo-500/20 p-5 rounded-[2.5rem] space-y-4">
-                <h3 class="font-extrabold text-xs text-indigo-200 flex items-center space-x-2">
-                    <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 inline-block animate-ping"></span>
+                <h3 class="font-extrabold text-xs text-indigo-700 flex items-center space-x-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-cyan-500 inline-block animate-ping"></span>
                     <span>Submit Work Proof</span>
                 </h3>
 
                 <div class="space-y-3.5">
                     <div>
-                        <label class="text-[11px] text-slate-400 font-semibold block mb-1">1. Enter Proof Text / Your Username</label>
-                        <input type="text" id="proof-text" placeholder="e.g. @your_username or task name" class="w-full bg-slate-950/90 border border-indigo-500/20 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-pink-500 transition shadow-inner">
+                        <label class="text-[11px] text-slate-600 font-semibold block mb-1">1. Enter Proof Text / Your Username</label>
+                        <input type="text" id="proof-text" placeholder="e.g. @your_username or task name" class="w-full bg-white border border-indigo-500/20 rounded-2xl px-4 py-3 text-xs text-slate-800 outline-none focus:border-pink-500 transition shadow-inner">
                     </div>
                     
                     <div>
-                        <label class="text-[11px] text-slate-400 font-semibold block mb-1">2. Upload Screenshot (Camera / Gallery)</label>
-                        
-                        <div onclick="openSourceSelectorFor('proof')" class="w-full bg-slate-950/90 border-2 border-dashed border-indigo-500/30 hover:border-pink-500 rounded-2xl p-4 text-center cursor-pointer transition flex flex-col items-center justify-center space-y-2">
-                            <div id="upload-icon-box" class="w-10 h-10 rounded-xl bg-indigo-950/80 text-pink-400 flex items-center justify-center text-lg shadow-inner">📁</div>
-                            <span id="upload-status-text" class="text-xs font-bold text-slate-300">Click to Select or Capture Screenshot</span>
-                            <span class="text-[9px] text-slate-500">Supports Camera & Gallery</span>
+                        <label class="text-[11px] text-slate-600 font-semibold block mb-1">2. Upload Screenshot (Camera / Gallery)</label>
+                        <div onclick="openSourceSelectorFor('proof')" class="w-full bg-white border-2 border-dashed border-indigo-500/30 hover:border-pink-500 rounded-2xl p-4 text-center cursor-pointer transition flex flex-col items-center justify-center space-y-2 shadow-inner">
+                            <div id="upload-icon-box" class="w-10 h-10 rounded-xl bg-indigo-50 text-pink-600 flex items-center justify-center text-lg shadow-inner">📁</div>
+                            <span id="upload-status-text" class="text-xs font-bold text-slate-700">Click to Select or Capture Screenshot</span>
+                            <span class="text-[9px] text-slate-400">Supports Camera & Gallery</span>
                         </div>
                         <input type="hidden" id="proof-image-url" value="">
                     </div>
@@ -284,212 +325,211 @@
             </div>
         </section>
 
-        <!-- 3. LEADERBOARD VIEW -->
+        <!-- 4. LEADERBOARD VIEW -->
         <section id="view-leaderboard" class="space-y-4 hidden animate-pop">
             <div class="flex justify-between items-center mb-1">
-                <h2 class="text-xs font-extrabold uppercase tracking-widest text-pink-400">Global Leaderboard</h2>
-                <span class="text-[10px] text-pink-400 bg-pink-500/10 border border-pink-500/30 px-3 py-1 rounded-xl font-extrabold shadow-sm">👑 Top Earners</span>
+                <h2 class="text-xs font-extrabold uppercase tracking-widest text-pink-600">Global Leaderboard</h2>
+                <span class="text-[10px] text-pink-600 bg-pink-100 border border-pink-500/30 px-3 py-1 rounded-xl font-extrabold shadow-sm">👑 Top Earners</span>
             </div>
 
             <!-- Podium -->
             <div id="podium-container" class="grid grid-cols-3 gap-2.5 items-end pt-5 pb-2">
-                <div id="podium-2" class="cyber-card border-slate-700/60 p-3.5 rounded-[2rem] text-center flex flex-col items-center relative shadow-xl">
-                    <div class="absolute -top-3.5 bg-slate-400 text-slate-950 font-black text-[10px] w-6 h-6 rounded-full flex items-center justify-center border-2 border-[#030712] shadow">2</div>
-                    <div class="w-10 h-10 rounded-2xl bg-indigo-950/80 text-indigo-300 border border-indigo-500/30 flex items-center justify-center text-sm font-bold mb-2 shadow-inner overflow-hidden" id="podium-avatar-2">A</div>
-                    <h3 class="font-bold text-[11px] text-slate-200 truncate w-full" id="podium-name-2">Name</h3>
-                    <p class="text-xs font-black text-pink-400 mt-0.5" id="podium-income-2">৳0</p>
-                    <span class="text-[9px] text-slate-400 mt-1.5 bg-slate-900/80 px-2 py-0.5 rounded-lg font-medium border border-slate-800" id="podium-ref-2">👥 0 Refs</span>
+                <div id="podium-2" class="cyber-card border-slate-300 p-3.5 rounded-[2.0rem] text-center flex flex-col items-center relative shadow-md">
+                    <div class="absolute -top-3.5 bg-slate-500 text-white font-black text-[10px] w-6 h-6 rounded-full flex items-center justify-center border-2 border-white shadow">2</div>
+                    <div class="w-10 h-10 rounded-2xl bg-indigo-100 text-indigo-700 border border-indigo-500/30 flex items-center justify-center text-sm font-bold mb-2 shadow-inner overflow-hidden" id="podium-avatar-2">A</div>
+                    <h3 class="font-bold text-[11px] text-slate-700 truncate w-full" id="podium-name-2">Name</h3>
+                    <p class="text-xs font-black text-pink-600 mt-0.5" id="podium-income-2">৳0</p>
+                    <span class="text-[9px] text-slate-500 mt-1.5 bg-slate-100 px-2 py-0.5 rounded-lg font-medium border border-slate-200" id="podium-ref-2">👥 0 Refs</span>
                 </div>
 
-                <div id="podium-1" class="cyber-card neon-card p-3.5 rounded-[2rem] text-center flex flex-col items-center relative shadow-2xl -mt-4">
-                    <div class="absolute -top-4 bg-pink-500 text-white font-black text-xs w-7 h-7 rounded-full flex items-center justify-center border-2 border-[#030712] shadow-md animate-bounce">👑</div>
-                    <div class="w-12 h-12 rounded-2xl bg-pink-500/20 border border-pink-400/40 flex items-center justify-center text-base font-bold text-pink-400 mb-2 shadow-inner overflow-hidden" id="podium-avatar-1">T</div>
-                    <h3 class="font-bold text-xs text-pink-300 truncate w-full" id="podium-name-1">Name</h3>
-                    <p class="text-xs font-black text-pink-400 mt-0.5" id="podium-income-1">৳0</p>
-                    <span class="text-[9px] text-pink-300 mt-1.5 bg-pink-500/20 px-2 py-0.5 rounded-lg font-medium border border-pink-400/30" id="podium-ref-1">👥 0 Refs</span>
+                <div id="podium-1" class="cyber-card neon-card p-3.5 rounded-[2.0rem] text-center flex flex-col items-center relative shadow-xl -mt-4">
+                    <div class="absolute -top-4 bg-pink-500 text-white font-black text-xs w-7 h-7 rounded-full flex items-center justify-center border-2 border-white shadow-md animate-bounce">👑</div>
+                    <div class="w-12 h-12 rounded-2xl bg-pink-100 border border-pink-400/40 flex items-center justify-center text-base font-bold text-pink-600 mb-2 shadow-inner overflow-hidden" id="podium-avatar-1">T</div>
+                    <h3 class="font-bold text-xs text-pink-700 truncate w-full" id="podium-name-1">Name</h3>
+                    <p class="text-xs font-black text-pink-600 mt-0.5" id="podium-income-1">৳0</p>
+                    <span class="text-[9px] text-pink-700 mt-1.5 bg-pink-100 px-2 py-0.5 rounded-lg font-medium border border-pink-300" id="podium-ref-1">👥 0 Refs</span>
                 </div>
 
-                <div id="podium-3" class="cyber-card border-slate-700/60 p-3.5 rounded-[2rem] text-center flex flex-col items-center relative shadow-xl">
-                    <div class="absolute -top-3.5 bg-amber-700 text-white font-black text-[10px] w-6 h-6 rounded-full flex items-center justify-center border-2 border-[#030712] shadow">3</div>
-                    <div class="w-10 h-10 rounded-2xl bg-indigo-950/80 text-indigo-300 border border-indigo-500/30 flex items-center justify-center text-sm font-bold mb-2 shadow-inner overflow-hidden" id="podium-avatar-3">N</div>
-                    <h3 class="font-bold text-[11px] text-slate-200 truncate w-full" id="podium-name-3">Name</h3>
-                    <p class="text-xs font-black text-pink-400 mt-0.5" id="podium-income-3">৳0</p>
-                    <span class="text-[9px] text-slate-400 mt-1.5 bg-slate-900/80 px-2 py-0.5 rounded-lg font-medium border border-slate-800" id="podium-ref-3">👥 0 Refs</span>
+                <div id="podium-3" class="cyber-card border-slate-300 p-3.5 rounded-[2.0rem] text-center flex flex-col items-center relative shadow-md">
+                    <div class="absolute -top-3.5 bg-amber-600 text-white font-black text-[10px] w-6 h-6 rounded-full flex items-center justify-center border-2 border-white shadow">3</div>
+                    <div class="w-10 h-10 rounded-2xl bg-indigo-100 text-indigo-700 border border-indigo-500/30 flex items-center justify-center text-sm font-bold mb-2 shadow-inner overflow-hidden" id="podium-avatar-3">N</div>
+                    <h3 class="font-bold text-[11px] text-slate-700 truncate w-full" id="podium-name-3">Name</h3>
+                    <p class="text-xs font-black text-pink-600 mt-0.5" id="podium-income-3">৳0</p>
+                    <span class="text-[9px] text-slate-500 mt-1.5 bg-slate-100 px-2 py-0.5 rounded-lg font-medium border border-slate-200" id="podium-ref-3">👥 0 Refs</span>
                 </div>
             </div>
 
             <div class="space-y-2.5 pt-2">
-                <h3 class="text-[11px] font-extrabold text-indigo-300 px-1 uppercase tracking-wider">Other Leaders</h3>
+                <h3 class="text-[11px] font-extrabold text-indigo-700 px-1 uppercase tracking-wider">Other Leaders</h3>
                 <div id="leaderboard-list" class="space-y-2.5"></div>
             </div>
         </section>
 
-        <!-- 4. WITHDRAW VIEW -->
+        <!-- 5. WITHDRAW VIEW -->
         <section id="view-withdraw" class="space-y-4 hidden animate-pop">
-            <div class="cyber-card border-indigo-500/20 p-5 rounded-[2.5rem] space-y-4">
+            <div class="cyber-card border-indigo-500/20 p-5 rounded-[2.5rem] space-y-4 shadow-sm">
                 <div class="text-center">
-                    <span class="text-xs text-slate-400 font-semibold">Total Withdrawable Balance</span>
-                    <h2 class="text-3xl font-black text-pink-400 mt-1">৳<span id="withdraw-total-balance">0</span></h2>
+                    <span class="text-xs text-slate-500 font-semibold">Total Withdrawable Balance</span>
+                    <h2 class="text-3xl font-black text-pink-600 mt-1">৳<span id="withdraw-total-balance">0</span></h2>
                 </div>
-                <div class="grid grid-cols-3 gap-2.5 pt-3 border-t border-slate-800/80 text-center">
-                    <div class="bg-emerald-950/30 p-2.5 rounded-2xl border border-emerald-500/20">
-                        <span class="text-[10px] text-emerald-400 font-semibold">Success</span>
-                        <p class="text-xs font-extrabold text-emerald-300 mt-0.5">৳<span id="stat-success">0</span></p>
+                <div class="grid grid-cols-3 gap-2.5 pt-3 border-t border-slate-200 text-center">
+                    <div class="bg-emerald-50 p-2.5 rounded-2xl border border-emerald-500/20">
+                        <span class="text-[10px] text-emerald-600 font-semibold">Success</span>
+                        <p class="text-xs font-extrabold text-emerald-700 mt-0.5">৳<span id="stat-success">0</span></p>
                     </div>
-                    <div class="bg-pink-950/30 p-2.5 rounded-2xl border border-pink-500/20">
-                        <span class="text-[10px] text-pink-400 font-semibold">Pending</span>
-                        <p class="text-xs font-extrabold text-pink-300 mt-0.5">৳<span id="stat-pending">0</span></p>
+                    <div class="bg-pink-50 p-2.5 rounded-2xl border border-pink-500/20">
+                        <span class="text-[10px] text-pink-600 font-semibold">Pending</span>
+                        <p class="text-xs font-extrabold text-pink-700 mt-0.5">৳<span id="stat-pending">0</span></p>
                     </div>
-                    <div class="bg-indigo-950/30 p-2.5 rounded-2xl border border-indigo-500/20">
-                        <span class="text-[10px] text-indigo-300 font-semibold">Minimum</span>
-                        <p class="text-xs font-extrabold text-indigo-200 mt-0.5">৳50</p>
+                    <div class="bg-indigo-50 p-2.5 rounded-2xl border border-indigo-500/20">
+                        <span class="text-[10px] text-indigo-600 font-semibold">Minimum</span>
+                        <p class="text-xs font-extrabold text-indigo-700 mt-0.5">৳50</p>
                     </div>
                 </div>
             </div>
 
-            <div class="cyber-card border-indigo-500/20 p-5 rounded-[2.5rem] space-y-4">
-                <h3 class="font-extrabold text-xs text-indigo-200 flex items-center space-x-2">
+            <div class="cyber-card border-indigo-500/20 p-5 rounded-[2.5rem] space-y-4 shadow-sm">
+                <h3 class="font-extrabold text-xs text-indigo-700 flex items-center space-x-2">
                     <span class="w-2.5 h-2.5 rounded-full bg-pink-500 inline-block animate-pulse"></span>
                     <span>Withdraw via bKash / Nagad (Personal)</span>
                 </h3>
                 
                 <div class="space-y-3.5">
                     <div>
-                        <label class="text-[11px] text-slate-400 font-semibold block mb-1">Select Payment Method</label>
-                        <select id="withdraw-method" class="w-full bg-slate-950/90 border border-indigo-500/20 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-pink-500 transition shadow-inner">
+                        <label class="text-[11px] text-slate-600 font-semibold block mb-1">Select Payment Method</label>
+                        <select id="withdraw-method" class="w-full bg-white border border-indigo-500/20 rounded-2xl px-4 py-3 text-xs text-slate-800 outline-none focus:border-pink-500 transition shadow-inner">
                             <option value="bKash (Personal)">bKash (Personal)</option>
                             <option value="Nagad (Personal)">Nagad (Personal)</option>
                         </select>
                     </div>
                     <div>
-                        <label class="text-[11px] text-slate-400 font-semibold block mb-1">Your Account Number </label>
-                        <input type="tel" id="bkash-number" placeholder="017xxxxxxxx" maxlength="20" class="w-full bg-slate-950/90 border border-indigo-500/20 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-pink-500 transition shadow-inner">
+                        <label class="text-[11px] text-slate-600 font-semibold block mb-1">Your Account Number</label>
+                        <input type="tel" id="bkash-number" placeholder="017xxxxxxxx" maxlength="20" class="w-full bg-white border border-indigo-500/20 rounded-2xl px-4 py-3 text-xs text-slate-800 outline-none focus:border-pink-500 transition shadow-inner">
                     </div>
                     <div>
-                        <label class="text-[11px] text-slate-400 font-semibold block mb-1">Amount (BDT)</label>
-                        <input type="number" id="withdraw-amount" placeholder="Minimum 50 BDT" class="w-full bg-slate-950/90 border border-indigo-500/20 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-pink-500 transition shadow-inner">
+                        <label class="text-[11px] text-slate-600 font-semibold block mb-1">Amount (BDT)</label>
+                        <input type="number" id="withdraw-amount" placeholder="Minimum 50 BDT" class="w-full bg-white border border-indigo-500/20 rounded-2xl px-4 py-3 text-xs text-slate-800 outline-none focus:border-pink-500 transition shadow-inner">
                     </div>
                     <button onclick="requestWithdraw()" class="w-full bg-gradient-to-r from-pink-600 to-rose-600 hover:opacity-95 active:scale-95 transition duration-200 text-xs font-black py-4 rounded-2xl shadow-lg shadow-pink-600/30 text-white uppercase tracking-wider">Send Withdraw Request</button>
                 </div>
             </div>
 
             <div class="space-y-3">
-                <h3 class="text-xs font-extrabold uppercase tracking-widest text-pink-400 px-1">Withdraw History</h3>
+                <h3 class="text-xs font-extrabold uppercase tracking-widest text-pink-600 px-1">Withdraw History</h3>
                 <div id="withdraw-history-container" class="space-y-2.5">
-                    <div class="cyber-card p-4 rounded-2xl text-center text-xs text-slate-400">No withdraw history found</div>
+                    <div class="cyber-card p-4 rounded-2xl text-center text-xs text-slate-500">No withdraw history found</div>
                 </div>
             </div>
         </section>
 
-        <!-- 5. PROFILE VIEW -->
+        <!-- 6. PROFILE VIEW -->
         <section id="view-profile" class="space-y-4 hidden animate-pop">
-            <div class="cyber-card border-indigo-500/30 p-6 rounded-[2.5rem] text-center shadow-2xl relative overflow-hidden cyber-glow">
-                <div class="absolute -top-14 left-1/2 -translate-x-1/2 w-48 h-48 bg-pink-500/20 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="cyber-card border-indigo-500/30 p-6 rounded-[2.5rem] text-center shadow-xl relative overflow-hidden cyber-glow">
+                <div class="absolute -top-14 left-1/2 -translate-x-1/2 w-48 h-48 bg-pink-500/15 rounded-full blur-3xl pointer-events-none"></div>
 
                 <div class="relative inline-block mx-auto">
                     <div onclick="openSourceSelectorFor('profile')" class="w-20 h-20 bg-gradient-to-tr from-pink-500 via-purple-600 to-cyan-400 rounded-3xl p-1 shadow-2xl neon-glow flex items-center justify-center overflow-hidden cursor-pointer relative group">
-                        <div id="profile-avatar-container" class="w-full h-full bg-slate-950 rounded-[22px] flex items-center justify-center text-pink-400 text-3xl font-black overflow-hidden">
+                        <div id="profile-avatar-container" class="w-full h-full bg-white rounded-[22px] flex items-center justify-center text-pink-600 text-3xl font-black overflow-hidden">
                             <span id="profile-avatar-letter">U</span>
                         </div>
-                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+                        <div class="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
                             <span class="text-white text-xs font-bold">📷</span>
                         </div>
                     </div>
-                    <button onclick="openSourceSelectorFor('profile')" class="absolute -bottom-1 -right-1 bg-pink-500 hover:bg-pink-600 text-white text-[10px] w-6 h-6 rounded-full border-2 border-slate-950 shadow flex items-center justify-center transition">✏️</button>
+                    <button onclick="openSourceSelectorFor('profile')" class="absolute -bottom-1 -right-1 bg-pink-600 hover:bg-pink-700 text-white text-[10px] w-6 h-6 rounded-full border-2 border-white shadow flex items-center justify-center transition">✏️</button>
                 </div>
 
-                <h3 id="profile-name" class="font-black text-base mt-3.5 text-white tracking-wide">User</h3>
-                <p class="text-[11px] text-slate-400 mt-0.5 font-semibold" id="profile-username">@username</p>
-                <div class="inline-block mt-2.5 bg-indigo-950/60 border border-indigo-500/30 px-4 py-1.5 rounded-2xl shadow-inner">
-                    <p class="text-xs text-indigo-300 font-mono font-black" id="profile-id">UID: 00000000</p>
+                <h3 id="profile-name" class="font-black text-base mt-3.5 text-slate-800 tracking-wide">User</h3>
+                <p class="text-[11px] text-slate-500 mt-0.5 font-semibold" id="profile-username">@username</p>
+                <div class="inline-block mt-2.5 bg-indigo-50 border border-indigo-500/30 px-4 py-1.5 rounded-2xl shadow-inner">
+                    <p class="text-xs text-indigo-700 font-mono font-black" id="profile-id">UID: 00000000</p>
                 </div>
                 
-                <div class="mt-5 pt-4 border-t border-slate-800/80 grid grid-cols-2 gap-3 text-center">
-                    <div class="bg-pink-950/20 p-3.5 rounded-2xl border border-pink-500/20">
-                        <span class="text-[10px] text-pink-400 font-extrabold uppercase tracking-wider">Total Earned</span>
-                        <p class="text-sm font-black text-pink-400 mt-0.5">৳<span id="stat-total-earned">0</span></p>
+                <div class="mt-5 pt-4 border-t border-slate-200 grid grid-cols-2 gap-3 text-center">
+                    <div class="bg-pink-50 p-3.5 rounded-2xl border border-pink-500/20">
+                        <span class="text-[10px] text-pink-600 font-extrabold uppercase tracking-wider">Total Earned</span>
+                        <p class="text-sm font-black text-pink-600 mt-0.5">৳<span id="stat-total-earned">0</span></p>
                     </div>
-                    <div class="bg-indigo-950/20 p-3.5 rounded-2xl border border-indigo-500/20">
-                        <span class="text-[10px] text-indigo-300 font-extrabold uppercase tracking-wider">Total Referrals</span>
-                        <p class="text-sm font-black text-indigo-200 mt-0.5"><span id="stat-total-refer">0</span> users</p>
+                    <div class="bg-indigo-50 p-3.5 rounded-2xl border border-indigo-500/20">
+                        <span class="text-[10px] text-indigo-600 font-extrabold uppercase tracking-wider">Total Referrals</span>
+                        <p class="text-sm font-black text-indigo-700 mt-0.5"><span id="stat-total-refer">0</span> users</p>
                     </div>
                 </div>
 
                 <div class="mt-3 grid grid-cols-3 gap-2 text-center">
-                    <div class="bg-slate-900/60 p-2.5 rounded-2xl border border-slate-800">
-                        <span class="text-[9px] text-slate-400 font-bold block">Completed</span>
-                        <p class="text-xs font-black text-indigo-300 mt-0.5"><span id="stat-completed-tasks">0</span></p>
+                    <div class="bg-slate-50 p-2.5 rounded-2xl border border-slate-200">
+                        <span class="text-[9px] text-slate-500 font-bold block">Completed</span>
+                        <p class="text-xs font-black text-indigo-700 mt-0.5"><span id="stat-completed-tasks">0</span></p>
                     </div>
-                    <div class="bg-slate-900/60 p-2.5 rounded-2xl border border-slate-800">
-                        <span class="text-[9px] text-pink-400 font-bold block">Pending</span>
-                        <p class="text-xs font-black text-pink-400 mt-0.5"><span id="stat-pending-tasks">0</span></p>
+                    <div class="bg-slate-50 p-2.5 rounded-2xl border border-slate-200">
+                        <span class="text-[9px] text-pink-600 font-bold block">Pending</span>
+                        <p class="text-xs font-black text-pink-600 mt-0.5"><span id="stat-pending-tasks">0</span></p>
                     </div>
-                    <div class="bg-slate-900/60 p-2.5 rounded-2xl border border-slate-800">
-                        <span class="text-[9px] text-rose-400 font-bold block">Rejected</span>
-                        <p class="text-xs font-black text-rose-400 mt-0.5"><span id="stat-rejected-tasks">0</span></p>
+                    <div class="bg-slate-50 p-2.5 rounded-2xl border border-slate-200">
+                        <span class="text-[9px] text-rose-600 font-bold block">Rejected</span>
+                        <p class="text-xs font-black text-rose-600 mt-0.5"><span id="stat-rejected-tasks">0</span></p>
                     </div>
                 </div>
             </div>
 
-            <div class="cyber-card border-indigo-500/20 p-5 rounded-[2.5rem] space-y-3.5">
+            <div class="cyber-card border-indigo-500/20 p-5 rounded-[2.5rem] space-y-3.5 shadow-sm">
                 <div class="flex items-center space-x-2">
                     <span class="text-base">🎁</span>
-                    <h4 class="font-extrabold text-xs text-indigo-200 uppercase tracking-wider">Your Referral Code</h4>
+                    <h4 class="font-extrabold text-xs text-indigo-700 uppercase tracking-wider">Your Referral Code</h4>
                 </div>
-                <p class="text-[11px] text-slate-400 leading-relaxed font-medium">Share this code with your friends. When they enter the app and use this code, you will get 1 BDT bonus per referral!</p>
+                <p class="text-[11px] text-slate-600 leading-relaxed font-medium">Share this code with your friends. When they enter the app and use this code, you will get 1 BDT bonus per referral!</p>
                 
-                <div class="flex items-center justify-between bg-slate-950/90 border border-indigo-500/30 rounded-2xl p-2 pl-4 shadow-inner">
-                    <span id="referral-code-display" class="text-sm font-black text-pink-400 font-mono tracking-widest">000000</span>
+                <div class="flex items-center justify-between bg-white border border-indigo-500/30 rounded-2xl p-2 pl-4 shadow-inner">
+                    <span id="referral-code-display" class="text-sm font-black text-pink-600 font-mono tracking-widest">000000</span>
                     <button onclick="copyReferralCode()" class="btn-cyber text-xs font-extrabold px-4.5 py-3 rounded-xl text-white shadow-lg">Copy Code</button>
                 </div>
             </div>
         </section>
 
-        <!-- 6. ADMIN PANEL VIEW -->
+        <!-- 7. ADMIN PANEL VIEW -->
         <section id="view-admin" class="space-y-4 hidden animate-pop">
             <div class="flex justify-between items-center">
-                <h3 class="text-xs font-extrabold uppercase tracking-widest text-pink-400">👑 Admin Control Panel</h3>
-                <button onclick="openAdminHistoryModal()" class="cyber-card hover:bg-indigo-900/40 text-indigo-200 text-[11px] font-bold px-3.5 py-2 rounded-xl border border-indigo-500/30 shadow transition flex items-center space-x-1.5">
+                <h3 class="text-xs font-extrabold uppercase tracking-widest text-pink-600">👑 Admin Control Panel</h3>
+                <button onclick="openAdminHistoryModal()" class="cyber-card hover:bg-indigo-50 text-indigo-700 text-[11px] font-bold px-3.5 py-2 rounded-xl border border-indigo-500/30 shadow-sm transition flex items-center space-x-1.5">
                     <span>📜 Posted Task History</span>
                 </button>
             </div>
 
             <!-- Task Create Form -->
-            <div class="cyber-card neon-card p-5 rounded-[2.5rem] space-y-4">
-                <h4 class="text-xs font-extrabold uppercase tracking-wider text-pink-400">Create & Publish New Task</h4>
+            <div class="cyber-card neon-card p-5 rounded-[2.5rem] space-y-4 shadow-xl">
+                <h4 class="text-xs font-extrabold uppercase tracking-wider text-pink-600">Create & Publish New Task</h4>
                 <div class="space-y-3">
                     <div>
-                        <label class="text-[11px] text-slate-300 font-semibold block mb-1">Task Title</label>
-                        <input type="text" id="admin-task-title" placeholder="e.g. Subscribe YouTube Channel" class="w-full bg-slate-950/90 border border-indigo-500/30 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-pink-400">
+                        <label class="text-[11px] text-slate-700 font-semibold block mb-1">Task Title</label>
+                        <input type="text" id="admin-task-title" placeholder="e.g. Subscribe YouTube Channel" class="w-full bg-white border border-indigo-500/30 rounded-2xl px-4 py-3 text-xs text-slate-800 outline-none focus:border-pink-500 shadow-inner">
                     </div>
                     <div class="grid grid-cols-2 gap-2">
                         <div>
-                            <label class="text-[11px] text-slate-300 font-semibold block mb-1">Reward (BDT)</label>
-                            <input type="number" id="admin-task-reward" placeholder="10" class="w-full bg-slate-950/90 border border-indigo-500/30 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-pink-400">
+                            <label class="text-[11px] text-slate-700 font-semibold block mb-1">Reward (BDT)</label>
+                            <input type="number" id="admin-task-reward" placeholder="10" class="w-full bg-white border border-indigo-500/30 rounded-2xl px-4 py-3 text-xs text-slate-800 outline-none focus:border-pink-500 shadow-inner">
                         </div>
                         <div>
-                            <label class="text-[11px] text-slate-300 font-semibold block mb-1">Max Members / Limit</label>
-                            <input type="number" id="admin-task-limit" placeholder="50" class="w-full bg-slate-950/90 border border-indigo-500/30 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-pink-400">
+                            <label class="text-[11px] text-slate-700 font-semibold block mb-1">Max Members / Limit</label>
+                            <input type="number" id="admin-task-limit" placeholder="50" class="w-full bg-white border border-indigo-500/30 rounded-2xl px-4 py-3 text-xs text-slate-800 outline-none focus:border-pink-500 shadow-inner">
                         </div>
                     </div>
 
                     <div>
-                        <label class="text-[11px] text-slate-300 font-semibold block mb-1">Task Banner / Thumbnail Image</label>
-                        
-                        <div onclick="openSourceSelectorFor('admin')" class="w-full bg-slate-950/90 border-2 border-dashed border-indigo-500/30 hover:border-pink-500 rounded-2xl p-3.5 text-center cursor-pointer transition flex items-center justify-center space-x-2">
+                        <label class="text-[11px] text-slate-700 font-semibold block mb-1">Task Banner / Thumbnail Image</label>
+                        <div onclick="openSourceSelectorFor('admin')" class="w-full bg-white border-2 border-dashed border-indigo-500/30 hover:border-pink-500 rounded-2xl p-3.5 text-center cursor-pointer transition flex items-center justify-center space-x-2 shadow-inner">
                             <span id="admin-upload-icon">📁</span>
-                            <span id="admin-upload-status" class="text-xs font-bold text-slate-300">Click to Upload Task Image</span>
+                            <span id="admin-upload-status" class="text-xs font-bold text-slate-700">Click to Upload Task Image</span>
                         </div>
                         <input type="hidden" id="admin-task-icon" value="">
                     </div>
 
                     <div>
-                        <label class="text-[11px] text-slate-300 font-semibold block mb-1">Task Link</label>
-                        <input type="url" id="admin-task-link" placeholder="https://youtube.com/..." class="w-full bg-slate-950/90 border border-indigo-500/30 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-pink-400">
+                        <label class="text-[11px] text-slate-700 font-semibold block mb-1">Task Link</label>
+                        <input type="url" id="admin-task-link" placeholder="https://youtube.com/..." class="w-full bg-white border border-indigo-500/30 rounded-2xl px-4 py-3 text-xs text-slate-800 outline-none focus:border-pink-500 shadow-inner">
                     </div>
                     <div>
-                        <label class="text-[11px] text-slate-300 font-semibold block mb-1">Task Description / Instructions</label>
-                        <textarea id="admin-task-desc" placeholder="Watch full video and subscribe..." class="w-full bg-slate-950/90 border border-indigo-500/30 rounded-2xl px-4 py-3 text-xs text-white outline-none focus:border-pink-400 h-20"></textarea>
+                        <label class="text-[11px] text-slate-700 font-semibold block mb-1">Task Description / Instructions</label>
+                        <textarea id="admin-task-desc" placeholder="Watch full video and subscribe..." class="w-full bg-white border border-indigo-500/30 rounded-2xl px-4 py-3 text-xs text-slate-800 outline-none focus:border-pink-500 h-20 shadow-inner"></textarea>
                     </div>
                     <button onclick="adminPublishTask()" class="w-full btn-cyber text-xs font-black py-3.5 rounded-2xl shadow-lg text-white uppercase tracking-wider">Publish Task</button>
                 </div>
@@ -497,9 +537,9 @@
 
             <!-- All Combined Pending Requests -->
             <div class="space-y-3">
-                <h4 class="text-xs font-extrabold uppercase tracking-widest text-indigo-300 px-1">All Pending Requests (Tasks & Withdraws)</h4>
+                <h4 class="text-xs font-extrabold uppercase tracking-widest text-indigo-700 px-1">All Pending Requests (Tasks & Withdraws)</h4>
                 <div id="admin-all-requests-container" class="space-y-2.5">
-                    <div class="cyber-card p-4 rounded-2xl text-center text-xs text-slate-400">No pending requests</div>
+                    <div class="cyber-card p-4 rounded-2xl text-center text-xs text-slate-500">No pending requests</div>
                 </div>
             </div>
         </section>
@@ -507,56 +547,61 @@
     </main>
 
     <!-- ================= USER TASK HISTORY MODAL ================= -->
-    <div id="history-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div id="history-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
         <div class="cyber-card w-full max-w-sm rounded-[2.5rem] p-6 shadow-2xl space-y-4 max-h-[80vh] flex flex-col animate-pop border-indigo-500/30">
-            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                <h3 class="font-extrabold text-xs text-indigo-300 uppercase tracking-wider">Task Submission History</h3>
-                <button onclick="closeHistoryModal()" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs flex items-center justify-center transition">✕</button>
+            <div class="flex justify-between items-center border-b border-slate-200 pb-3">
+                <h3 class="font-extrabold text-xs text-indigo-700 uppercase tracking-wider">Task Submission History</h3>
+                <button onclick="closeHistoryModal()" class="w-8 h-8 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs flex items-center justify-center transition">✕</button>
             </div>
-            
             <div id="user-task-history-container" class="space-y-2.5 overflow-y-auto flex-1 pr-1"></div>
         </div>
     </div>
 
     <!-- ================= ADMIN POSTED TASK HISTORY MODAL ================= -->
-    <div id="admin-history-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-[160] hidden flex items-center justify-center p-4">
+    <div id="admin-history-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-[160] hidden flex items-center justify-center p-4">
         <div class="cyber-card neon-card w-full max-w-sm rounded-[2.5rem] p-6 shadow-2xl space-y-4 max-h-[80vh] flex flex-col animate-pop border-pink-500/40">
-            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                <h3 class="font-extrabold text-xs text-pink-400 uppercase tracking-wider">Posted Task History</h3>
-                <button onclick="closeAdminHistoryModal()" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs flex items-center justify-center transition">✕</button>
+            <div class="flex justify-between items-center border-b border-slate-200 pb-3">
+                <h3 class="font-extrabold text-xs text-pink-600 uppercase tracking-wider">Posted Task History</h3>
+                <button onclick="closeAdminHistoryModal()" class="w-8 h-8 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs flex items-center justify-center transition">✕</button>
             </div>
-            
             <div id="admin-posted-tasks-container" class="space-y-2.5 overflow-y-auto flex-1 pr-1"></div>
         </div>
     </div>
 
     <!-- ================= BOTTOM NAVIGATION BAR ================= -->
-    <nav id="bottom-nav" class="w-full max-w-md mx-auto fixed bottom-0 left-0 right-0 bg-[#050914]/90 backdrop-blur-2xl border-t border-indigo-500/20 px-4 py-2.5 z-40 shadow-2xl">
+    <nav id="bottom-nav" class="w-full max-w-md mx-auto fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-2xl border-t border-indigo-500/20 px-4 py-2.5 z-40 shadow-lg">
         <div class="flex justify-around items-center">
             
-            <button onclick="switchTab('home')" id="nav-home" class="flex flex-col items-center space-y-1 text-pink-400 transition transform hover:scale-105 group nav-btn-active">
-                <div class="nav-icon-wrapper w-11 h-11 rounded-2xl bg-slate-900/90 border border-indigo-500/20 flex items-center justify-center overflow-hidden shadow-inner p-1.5">
+            <button onclick="switchTab('home')" id="nav-home" class="flex flex-col items-center space-y-1 text-pink-600 transition transform hover:scale-105 group nav-btn-active">
+                <div class="nav-icon-wrapper w-11 h-11 rounded-2xl bg-slate-100 border border-indigo-500/20 flex items-center justify-center overflow-hidden shadow-inner p-1.5">
                     <img src="https://i.postimg.cc/Z5gFdNwz/pngtree-3d-home-icon-image-on-transparent-background-png-image-20814352.png" alt="Home" class="w-full h-full object-contain">
                 </div>
                 <span class="text-[10px] font-extrabold tracking-wide">Home</span>
             </button>
 
-            <button onclick="switchTab('leaderboard')" id="nav-leaderboard" class="flex flex-col items-center space-y-1 text-slate-400 hover:text-pink-400 transition transform hover:scale-105 group">
-                <div class="nav-icon-wrapper w-11 h-11 rounded-2xl bg-slate-900/90 border border-indigo-500/20 flex items-center justify-center overflow-hidden shadow-inner p-1.5">
+            <button onclick="switchTab('tasks')" id="nav-tasks" class="flex flex-col items-center space-y-1 text-slate-500 hover:text-pink-600 transition transform hover:scale-105 group">
+                <div class="nav-icon-wrapper w-11 h-11 rounded-2xl bg-slate-100 border border-indigo-500/20 flex items-center justify-center overflow-hidden shadow-inner p-1.5">
+                    <img src="https://i.postimg.cc/QMYL50Rj/images-(1).jpg" alt="Tasks" class="w-full h-full object-cover rounded-xl">
+                </div>
+                <span class="text-[10px] font-extrabold tracking-wide">Tasks</span>
+            </button>
+
+            <button onclick="switchTab('leaderboard')" id="nav-leaderboard" class="flex flex-col items-center space-y-1 text-slate-500 hover:text-pink-600 transition transform hover:scale-105 group">
+                <div class="nav-icon-wrapper w-11 h-11 rounded-2xl bg-slate-100 border border-indigo-500/20 flex items-center justify-center overflow-hidden shadow-inner p-1.5">
                     <img src="https://i.postimg.cc/D0jbKVN6/images-(2).jpg" alt="Ranks" class="w-full h-full object-cover rounded-xl">
                 </div>
                 <span class="text-[10px] font-extrabold tracking-wide">Ranks</span>
             </button>
 
-            <button onclick="switchTab('withdraw')" id="nav-withdraw" class="flex flex-col items-center space-y-1 text-slate-400 hover:text-pink-400 transition transform hover:scale-105 group">
-                <div class="nav-icon-wrapper w-11 h-11 rounded-2xl bg-slate-900/90 border border-indigo-500/20 flex items-center justify-center overflow-hidden shadow-inner p-1.5">
+            <button onclick="switchTab('withdraw')" id="nav-withdraw" class="flex flex-col items-center space-y-1 text-slate-500 hover:text-pink-600 transition transform hover:scale-105 group">
+                <div class="nav-icon-wrapper w-11 h-11 rounded-2xl bg-slate-100 border border-indigo-500/20 flex items-center justify-center overflow-hidden shadow-inner p-1.5">
                     <img src="https://i.postimg.cc/DyNbjTLW/images-(3).jpg" alt="Withdraw" class="w-full h-full object-cover rounded-xl">
                 </div>
                 <span class="text-[10px] font-extrabold tracking-wide">Withdraw</span>
             </button>
 
-            <button onclick="switchTab('profile')" id="nav-profile" class="flex flex-col items-center space-y-1 text-slate-400 hover:text-pink-400 transition transform hover:scale-105 group">
-                <div class="nav-icon-wrapper w-11 h-11 rounded-2xl bg-slate-900/90 border border-indigo-500/20 flex items-center justify-center overflow-hidden shadow-inner p-1.5">
+            <button onclick="switchTab('profile')" id="nav-profile" class="flex flex-col items-center space-y-1 text-slate-500 hover:text-pink-600 transition transform hover:scale-105 group">
+                <div class="nav-icon-wrapper w-11 h-11 rounded-2xl bg-slate-100 border border-indigo-500/20 flex items-center justify-center overflow-hidden shadow-inner p-1.5">
                     <img src="https://i.postimg.cc/6QJ4KfHT/images-(4).jpg" alt="Profile" class="w-full h-full object-cover rounded-xl">
                 </div>
                 <span class="text-[10px] font-extrabold tracking-wide">Profile</span>
@@ -630,11 +675,11 @@
         };
 
         let tasksList = [];
-        let completedTaskCounts = {}; // Track how many completed successfully per taskId
+        let completedTaskCounts = {};
         let selectedTask = null;
         let lastSuccessTaskKeys = new Set();
         let isAdminLoggedIn = false;
-        let activeUploadTarget = ''; // 'proof', 'profile', or 'admin'
+        let activeUploadTarget = '';
 
         window.switchTab = switchTab;
         window.openTaskDetails = openTaskDetails;
@@ -648,6 +693,7 @@
         window.closeHistoryModal = closeHistoryModal;
         window.requestWithdraw = requestWithdraw;
         window.copyReferralCode = copyReferralCode;
+        window.copyHomeReferralCode = copyHomeReferralCode;
         window.verifyAndEnterApp = verifyAndEnterApp;
         window.showPremiumAlert = showPremiumAlert;
         window.closePremiumAlert = closePremiumAlert;
@@ -829,7 +875,6 @@
             }
         }
 
-        // Fetch task completions count and check limits/auto-deletion
         const usersRefAll = ref(db, 'users');
         onValue(usersRefAll, (snapshot) => {
             completedTaskCounts = {};
@@ -857,7 +902,6 @@
                 let limit = parseInt(task.limit) || 0;
                 let doneCount = completedTaskCounts[task.id] || 0;
                 if (limit > 0 && doneCount >= limit) {
-                    // Auto delete completed task
                     remove(ref(db, 'tasks/' + task.id));
                 }
             });
@@ -1010,12 +1054,13 @@
                 } else {
                     showPremiumAlert('ত্রুটি', 'ডাটাবেজে কোনো ইউজার পাওয়া যায়নি।', '❌');
                 }
-            }).catch((error) => {
+            }).catch(() => {
                 showPremiumAlert('সার্ভার ত্রুটি', 'কানেকশন সমস্যা! আবার চেষ্টা করুন।', '⚠️');
             });
         }
 
         function initUserUI() {
+            document.getElementById('home-user-name').innerText = userData.name || 'User';
             document.getElementById('profile-name').innerText = userData.name || 'User';
             
             const avatarContainer = document.getElementById('profile-avatar-container');
@@ -1028,6 +1073,7 @@
             document.getElementById('profile-id').innerText = `UID: ${userData.id}`;
             document.getElementById('profile-username').innerText = userData.username;
             document.getElementById('referral-code-display').innerText = userData.id;
+            document.getElementById('home-referral-code').innerText = userData.id;
             document.getElementById('stat-total-earned').innerText = userData.totalEarned;
             document.getElementById('stat-total-refer').innerText = userData.totalRefer;
 
@@ -1064,6 +1110,7 @@
 
         function renderTasks() {
             const container = document.getElementById('task-container');
+            if(!container) return;
             container.innerHTML = '';
 
             const successfulTaskIds = new Set(
@@ -1075,7 +1122,7 @@
             const availableTasks = tasksList.filter(task => !successfulTaskIds.has(task.id));
 
             if (availableTasks.length === 0) {
-                container.innerHTML = `<div class="cyber-card p-6 rounded-2xl text-center text-xs text-slate-400 col-span-2">No tasks available right now. Please check back later!</div>`;
+                container.innerHTML = `<div class="cyber-card p-6 rounded-2xl text-center text-xs text-slate-500 col-span-2">No tasks available right now. Please check back later!</div>`;
                 return;
             }
 
@@ -1088,7 +1135,7 @@
                 let leftCount = limit > 0 ? Math.max(0, limit - doneCount) : 'Unlimited';
 
                 const taskCard = document.createElement('div');
-                taskCard.className = "cyber-card cyber-card-hover p-3.5 rounded-[2rem] flex flex-col justify-between space-y-3";
+                taskCard.className = "cyber-card cyber-card-hover p-3.5 rounded-[2.0rem] flex flex-col justify-between space-y-3";
                 
                 let btnText = 'Start Task';
                 let btnClass = 'btn-cyber text-white shadow-lg';
@@ -1097,11 +1144,11 @@
                 if (isSubmitted) {
                     if (existingTask.status === 'Pending') {
                         btnText = 'Pending';
-                        btnClass = 'bg-pink-950/80 text-pink-400 border border-pink-500/40';
-                        btnAction = `switchTab('home')`;
+                        btnClass = 'bg-pink-100 text-pink-700 border border-pink-300';
+                        btnAction = `switchTab('tasks')`;
                     } else if (existingTask.status === 'Rejected') {
                         btnText = 'Retry';
-                        btnClass = 'bg-rose-950/80 text-rose-400 border border-rose-500/40';
+                        btnClass = 'bg-rose-100 text-rose-700 border border-rose-300';
                         btnAction = `openTaskDetails('${task.id}')`;
                     }
                 }
@@ -1109,19 +1156,19 @@
                 let iconHtml = '';
                 const iconVal = task.icon || '📌';
                 if (iconVal.startsWith('http://') || iconVal.startsWith('https://') || iconVal.startsWith('data:image/')) {
-                    iconHtml = `<div onclick="openImageZoom('${iconVal}')" class="w-full h-24 rounded-2xl overflow-hidden border border-indigo-500/30 cursor-pointer shadow-inner"><img src="${iconVal}" alt="Task Image" class="w-full h-full object-cover"></div>`;
+                    iconHtml = `<div onclick="openImageZoom('${iconVal}')" class="w-full h-24 rounded-2xl overflow-hidden border border-indigo-200 cursor-pointer shadow-inner"><img src="${iconVal}" alt="Task Image" class="w-full h-full object-cover"></div>`;
                 } else {
-                    iconHtml = `<div class="w-full h-24 bg-pink-950/60 text-pink-400 border border-pink-500/30 rounded-2xl flex items-center justify-center font-bold text-2xl shadow-inner">${iconVal}</div>`;
+                    iconHtml = `<div class="w-full h-24 bg-pink-50 text-pink-600 border border-pink-200 rounded-2xl flex items-center justify-center font-bold text-2xl shadow-inner">${iconVal}</div>`;
                 }
 
                 taskCard.innerHTML = `
                     <div class="space-y-2">
                         ${iconHtml}
                         <div>
-                            <h3 class="font-extrabold text-xs text-white truncate">${task.title}</h3>
+                            <h3 class="font-extrabold text-xs text-slate-800 truncate">${task.title}</h3>
                             <div class="flex justify-between items-center mt-1">
-                                <span class="text-xs text-pink-400 font-black">+${task.reward} BDT</span>
-                                <span class="text-[9px] text-cyan-300 bg-cyan-950/60 px-2 py-0.5 rounded-lg border border-cyan-500/30">Left: ${leftCount}</span>
+                                <span class="text-xs text-pink-600 font-black">+${task.reward} BDT</span>
+                                <span class="text-[9px] text-cyan-700 bg-cyan-100 px-2 py-0.5 rounded-lg border border-cyan-200">Left: ${leftCount}</span>
                             </div>
                         </div>
                     </div>
@@ -1163,7 +1210,7 @@
             document.getElementById('upload-status-text').innerText = 'Click to Select or Capture Screenshot';
             document.getElementById('upload-icon-box').innerHTML = '📁';
 
-            const views = ['home', 'task-details', 'leaderboard', 'withdraw', 'profile', 'admin'];
+            const views = ['home', 'tasks', 'task-details', 'leaderboard', 'withdraw', 'profile', 'admin'];
             views.forEach(v => document.getElementById(`view-${v}`).classList.add('hidden'));
             document.getElementById('view-task-details').classList.remove('hidden');
         }
@@ -1203,7 +1250,7 @@
             push(globalReqRef, { type: 'task', ...newTask, reqKey: newTaskRef.key });
 
             showPremiumAlert('সফল!', 'আপনার টাস্ক প্রুফ সফলভাবে সাবমিট হয়েছে!', '🚀');
-            switchTab('home');
+            switchTab('tasks');
 
             if (tg.HapticFeedback) {
                 tg.HapticFeedback.notificationOccurred('success');
@@ -1212,28 +1259,29 @@
 
         function renderUserTaskHistory() {
             const container = document.getElementById('user-task-history-container');
+            if(!container) return;
             if (userData.userTasks.length === 0) {
-                container.innerHTML = `<div class="cyber-card p-4 rounded-2xl text-center text-xs text-slate-400">No tasks submitted yet</div>`;
+                container.innerHTML = `<div class="cyber-card p-4 rounded-2xl text-center text-xs text-slate-500">No tasks submitted yet</div>`;
                 return;
             }
 
             container.innerHTML = '';
             userData.userTasks.slice().reverse().forEach(item => {
-                let statusColor = 'text-pink-400 bg-pink-950/60 border border-pink-500/30';
-                if (item.status === 'Success') statusColor = 'text-emerald-400 bg-emerald-950/60 border border-emerald-500/30';
-                if (item.status === 'Rejected') statusColor = 'text-rose-400 bg-rose-950/60 border border-rose-500/30';
+                let statusColor = 'text-pink-600 bg-pink-100 border border-pink-300';
+                if (item.status === 'Success') statusColor = 'text-emerald-700 bg-emerald-100 border border-emerald-300';
+                if (item.status === 'Rejected') statusColor = 'text-rose-700 bg-rose-100 border border-rose-300';
 
                 container.innerHTML += `
                     <div class="cyber-card p-3.5 rounded-2xl flex items-center justify-between">
                         <div>
-                            <h4 class="font-extrabold text-xs text-white">${item.title}</h4>
+                            <h4 class="font-extrabold text-xs text-slate-800">${item.title}</h4>
                             <div class="flex items-center space-x-2 mt-1.5">
-                                <span class="text-[11px] text-pink-400 font-black">৳${item.reward}</span>
+                                <span class="text-[11px] text-pink-600 font-black">৳${item.reward}</span>
                                 <span class="text-[10px] font-bold px-2 py-0.5 rounded-xl ${statusColor}">${item.status}</span>
                             </div>
                             <span class="text-[9px] text-slate-400 font-mono mt-1 block">${item.date}</span>
                         </div>
-                        ${item.proofUrl ? `<button onclick="openImageZoom('${item.proofUrl}')" class="text-[10px] text-indigo-300 bg-indigo-950/80 px-2.5 py-1.5 rounded-xl border border-indigo-500/30 font-bold">View Proof</button>` : ''}
+                        ${item.proofUrl ? `<button onclick="openImageZoom('${item.proofUrl}')" class="text-[10px] text-indigo-700 bg-indigo-50 px-2.5 py-1.5 rounded-xl border border-indigo-200 font-bold">View Proof</button>` : ''}
                     </div>
                 `;
             });
@@ -1249,19 +1297,19 @@
 
         function switchTab(tabId) {
             if (isAdminLoggedIn && tabId !== 'admin') return;
-            const views = ['home', 'task-details', 'leaderboard', 'withdraw', 'profile', 'admin'];
+            const views = ['home', 'tasks', 'task-details', 'leaderboard', 'withdraw', 'profile', 'admin'];
             views.forEach(v => {
                 const el = document.getElementById(`view-${v}`);
                 if(el) el.classList.add('hidden');
             });
 
-            ['home', 'leaderboard', 'withdraw', 'profile'].forEach(v => {
+            ['home', 'tasks', 'leaderboard', 'withdraw', 'profile'].forEach(v => {
                 const navEl = document.getElementById(`nav-${v}`);
                 if (navEl) {
-                    navEl.className = "flex flex-col items-center space-y-1 text-slate-400 hover:text-pink-400 transition transform hover:scale-105 group";
+                    navEl.className = "flex flex-col items-center space-y-1 text-slate-500 hover:text-pink-600 transition transform hover:scale-105 group";
                     const iconWrapper = navEl.querySelector('.nav-icon-wrapper');
                     if (iconWrapper) {
-                        iconWrapper.className = "nav-icon-wrapper w-11 h-11 rounded-2xl bg-slate-900/90 border border-indigo-500/20 flex items-center justify-center overflow-hidden shadow-inner p-1.5";
+                        iconWrapper.className = "nav-icon-wrapper w-11 h-11 rounded-2xl bg-slate-100 border border-indigo-500/20 flex items-center justify-center overflow-hidden shadow-inner p-1.5";
                     }
                 }
             });
@@ -1271,14 +1319,14 @@
             
             const targetNav = document.getElementById(`nav-${tabId}`);
             if (targetNav) {
-                targetNav.className = "flex flex-col items-center space-y-1 text-pink-400 transition transform hover:scale-105 group nav-btn-active";
+                targetNav.className = "flex flex-col items-center space-y-1 text-pink-600 transition transform hover:scale-105 group nav-btn-active";
                 const activeWrapper = targetNav.querySelector('.nav-icon-wrapper');
                 if (activeWrapper) {
-                    activeWrapper.className = "nav-icon-wrapper w-11 h-11 rounded-2xl bg-slate-900/90 border border-indigo-500/20 flex items-center justify-center overflow-hidden shadow-inner p-1.5";
+                    activeWrapper.className = "nav-icon-wrapper w-11 h-11 rounded-2xl bg-slate-100 border border-indigo-500/20 flex items-center justify-center overflow-hidden shadow-inner p-1.5";
                 }
             }
 
-            if(tabId === 'home') {
+            if(tabId === 'tasks') {
                 renderTasks();
                 renderUserTaskHistory();
             }
@@ -1294,12 +1342,15 @@
                 if (snapshot.exists()) {
                     snapshot.forEach((childSnapshot) => {
                         let data = childSnapshot.val();
-                        usersArray.push({
-                            name: data.name || 'User',
-                            photoUrl: data.photoUrl || '',
-                            totalEarned: data.totalEarned || 0,
-                            totalRefer: data.totalRefer || 0
-                        });
+                        // Filter out test/dummy accounts, keeping only valid user names
+                        if (data.name && data.name !== 'Telegram User' && !data.name.includes('test')) {
+                            usersArray.push({
+                                name: data.name,
+                                photoUrl: data.photoUrl || '',
+                                totalEarned: data.totalEarned || 0,
+                                totalRefer: data.totalRefer || 0
+                            });
+                        }
                     });
                 }
 
@@ -1319,7 +1370,7 @@
                         return `<img src="${u.photoUrl}" alt="Avatar" class="${sizeClass} object-cover">`;
                     } else {
                         const letter = u && u.name ? u.name.charAt(0).toUpperCase() : 'U';
-                        return `<div class="w-full h-full bg-indigo-950 flex items-center justify-center font-bold text-pink-400 ${textClass}">${letter}</div>`;
+                        return `<div class="w-full h-full bg-indigo-50 flex items-center justify-center font-bold text-pink-600 ${textClass}">${letter}</div>`;
                     }
                 };
 
@@ -1348,28 +1399,28 @@
                 if (usersArray.length > 3) {
                     for (let i = 3; i < usersArray.length; i++) {
                         let item = usersArray[i];
-                        let avatarMarkup = item.photoUrl ? `<img src="${item.photoUrl}" alt="Avatar" class="w-full h-full object-cover">` : `<span class="text-xs font-bold text-pink-400">${item.name.charAt(0).toUpperCase()}</span>`;
+                        let avatarMarkup = item.photoUrl ? `<img src="${item.photoUrl}" alt="Avatar" class="w-full h-full object-cover">` : `<span class="text-xs font-bold text-pink-600">${item.name.charAt(0).toUpperCase()}</span>`;
 
                         lbList.innerHTML += `
                             <div class="cyber-card cyber-card-hover p-3.5 rounded-2xl flex items-center justify-between">
                                 <div class="flex items-center space-x-3">
-                                    <span class="w-6 text-center font-black text-xs text-pink-400">#${i + 1}</span>
-                                    <div class="w-10 h-10 rounded-xl bg-indigo-950 border border-indigo-500/30 overflow-hidden flex items-center justify-center shadow-inner flex-shrink-0">
+                                    <span class="w-6 text-center font-black text-xs text-pink-600">#${i + 1}</span>
+                                    <div class="w-10 h-10 rounded-xl bg-indigo-50 border border-indigo-200 overflow-hidden flex items-center justify-center shadow-inner flex-shrink-0">
                                         ${avatarMarkup}
                                     </div>
                                     <div>
-                                        <h4 class="text-xs font-extrabold text-white">${item.name}</h4>
-                                        <span class="text-[10px] text-slate-400 bg-indigo-950/60 px-2 py-0.5 rounded-md border border-indigo-500/20 inline-block mt-0.5">👥 ${item.totalRefer} Refs</span>
+                                        <h4 class="text-xs font-extrabold text-slate-800">${item.name}</h4>
+                                        <span class="text-[10px] text-slate-500 bg-indigo-50 px-2 py-0.5 rounded-md border border-indigo-100 inline-block mt-0.5">👥 ${item.totalRefer} Refs</span>
                                     </div>
                                 </div>
-                                <span class="text-xs font-black text-pink-400">৳${item.totalEarned}</span>
+                                <span class="text-xs font-black text-pink-600">৳${item.totalEarned}</span>
                             </div>
                         `;
                     }
                 } else if(usersArray.length <= 3 && usersArray.length > 0) {
-                    lbList.innerHTML = `<div class="cyber-card p-4 rounded-2xl text-center text-xs text-slate-400">No other users in ranking</div>`;
+                    lbList.innerHTML = `<div class="cyber-card p-4 rounded-2xl text-center text-xs text-slate-500">No other users in ranking</div>`;
                 } else {
-                    lbList.innerHTML = `<div class="cyber-card p-4 rounded-2xl text-center text-xs text-slate-400">No leaderboard data found</div>`;
+                    lbList.innerHTML = `<div class="cyber-card p-4 rounded-2xl text-center text-xs text-slate-500">No leaderboard data found</div>`;
                 }
             });
         }
@@ -1430,23 +1481,24 @@
 
         function renderWithdrawHistory() {
             const container = document.getElementById('withdraw-history-container');
+            if(!container) return;
             if (userData.withdrawHistory.length === 0) {
-                container.innerHTML = `<div class="cyber-card p-4 rounded-2xl text-center text-xs text-slate-400">No withdraw history found</div>`;
+                container.innerHTML = `<div class="cyber-card p-4 rounded-2xl text-center text-xs text-slate-500">No withdraw history found</div>`;
                 return;
             }
 
             container.innerHTML = '';
             userData.withdrawHistory.slice().reverse().forEach(item => {
-                const statusColor = item.status === 'Success' ? 'text-emerald-400 bg-emerald-950/60 border border-emerald-500/30' : 'text-pink-400 bg-pink-950/60 border border-pink-500/30';
+                const statusColor = item.status === 'Success' ? 'text-emerald-700 bg-emerald-100 border border-emerald-300' : 'text-pink-600 bg-pink-100 border border-pink-300';
                 container.innerHTML += `
                     <div class="cyber-card p-3.5 rounded-2xl flex items-center justify-between">
                         <div>
                             <div class="flex items-center space-x-2">
-                                <span class="font-extrabold text-xs text-white">৳${item.amount}</span>
+                                <span class="font-extrabold text-xs text-slate-800">৳${item.amount}</span>
                                 <span class="text-[10px] font-bold px-2 py-0.5 rounded-xl ${statusColor}">${item.status}</span>
                             </div>
-                            <p class="text-[11px] text-slate-400 mt-1 font-medium">${item.method} (${item.number})</p>
-                            <span class="text-[9px] text-slate-500 font-mono mt-0.5 block">${item.date}</span>
+                            <p class="text-[11px] text-slate-600 mt-1 font-medium">${item.method} (${item.number})</p>
+                            <span class="text-[9px] text-slate-400 font-mono mt-0.5 block">${item.date}</span>
                         </div>
                     </div>
                 `;
@@ -1459,9 +1511,15 @@
             showPremiumAlert('সফল', 'রেফারেল কোড সফলভাবে কপি করা হয়েছে!', '📋');
         }
 
+        function copyHomeReferralCode() {
+            const code = document.getElementById("home-referral-code").innerText;
+            navigator.clipboard.writeText(code);
+            showPremiumAlert('সফল', 'রেফারেল কোড সফলভাবে কপি করা হয়েছে!', '📋');
+        }
+
         function openAdminPanel() {
             isAdminLoggedIn = true;
-            const views = ['home', 'task-details', 'leaderboard', 'withdraw', 'profile'];
+            const views = ['home', 'tasks', 'task-details', 'leaderboard', 'withdraw', 'profile'];
             views.forEach(v => document.getElementById(`view-${v}`).classList.add('hidden'));
             document.getElementById('view-admin').classList.remove('hidden');
             document.getElementById('headerTitle').innerText = 'Admin Control Panel';
@@ -1526,10 +1584,11 @@
             const allReqsRef = ref(db, 'admin_all_requests');
             onValue(allReqsRef, (snapshot) => {
                 const container = document.getElementById('admin-all-requests-container');
+                if(!container) return;
                 container.innerHTML = '';
                 const data = snapshot.val();
                 if (!data) {
-                    container.innerHTML = `<div class="cyber-card p-4 rounded-2xl text-center text-xs text-slate-400">No pending requests</div>`;
+                    container.innerHTML = `<div class="cyber-card p-4 rounded-2xl text-center text-xs text-slate-500">No pending requests</div>`;
                     return;
                 }
 
@@ -1539,13 +1598,13 @@
                         container.innerHTML += `
                             <div class="cyber-card p-3.5 rounded-2xl space-y-2">
                                 <div class="flex justify-between items-center">
-                                    <span class="font-extrabold text-xs text-white">${req.userName} <span class="text-[9px] text-pink-400">(Task Proof)</span></span>
-                                    <span class="text-xs font-black text-pink-400">৳${req.reward}</span>
+                                    <span class="font-extrabold text-xs text-slate-800">${req.userName} <span class="text-[9px] text-pink-600">(Task Proof)</span></span>
+                                    <span class="text-xs font-black text-pink-600">৳${req.reward}</span>
                                 </div>
-                                <p class="text-[11px] text-indigo-300"><b>Task:</b> ${req.title}</p>
-                                <p class="text-[11px] text-slate-300"><b>Proof:</b> ${req.proofText}</p>
+                                <p class="text-[11px] text-indigo-700"><b>Task:</b> ${req.title}</p>
+                                <p class="text-[11px] text-slate-600"><b>Proof:</b> ${req.proofText}</p>
                                 <div class="flex space-x-2 pt-1">
-                                    <button onclick="openImageZoom('${req.proofUrl}')" class="flex-1 bg-indigo-950 text-center py-2 rounded-xl text-[10px] text-indigo-300 border border-indigo-500/30">View Proof</button>
+                                    <button onclick="openImageZoom('${req.proofUrl}')" class="flex-1 bg-indigo-50 text-center py-2 rounded-xl text-[10px] text-indigo-700 border border-indigo-200">View Proof</button>
                                     <button onclick="approveTaskProof('${key}', '${req.userId}', '${req.reqKey}', ${req.reward})" class="flex-1 bg-emerald-600 text-white py-2 rounded-xl text-[10px] font-bold">Approve</button>
                                     <button onclick="rejectTaskProof('${key}', '${req.userId}', '${req.reqKey}')" class="flex-1 bg-rose-600 text-white py-2 rounded-xl text-[10px] font-bold">Reject</button>
                                 </div>
@@ -1555,10 +1614,10 @@
                         container.innerHTML += `
                             <div class="cyber-card p-3.5 rounded-2xl space-y-2">
                                 <div class="flex justify-between items-center">
-                                    <span class="font-extrabold text-xs text-white">${req.userName} <span class="text-[9px] text-pink-400">(Withdraw)</span></span>
-                                    <span class="text-xs font-black text-pink-400">৳${req.amount}</span>
+                                    <span class="font-extrabold text-xs text-slate-800">${req.userName} <span class="text-[9px] text-pink-600">(Withdraw)</span></span>
+                                    <span class="text-xs font-black text-pink-600">৳${req.amount}</span>
                                 </div>
-                                <p class="text-[11px] text-slate-300"><b>Number:</b> ${req.number} (${req.method})</p>
+                                <p class="text-[11px] text-slate-600"><b>Number:</b> ${req.number} (${req.method})</p>
                                 <div class="flex space-x-2 pt-1">
                                     <button onclick="approveWithdrawReq('${key}', '${req.userId}', '${req.reqKey}')" class="flex-1 bg-emerald-600 text-white py-2 rounded-xl text-[10px] font-bold">Approve</button>
                                     <button onclick="rejectWithdrawReq('${key}', '${req.userId}', '${req.reqKey}', ${req.amount})" class="flex-1 bg-rose-600 text-white py-2 rounded-xl text-[10px] font-bold">Reject & Refund</button>
@@ -1572,9 +1631,10 @@
 
         function renderAdminPostedTasks() {
             const container = document.getElementById('admin-posted-tasks-container');
+            if(!container) return;
             container.innerHTML = '';
             if (tasksList.length === 0) {
-                container.innerHTML = `<div class="cyber-card p-4 rounded-2xl text-center text-xs text-slate-400">No posted tasks found</div>`;
+                container.innerHTML = `<div class="cyber-card p-4 rounded-2xl text-center text-xs text-slate-500">No posted tasks found</div>`;
                 return;
             }
 
@@ -1582,7 +1642,7 @@
                 let adminIconHtml = '';
                 const iconVal = task.icon || '📌';
                 if (iconVal.startsWith('http://') || iconVal.startsWith('https://') || iconVal.startsWith('data:image/')) {
-                    adminIconHtml = `<img src="${iconVal}" alt="Task Icon" class="w-8 h-8 rounded-xl object-cover border border-indigo-500/30">`;
+                    adminIconHtml = `<img src="${iconVal}" alt="Task Icon" class="w-8 h-8 rounded-xl object-cover border border-indigo-200">`;
                 } else {
                     adminIconHtml = `<span class="text-xl">${iconVal}</span>`;
                 }
@@ -1595,14 +1655,14 @@
                         <div class="flex items-center space-x-3">
                             ${adminIconHtml}
                             <div>
-                                <h4 class="text-xs font-extrabold text-white">${task.title}</h4>
+                                <h4 class="text-xs font-extrabold text-slate-800">${task.title}</h4>
                                 <div class="flex items-center space-x-2 mt-0.5">
-                                    <span class="text-[10px] text-pink-400 font-bold">৳${task.reward}</span>
-                                    <span class="text-[9px] text-cyan-300 bg-cyan-950/60 px-2 py-0.5 rounded-lg border border-cyan-500/30">Done: ${doneCount}/${limit > 0 ? limit : '∞'}</span>
+                                    <span class="text-[10px] text-pink-600 font-bold">৳${task.reward}</span>
+                                    <span class="text-[9px] text-cyan-700 bg-cyan-100 px-2 py-0.5 rounded-lg border border-cyan-200">Done: ${doneCount}/${limit > 0 ? limit : '∞'}</span>
                                 </div>
                             </div>
                         </div>
-                        <button onclick="adminDeleteTask('${task.id}')" class="bg-rose-600/80 hover:bg-rose-700 text-white text-[10px] font-bold px-3 py-1.5 rounded-xl transition">Delete</button>
+                        <button onclick="adminDeleteTask('${task.id}')" class="bg-rose-600 hover:bg-rose-700 text-white text-[10px] font-bold px-3 py-1.5 rounded-xl transition">Delete</button>
                     </div>
                 `;
             });
@@ -1650,4 +1710,3 @@
     </script>
 </body>
 </html>
-
